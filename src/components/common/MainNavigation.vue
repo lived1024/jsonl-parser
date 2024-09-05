@@ -255,17 +255,23 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 700px;
+  justify-content: space-around;
+  overflow: hidden;
 }
 
 .nav-item {
   margin: 0;
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.5rem;
   border-radius: 1.5rem;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.8);
@@ -274,6 +280,9 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  justify-content: center;
+  min-width: 0;
 }
 
 .nav-link::before {
@@ -315,6 +324,10 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
 
 .nav-label {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+  text-align: center;
 }
 
 /* Mobile Navigation */
