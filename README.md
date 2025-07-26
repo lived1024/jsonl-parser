@@ -2,6 +2,15 @@
 
 JSON과 JSONL 데이터를 시각적인 트리 구조로 표시하는 웹 애플리케이션입니다.
 
+## 🌐 운영 사이트
+
+> ### 🚀 **라이브 데모를 확인해보세요!**
+> 
+> | 사이트 | 링크 | 호스팅 |
+> |--------|------|--------|
+> | **JSONL Parser 1** | 🔗 **[https://jsonl-parser.netlify.app/](https://jsonl-parser.netlify.app/)** | Netlify |
+> | **JSONL Parser 2** | 🔗 **[https://json-tree-viewer-pink.vercel.app/](https://json-tree-viewer-pink.vercel.app/)** | Vercel |
+
 ## 🚀 주요 기능
 
 ### 📝 입력 지원
