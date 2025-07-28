@@ -17,10 +17,9 @@
         </div>
       </div>
       
-      <fieldset class="input-type-selector" aria-label="입력 형식 선택">
-        <legend class="sr-only">JSON 입력 형식을 선택하세요</legend>
-        <div class="radio-group">
-          <label class="radio-option" :class="{ 'radio-option--active': store.inputType === InputType.JSON }">
+      <div class="input-type-selector">
+        <div class="type-tabs">
+          <label class="type-tab json-tab" :class="{ 'type-tab--active': store.inputType === InputType.JSON }">
             <input 
               type="radio" 
               :value="InputType.JSON" 
@@ -28,10 +27,19 @@
               @change="handleTypeChange"
               aria-describedby="json-description"
             />
-            <span class="radio-text">JSON</span>
-            <span class="radio-description">Objects & Arrays</span>
+            <div class="tab-icon json-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14,2 14,8 20,8"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-name">JSON</span>
+              <span class="tab-desc">Single object</span>
+            </div>
           </label>
-          <label class="radio-option" :class="{ 'radio-option--active': store.inputType === InputType.JSONL }">
+          
+          <label class="type-tab jsonl-tab" :class="{ 'type-tab--active': store.inputType === InputType.JSONL }">
             <input 
               type="radio" 
               :value="InputType.JSONL" 
@@ -39,11 +47,23 @@
               @change="handleTypeChange"
               aria-describedby="jsonl-description"
             />
-            <span class="radio-text">JSONL</span>
-            <span class="radio-description">Line-delimited</span>
+            <div class="tab-icon jsonl-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M8 6h13"/>
+                <path d="M8 12h13"/>
+                <path d="M8 18h13"/>
+                <path d="M3 6h.01"/>
+                <path d="M3 12h.01"/>
+                <path d="M3 18h.01"/>
+              </svg>
+            </div>
+            <div class="tab-content">
+              <span class="tab-name">JSONL</span>
+              <span class="tab-desc">Multiple lines</span>
+            </div>
           </label>
         </div>
-      </fieldset>
+      </div>
     </div>
     
     <div class="panel-content">
