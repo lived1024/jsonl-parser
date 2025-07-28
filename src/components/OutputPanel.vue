@@ -81,9 +81,9 @@
           </button>
         </div>
         
-        <div class="control-group level-controls" :class="{ 'level-controls--scrollable': needsScroll }">
+        <div class="control-group level-controls" :class="{ 'level-controls--scrollable': needsScroll }"  style="overflow: auto;">
           <span class="control-label-small">By Level:</span>
-          <div class="level-buttons-container" :class="{ 'level-buttons--scrollable': needsScroll }">
+          <div class="level-buttons-container level-buttons--scrollable" :class="{ 'level-buttons--scrollable': needsScroll }">
             <button 
               v-for="level in levelButtons"
               :key="level"

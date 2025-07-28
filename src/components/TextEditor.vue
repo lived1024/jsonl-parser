@@ -70,7 +70,7 @@
             type="button" 
             class="action-button"
             @click="formatJson"
-            :disabled="!inputText.trim()"
+            :disabled="!inputText.trim() || store.inputType !== 'json'"
             title="Format JSON (Ctrl+Shift+F)"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
