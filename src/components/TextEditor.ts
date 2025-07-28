@@ -55,6 +55,16 @@ export default function useTextEditor() {
     return num.toLocaleString()
   }
 
+  // JSON 유효성 검사
+  const isInputValidJson = computed(() => {
+    try {
+      JSON.parse(inputText.value)
+      return true
+    } catch (e) {
+      return false
+    }
+  })
+
   // JSON 포맷팅
   const formatJson = () => {
     try {
@@ -164,6 +174,7 @@ export default function useTextEditor() {
     textLines,
     lineCount,
     showLineNumbers,
+    isInputValidJson,
 
     // Methods
     formatNumber,

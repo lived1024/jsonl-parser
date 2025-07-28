@@ -70,7 +70,7 @@
             type="button" 
             class="action-button"
             @click="formatJson"
-            :disabled="!inputText.trim() || store.inputType !== 'json'"
+            :disabled="!isInputValidJson || store.inputType !== 'json'"
             title="Format JSON (Ctrl+Shift+F)"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -117,7 +117,8 @@ const {
   formatJson,
   clearInput,
   handleInput,
-  handleKeydown
+  handleKeydown,
+  isInputValidJson
 } = useTextEditor()
 </script>
 
