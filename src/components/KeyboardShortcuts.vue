@@ -137,6 +137,35 @@
             <span class="shortcut-description">Collapse node</span>
           </div>
         </div>
+        
+        <div class="shortcut-section">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"/>
+              </svg>
+            </div>
+            <h4>Tree Control</h4>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>E</kbd>
+            </div>
+            <span class="shortcut-description">Expand all nodes</span>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>W</kbd>
+            </div>
+            <span class="shortcut-description">Collapse all nodes</span>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys">
+              <kbd>Ctrl</kbd> + <kbd>1-9</kbd>
+            </div>
+            <span class="shortcut-description">Expand to level</span>
+          </div>
+        </div>
       </div>
       </div>
     </Transition>

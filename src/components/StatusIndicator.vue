@@ -70,9 +70,7 @@
             <p class="warning-message">{{ store.parseError?.message }}</p>
             <div class="success-stats">
               <div class="stat-item">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                </svg>
+                <NodesIcon :size="12" />
                 {{ nodeCount }} nodes
               </div>
               <div v-if="store.inputType === 'jsonl'" class="stat-item">
@@ -104,9 +102,7 @@
           <span class="status-text">Successfully Parsed</span>
           <div class="success-stats">
             <div class="stat-item">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-              </svg>
+              <NodesIcon :size="12" />
               {{ formatNumber(nodeCount) }} nodes
             </div>
             <div v-if="store.inputType === 'jsonl'" class="stat-item">
@@ -146,6 +142,7 @@
 import useStatusIndicator from './StatusIndicator'
 
 const {
+  NodesIcon,
   store,
   errorLocation,
   nodeCount,

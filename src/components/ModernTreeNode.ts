@@ -1,22 +1,18 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { TypeIcon } from './icons'
 import { SlideTransition } from './transitions'
-
-interface TreeNode {
-  id: string
-  key?: string
-  value: any
-  type: 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
-  children?: TreeNode[]
-}
+import { useJsonTreeStore } from '../stores'
+import type { ParsedNode } from '../types'
 
 interface Props {
-  node: TreeNode
+  node: ParsedNode
   level?: number
 }
 
 export default function useModernTreeNode(props: Props) {
-  const isExpanded = ref(props.level < 2) // 기본적으로 2레벨까지 확장
+  const store = useJsonTreeStore()
+
+  const isExpanded = computed(() => props.node.isExpanded)
 
   const hasChildren = computed(() => {
     return props.node.children && props.node.children.length > 0
@@ -76,7 +72,7 @@ export default function useModernTreeNode(props: Props) {
       event.stopPropagation()
     }
     if (hasChildren.value) {
-      isExpanded.value = !isExpanded.value
+      store.toggleNode(props.node.id)
     }
   }
 
@@ -97,14 +93,14 @@ export default function useModernTreeNode(props: Props) {
         if (hasChildren.value && !isExpanded.value) {
           event.preventDefault()
           event.stopPropagation()
-          isExpanded.value = true
+          store.toggleNode(props.node.id)
         }
         break
       case 'ArrowLeft':
         if (hasChildren.value && isExpanded.value) {
           event.preventDefault()
           event.stopPropagation()
-          isExpanded.value = false
+          store.toggleNode(props.node.id)
         }
         break
     }
@@ -135,4 +131,4 @@ export default function useModernTreeNode(props: Props) {
   }
 }
 
-export type { TreeNode, Props }
+export type { Props }

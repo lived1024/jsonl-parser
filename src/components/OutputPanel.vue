@@ -2,30 +2,103 @@
   <div class="output-panel" role="region" aria-labelledby="output-panel-title">
     <div class="panel-header">
       <div class="header-title">
-        <TypeIcon type="folder-open" :size="20" />
-        <h2 id="output-panel-title" class="panel-title">JSON Tree</h2>
+        <div class="title-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h3"/>
+            <path d="M6 8v8"/>
+            <path d="M6 8h6"/>
+            <path d="M6 16h6"/>
+            <path d="M12 8v8"/>
+            <path d="M12 8h6"/>
+            <path d="M12 12h6"/>
+            <path d="M12 16h6"/>
+            <circle cx="3" cy="12" r="1"/>
+            <circle cx="6" cy="8" r="1"/>
+            <circle cx="6" cy="16" r="1"/>
+            <circle cx="12" cy="8" r="1"/>
+            <circle cx="12" cy="12" r="1"/>
+            <circle cx="12" cy="16" r="1"/>
+            <circle cx="18" cy="8" r="1"/>
+            <circle cx="18" cy="12" r="1"/>
+            <circle cx="18" cy="16" r="1"/>
+          </svg>
+        </div>
+        <div class="title-content">
+          <h2 id="output-panel-title" class="panel-title">JSON Tree</h2>
+          <p class="title-description">Interactive tree visualization</p>
+        </div>
       </div>
       
       <div v-if="store.hasData" class="panel-stats" role="status" aria-live="polite">
         <div class="stat-card">
           <NodesIcon :size="16" />
-          <span class="stat-value">{{ nodeCount }}</span>
-          <span class="stat-label">nodes</span>
+          <div class="stat-content">
+            <span class="stat-value">{{ nodeCount }}</span>
+            <span class="stat-label">nodes</span>
+          </div>
         </div>
         <div v-if="maxDepth > 0" class="stat-card">
           <LayersIcon :size="16" />
-          <span class="stat-value">{{ maxDepth }}</span>
-          <span class="stat-label">levels</span>
+          <div class="stat-content">
+            <span class="stat-value">{{ maxDepth }}</span>
+            <span class="stat-label">levels</span>
+          </div>
         </div>
         <div v-if="store.inputType === 'jsonl'" class="stat-card">
           <FileTextIcon :size="16" />
-          <span class="stat-value">{{ store.parsedData.length }}</span>
-          <span class="stat-label">lines</span>
+          <div class="stat-content">
+            <span class="stat-value">{{ store.parsedData.length }}</span>
+            <span class="stat-label">lines</span>
+          </div>
         </div>
       </div>
     </div>
     
     <div class="panel-content">
+      <!-- 트리 컨트롤 -->
+      <div v-if="store.hasData" class="tree-controls">
+        <div class="control-group">
+          <button 
+            type="button"
+            class="control-button"
+            @click="expandAll"
+            title="Expand all nodes"
+            aria-label="Expand all nodes"
+          >
+            <ExpandAllIcon :size="16" />
+            <span class="control-label">Expand All</span>
+          </button>
+          
+          <button 
+            type="button"
+            class="control-button"
+            @click="collapseAll"
+            title="Collapse all nodes"
+            aria-label="Collapse all nodes"
+          >
+            <CollapseAllIcon :size="16" />
+            <span class="control-label">Collapse All</span>
+          </button>
+        </div>
+        
+        <div class="control-group level-controls" :class="{ 'level-controls--scrollable': needsScroll }">
+          <span class="control-label-small">By Level:</span>
+          <div class="level-buttons-container" :class="{ 'level-buttons--scrollable': needsScroll }">
+            <button 
+              v-for="level in levelButtons"
+              :key="level"
+              type="button"
+              class="level-button"
+              @click="expandToLevel(level)"
+              :title="`Expand to level ${level}`"
+              :aria-label="`Expand to level ${level}`"
+            >
+              {{ level }}
+            </button>
+          </div>
+        </div>
+      </div>
+      
       <!-- 빈 상태 -->
       <FadeTransition>
         <div v-if="!store.hasData && !store.hasError" class="empty-state">
@@ -148,7 +221,7 @@
           <div 
             class="tree-scroll"
             role="tree"
-            aria-label="JSON 트리 구조"
+            aria-label="JSON tree structure"
             tabindex="0"
           >
             <SlideTransition direction="up" :appear="true">
@@ -182,6 +255,8 @@ const {
   NodesIcon,
   TrashIcon,
   XIcon,
+  ExpandAllIcon,
+  CollapseAllIcon,
   ModernTreeNode,
   TypeIcon,
   FadeTransition,
@@ -190,9 +265,14 @@ const {
   nodeCount,
   maxDepth,
   errorLocation,
+  levelButtons,
+  needsScroll,
   retryParsing,
   clearInput,
-  dismissPartialError
+  dismissPartialError,
+  expandAll,
+  collapseAll,
+  expandToLevel
 } = useOutputPanel()
 </script>
 

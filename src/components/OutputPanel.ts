@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { 
+import {
   TreePine as TreePineIcon,
   Sparkles as SparklesIcon,
   AlertTriangle as AlertTriangleIcon,
@@ -10,7 +10,9 @@ import {
   FileText as FileTextIcon,
   Network as NodesIcon,
   Trash as TrashIcon,
-  X as XIcon
+  X as XIcon,
+  ChevronDown as ExpandAllIcon,
+  ChevronRight as CollapseAllIcon
 } from 'lucide-vue-next'
 import { useJsonTreeStore } from '../stores'
 import ModernTreeNode from './ModernTreeNode.vue'
@@ -32,7 +34,7 @@ export default function useOutputPanel() {
       }
       return count
     }
-    
+
     return countNodes(store.parsedData)
   })
 
@@ -48,7 +50,7 @@ export default function useOutputPanel() {
       }
       return maxDepth
     }
-    
+
     return getMaxDepth(store.parsedData)
   })
 
@@ -73,6 +75,34 @@ export default function useOutputPanel() {
     // 부분적 오류 상태를 숨기는 로직 (필요시 스토어에 추가)
   }
 
+  // 레벨 버튼 배열 생성
+  const levelButtons = computed(() => {
+    const depth = maxDepth.value
+    if (depth <= 0) return []
+
+    // 최대 15개 레벨까지 표시 (실용적인 제한)
+    const maxLevels = Math.min(depth + 1, 15)
+    return Array.from({ length: maxLevels }, (_, i) => i + 1)
+  })
+
+  // 레벨 컨트롤이 스크롤 필요한지 확인
+  const needsScroll = computed(() => {
+    return levelButtons.value.length > 8
+  })
+
+  // 트리 제어 메서드들
+  const expandAll = () => {
+    store.expandAllNodes()
+  }
+
+  const collapseAll = () => {
+    store.collapseAllNodes()
+  }
+
+  const expandToLevel = (level: number) => {
+    store.expandToLevel(level)
+  }
+
   return {
     // Icons
     TreePineIcon,
@@ -86,24 +116,31 @@ export default function useOutputPanel() {
     NodesIcon,
     TrashIcon,
     XIcon,
-    
+    ExpandAllIcon,
+    CollapseAllIcon,
+
     // Components
     ModernTreeNode,
     TypeIcon,
     FadeTransition,
     SlideTransition,
-    
+
     // Store
     store,
-    
+
     // Computed properties
     nodeCount,
     maxDepth,
     errorLocation,
-    
+    levelButtons,
+    needsScroll,
+
     // Methods
     retryParsing,
     clearInput,
-    dismissPartialError
+    dismissPartialError,
+    expandAll,
+    collapseAll,
+    expandToLevel
   }
 }

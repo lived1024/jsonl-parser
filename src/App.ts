@@ -69,6 +69,25 @@ export default function useApp() {
       }
     }
 
+    // Ctrl/Cmd + E: 모든 노드 펼치기
+    if ((event.ctrlKey || event.metaKey) && event.key === 'e' && store.hasData) {
+      event.preventDefault()
+      store.expandAllNodes()
+    }
+
+    // Ctrl/Cmd + W: 모든 노드 접기
+    if ((event.ctrlKey || event.metaKey) && event.key === 'w' && store.hasData) {
+      event.preventDefault()
+      store.collapseAllNodes()
+    }
+
+    // Ctrl/Cmd + 1-9: 레벨별 펼치기
+    if ((event.ctrlKey || event.metaKey) && /^[1-9]$/.test(event.key) && store.hasData) {
+      event.preventDefault()
+      const level = parseInt(event.key) - 1
+      store.expandToLevel(level)
+    }
+
     // Escape: 현재 포커스 해제
     if (event.key === 'Escape') {
       const activeElement = document.activeElement as HTMLElement

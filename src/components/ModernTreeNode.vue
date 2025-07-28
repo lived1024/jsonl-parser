@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import useModernTreeNode, { type TreeNode, type Props } from './ModernTreeNode'
+import useModernTreeNode, { type Props } from './ModernTreeNode'
 
 const props = withDefaults(defineProps<Props>(), {
   level: 0

@@ -1,4 +1,5 @@
 import { computed } from 'vue'
+import { Network as NodesIcon } from 'lucide-vue-next'
 import { useJsonTreeStore } from '../stores'
 
 export default function useStatusIndicator() {
@@ -38,6 +39,7 @@ export default function useStatusIndicator() {
   }
 
   return {
+    NodesIcon,
     store,
     errorLocation,
     nodeCount,
