@@ -5,7 +5,7 @@
       @click="isVisible = !isVisible"
       :aria-expanded="isVisible"
       aria-label="키보드 단축키 도움말"
-      title="키보드 단축키 (Ctrl+?)"
+      title="키보드 단축키 (Alt+H)"
       :class="{ 'shortcuts-toggle--active': isVisible }"
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -58,13 +58,13 @@
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>K</kbd>
+              <kbd>Alt</kbd> + <kbd>I</kbd>
             </div>
             <span class="shortcut-description">Focus input area</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>Enter</kbd>
+              <kbd>Alt</kbd> + <kbd>Enter</kbd>
             </div>
             <span class="shortcut-description">Parse JSON</span>
           </div>
@@ -103,7 +103,7 @@
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>
+              <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>
             </div>
             <span class="shortcut-description">Format JSON</span>
           </div>
@@ -149,19 +149,19 @@
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>E</kbd>
+              <kbd>Alt</kbd> + <kbd>E</kbd>
             </div>
             <span class="shortcut-description">Expand all nodes</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>W</kbd>
+              <kbd>Alt</kbd> + <kbd>W</kbd>
             </div>
             <span class="shortcut-description">Collapse all nodes</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
-              <kbd>Ctrl</kbd> + <kbd>1-9</kbd>
+              <kbd>Alt</kbd> + <kbd>1-9</kbd>
             </div>
             <span class="shortcut-description">Expand to level</span>
           </div>

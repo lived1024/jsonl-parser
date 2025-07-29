@@ -101,10 +101,19 @@ export default function useTextEditor() {
       return
     }
 
-    // Ctrl+Enter (강제 파싱)
-    if (event.ctrlKey && event.key === 'Enter') {
+    // Alt+Enter (강제 파싱)
+    if (event.altKey && event.key === 'Enter') {
       event.preventDefault()
       store.parseInput()
+      return
+    }
+
+    // Alt+Shift+F (JSON 포맷팅)
+    if (event.altKey && event.shiftKey && event.key === 'F') {
+      event.preventDefault()
+      if (isInputValidJson.value && store.inputType === 'json') {
+        formatJson()
+      }
       return
     }
 

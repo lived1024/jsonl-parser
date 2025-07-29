@@ -71,7 +71,7 @@
             class="action-button"
             @click="formatJson"
             :disabled="!isInputValidJson || store.inputType !== 'json'"
-            title="Format JSON (Ctrl+Shift+F)"
+            title="Format JSON (Alt+Shift+F)"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="16 18 22 12 16 6"/>
@@ -85,7 +85,7 @@
             class="action-button"
             @click="clearInput"
             :disabled="!inputText.trim()"
-            title="Clear input (Ctrl+K)"
+            title="Clear input (Alt+I)"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 6h18"/>

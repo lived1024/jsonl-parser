@@ -3,9 +3,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 export default function useKeyboardShortcuts() {
   const isVisible = ref(false)
 
-  // Ctrl+? 단축키로 도움말 토글
+  // Alt+H 단축키로 도움말 토글
   const handleKeydown = (event: KeyboardEvent) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === '?') {
+    if (event.altKey && event.key === 'h') {
       event.preventDefault()
       isVisible.value = !isVisible.value
     }

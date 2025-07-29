@@ -52,8 +52,8 @@ export function useApp() {
 
   // 전역 키보드 단축키 처리
   const handleGlobalKeydown = (event: KeyboardEvent) => {
-    // Ctrl/Cmd + K: 입력 영역에 포커스
-    if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+    // Alt + I: 입력 영역에 포커스
+    if (event.altKey && event.key === 'i') {
       event.preventDefault()
       const textarea = document.querySelector('.editor-textarea') as HTMLTextAreaElement
       if (textarea) {
@@ -61,28 +61,28 @@ export function useApp() {
       }
     }
 
-    // Ctrl/Cmd + Enter: 파싱 실행
-    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+    // Alt + Enter: 파싱 실행
+    if (event.altKey && event.key === 'Enter') {
       event.preventDefault()
       if (store.inputText.trim()) {
         store.parseInput()
       }
     }
 
-    // Ctrl/Cmd + E: 모든 노드 펼치기
-    if ((event.ctrlKey || event.metaKey) && event.key === 'e' && store.hasData) {
+    // Alt + E: 모든 노드 펼치기
+    if (event.altKey && event.key === 'e' && store.hasData) {
       event.preventDefault()
       store.expandAllNodes()
     }
 
-    // Ctrl/Cmd + W: 모든 노드 접기
-    if ((event.ctrlKey || event.metaKey) && event.key === 'w' && store.hasData) {
+    // Alt + W: 모든 노드 접기
+    if (event.altKey && event.key === 'w' && store.hasData) {
       event.preventDefault()
       store.collapseAllNodes()
     }
 
-    // Ctrl/Cmd + 1-9: 레벨별 펼치기
-    if ((event.ctrlKey || event.metaKey) && /^[1-9]$/.test(event.key) && store.hasData) {
+    // Alt + 1-9: 레벨별 펼치기
+    if (event.altKey && /^[1-9]$/.test(event.key) && store.hasData) {
       event.preventDefault()
       const level = parseInt(event.key) - 1
       store.expandToLevel(level)
