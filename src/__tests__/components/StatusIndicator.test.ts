@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import StatusIndicator from '../../components/StatusIndicator.vue'
+import StatusIndicator from '../../components/ui/StatusIndicator.vue'
 import { useJsonTreeStore } from '../../stores/jsonTreeStore'
 import { DataType, InputType } from '../../types'
 

@@ -14,10 +14,10 @@ import {
   ChevronDown as ExpandAllIcon,
   ChevronRight as CollapseAllIcon
 } from 'lucide-vue-next'
-import { useJsonTreeStore } from '../stores'
-import ModernTreeNode from './ModernTreeNode.vue'
-import { TypeIcon } from './icons'
-import { FadeTransition, SlideTransition } from './transitions'
+import { useJsonTreeStore } from '../../stores'
+import ModernTreeNode from '../ui/ModernTreeNode.vue'
+import { TypeIcon } from '../icons'
+import { FadeTransition, SlideTransition } from '../transitions'
 
 export default function useOutputPanel() {
   const store = useJsonTreeStore()
@@ -77,7 +77,7 @@ export default function useOutputPanel() {
 
   // 레벨 버튼 배열 생성
   const levelButtons = computed(() => {
-    const depth = maxDepth.value
+    const depth = maxDepth.value - 1
     if (depth <= 0) return []
 
     // 최대 15개 레벨까지 표시 (실용적인 제한)

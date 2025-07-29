@@ -1,6 +1,6 @@
 import { computed, defineComponent, h, ref } from 'vue'
-import { useJsonTreeStore } from '../stores'
-import { ParsedNode, DataType } from '../types'
+import { useJsonTreeStore } from '../../stores'
+import { ParsedNode, DataType } from '../../types'
 
 export default function useTreeNode(props: { node: ParsedNode }) {
   const store = useJsonTreeStore()

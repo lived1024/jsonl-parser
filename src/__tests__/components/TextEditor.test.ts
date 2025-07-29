@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import TextEditor from '../../components/TextEditor.vue'
+import TextEditor from '../../components/ui/TextEditor.vue'
 import { useJsonTreeStore } from '../../stores/jsonTreeStore'
 import { InputType } from '../../types'
 

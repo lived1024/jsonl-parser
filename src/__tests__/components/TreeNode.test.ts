@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import TreeNode from '../../components/TreeNode.vue'
+import TreeNode from '../../components/ui/TreeNode.vue'
 import { useJsonTreeStore } from '../../stores/jsonTreeStore'
 import { DataType, ParsedNode } from '../../types'
 

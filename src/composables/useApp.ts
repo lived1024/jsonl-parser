@@ -1,7 +1,7 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useJsonTreeStore } from './stores'
+import { useJsonTreeStore } from '../stores'
 
-export default function useApp() {
+export function useApp() {
   const store = useJsonTreeStore()
 
   // 반응형 상태 관리

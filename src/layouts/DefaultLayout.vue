@@ -1,4 +1,36 @@
-#app {
+<template>
+  <div class="default-layout">
+    <header class="app-header" role="banner">
+      <div class="header-content">
+        <div class="header-brand">
+          <div class="brand-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+          <h1 class="brand-title">JSON Tree Viewer</h1>
+        </div>
+        <div class="header-actions">
+          <KeyboardShortcuts />
+        </div>
+      </div>
+    </header>
+    
+    <main class="app-main" :style="mainStyle" role="main" aria-label="JSON 트리 뷰어 메인 영역">
+      <slot />
+    </main>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useApp } from '../composables/useApp'
+import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
+
+const { mainStyle } = useApp()
+</script>
+
+<style scoped>
+.default-layout {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,6 +43,7 @@
   padding: 1rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .header-content {
@@ -59,53 +92,7 @@
   padding: 1rem;
   gap: 1rem;
   background: var(--color-surface);
-}
-
-.input-panel,
-.output-panel {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.input-panel-container {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--color-background);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.output-panel-container {
-  background: var(--color-background);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.panel-placeholder {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  color: #6c757d;
-}
-
-.panel-placeholder h2 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  font-weight: 500;
-}
-
-.panel-placeholder p {
-  margin: 0;
-  font-size: 0.875rem;
+  min-height: 0;
 }
 
 /* 반응형 디자인 - 모바일 */
@@ -113,11 +100,6 @@
   .app-main {
     padding: 0.75rem;
     gap: 0.75rem;
-  }
-  
-  .input-panel-container,
-  .output-panel-container {
-    border-radius: var(--radius-md);
   }
   
   .app-header {
@@ -148,3 +130,4 @@
     font-size: var(--text-lg);
   }
 }
+</style>

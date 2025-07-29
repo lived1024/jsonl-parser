@@ -1,7 +1,7 @@
-import { useJsonTreeStore } from '../stores'
-import { InputType } from '../types'
-import TextEditor from './TextEditor.vue'
-import StatusIndicator from './StatusIndicator.vue'
+import { useJsonTreeStore } from '../../stores'
+import { InputType } from '../../types'
+import TextEditor from '../ui/TextEditor.vue'
+import StatusIndicator from '../ui/StatusIndicator.vue'
 
 export default function useInputPanel() {
   const store = useJsonTreeStore()

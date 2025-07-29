@@ -1,6 +1,6 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
-import { useJsonTreeStore } from '../stores'
-import { InputType } from '../types'
+import { useJsonTreeStore } from '../../stores'
+import { InputType } from '../../types'
 
 export default function useTextEditor() {
   const store = useJsonTreeStore()

@@ -2,6 +2,8 @@
   position: relative;
   user-select: none;
   transition: all var(--transition-fast);
+  width: 100%;
+  min-width: 0;
 }
 
 .node-content {
@@ -13,6 +15,9 @@
   cursor: pointer;
   transition: all var(--transition-fast);
   position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .node-content:hover {
@@ -130,6 +135,8 @@
   font-size: var(--text-sm);
   line-height: var(--leading-tight);
   word-break: break-all;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .node-value--string {

@@ -1,8 +1,8 @@
 import { computed } from 'vue'
-import { TypeIcon } from './icons'
-import { SlideTransition } from './transitions'
-import { useJsonTreeStore } from '../stores'
-import type { ParsedNode } from '../types'
+import { TypeIcon } from '../icons'
+import { SlideTransition } from '../transitions'
+import { useJsonTreeStore } from '../../stores'
+import type { ParsedNode } from '../../types'
 
 interface Props {
   node: ParsedNode

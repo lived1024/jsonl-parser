@@ -89,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { ParsedNode } from '../types'
+import { ParsedNode } from '../../types'
 import useTreeNode from './TreeNode'
 
 interface Props {
