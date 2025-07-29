@@ -16,12 +16,27 @@ export default function useKeyboardShortcuts() {
     }
   }
 
+  // 패널 외부 클릭 시 닫기
+  const handleClickOutside = (event: MouseEvent) => {
+    if (!isVisible.value) return
+    
+    const target = event.target as Element
+    const panel = document.querySelector('.shortcuts-panel')
+    const toggle = document.querySelector('.shortcuts-toggle')
+    
+    if (panel && toggle && !panel.contains(target) && !toggle.contains(target)) {
+      isVisible.value = false
+    }
+  }
+
   onMounted(() => {
     window.addEventListener('keydown', handleKeydown)
+    document.addEventListener('click', handleClickOutside)
   })
 
   onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown)
+    document.removeEventListener('click', handleClickOutside)
   })
 
   return {
