@@ -1,15 +1,15 @@
 # JSON Tree Viewer
 
-JSON과 JSONL 데이터를 시각적인 트리 구조로 표시하는 웹 애플리케이션입니다.
+JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플리케이션입니다. 실시간 파싱, 계층적 시각화, 복잡한 JSON 데이터에 대한 사용자 친화적 탐색 기능을 제공합니다.
 
-## 🌐 운영 사이트
+## 🌐 라이브 배포
 
 > ### 🚀 **라이브 데모를 확인해보세요!**
 > 
 > | 사이트 | 링크 | 호스팅 |
 > |--------|------|--------|
-> | **JSONL Parser 1** | 🔗 **[https://jsonl-parser.netlify.app/](https://jsonl-parser.netlify.app/)** | Netlify |
-> | **JSONL Parser 2** | 🔗 **[https://json-tree-viewer-pink.vercel.app/](https://json-tree-viewer-pink.vercel.app/)** | Vercel |
+> | **주요 사이트** | 🔗 **[https://jsonl-parser.netlify.app/](https://jsonl-parser.netlify.app/)** | Netlify |
+> | **보조 사이트** | 🔗 **[https://json-tree-viewer-pink.vercel.app/](https://json-tree-viewer-pink.vercel.app/)** | Vercel |
 
 ## 🚀 주요 기능
 
@@ -47,11 +47,30 @@ JSON과 JSONL 데이터를 시각적인 트리 구조로 표시하는 웹 애플
 
 ## 🛠️ 기술 스택
 
-- **Frontend**: Vue 3 + TypeScript
-- **상태 관리**: Pinia
-- **빌드 도구**: Vite
-- **테스트**: Vitest + Vue Test Utils
-- **스타일링**: CSS3 (CSS Variables, Grid, Flexbox)
+### 핵심 프레임워크
+- **Vue 3**: `<script setup>` 구문을 사용한 Composition API
+- **TypeScript**: 포괄적인 타입 검사가 활성화된 엄격 모드
+- **Vite**: HMR을 지원하는 빌드 도구 및 개발 서버
+
+### 상태 관리 및 라우팅
+- **Pinia**: Composition API 패턴을 사용한 스토어 관리
+- **Vue Router 4**: 클라이언트 사이드 라우팅
+
+### UI 및 스타일링
+- **CSS3**: CSS Variables, Grid, Flexbox를 사용한 모던 CSS
+- **Lucide Vue Next**: 일관된 아이콘 표현을 위한 아이콘 라이브러리
+- **반응형 디자인**: 768px, 1024px 브레이크포인트를 가진 모바일 우선 접근법
+
+### 테스팅
+- **Vitest**: 글로벌 설정이 활성화된 단위 및 통합 테스트
+- **Vue Test Utils**: 컴포넌트 테스트 유틸리티
+- **jsdom**: 테스트를 위한 DOM 환경
+- **Coverage**: 내장 커버리지 리포팅
+
+### 빌드 구성
+- 모던 브라우저 지원을 위한 **ES2020** 타겟
+- 최적의 트리 셰이킹을 위한 **번들러 모듈 해석**
+- 사용하지 않는 변수 감지가 포함된 **엄격한 TypeScript**
 
 ## 📦 설치 및 실행
 
@@ -61,32 +80,30 @@ JSON과 JSONL 데이터를 시각적인 트리 구조로 표시하는 웹 애플
 # 의존성 설치
 npm install
 
-# 개발 서버 실행
+# 개발 서버 실행 (localhost:5173)
 npm run dev
-
-# 브라우저에서 http://localhost:5173 접속
 ```
 
 ### 빌드
 
 ```bash
-# 프로덕션 빌드
+# dist/로 프로덕션 빌드
 npm run build
 
-# 빌드 결과 미리보기
+# 프로덕션 빌드 로컬 미리보기
 npm run preview
 ```
 
 ### 테스트
 
 ```bash
-# 모든 테스트 실행
+# 워치 모드로 테스트 실행
 npm run test
 
 # 테스트 한 번 실행
 npm run test:run
 
-# 커버리지 포함 테스트
+# 커버리지 리포트와 함께 테스트 실행
 npm run test:coverage
 ```
 
@@ -161,9 +178,10 @@ npm run test:coverage
 - 입력 크기 제한 (최대 10MB)
 
 ### 성능 최적화
-- 파싱 결과 캐싱 (최대 10개 항목, 5분 만료)
-- 컴포넌트 메모이제이션
-- 가상 스크롤링 (필요시)
+- 대용량 데이터셋을 위한 지연 로딩 (50개 이상의 자식 노드)
+- 파싱 결과 캐싱 (10개 항목, 5분 만료)
+- 트리 노드를 위한 컴포넌트 메모이제이션
+- 향후 구현을 위한 가상 스크롤링 준비
 
 ## 🧪 테스트 커버리지
 
@@ -189,6 +207,37 @@ npm run test:coverage
 - 터치 최적화 UI
 - 간소화된 인터페이스
 
+## 📁 프로젝트 구조
+
+```
+├── src/                 # 소스 코드
+│   ├── components/      # 재사용 가능한 UI 컴포넌트
+│   │   ├── common/     # 기능 간 공유 컴포넌트
+│   │   ├── feature/    # 기능별 전용 컴포넌트
+│   │   └── ui/         # 기본 UI 구성 요소
+│   ├── pages/          # 라우트 레벨 페이지 컴포넌트
+│   ├── layouts/        # 레이아웃 래퍼 컴포넌트
+│   ├── stores/         # Pinia 상태 관리
+│   ├── router/         # Vue Router 설정
+│   ├── composables/    # 재사용 가능한 컴포지션 함수
+│   ├── utils/          # 순수 유틸리티 함수
+│   ├── types/          # TypeScript 타입 정의
+│   ├── styles/         # 전역 CSS 파일
+│   └── __tests__/      # 테스트 파일 및 설정
+├── dist/               # 빌드 출력 (생성됨)
+├── .kiro/              # Kiro AI 어시스턴트 설정
+├── index.html          # 진입점 HTML 파일
+├── package.json        # 프로젝트 설정
+├── vite.config.ts      # Vite 빌드 설정
+└── tsconfig.json       # TypeScript 설정
+```
+
+### 명명 규칙
+- **컴포넌트**: PascalCase (예: `TreeNode.vue`, `JsonEditor.vue`)
+- **페이지**: "Page" 접미사가 있는 PascalCase (예: `HomePage.vue`)
+- **스토어**: "Store" 접미사가 있는 camelCase (예: `jsonTreeStore.ts`)
+- **유틸리티**: camelCase (예: `parseJson.ts`, `formatError.ts`)
+
 ## 🤝 기여하기
 
 1. 이 저장소를 포크합니다
@@ -201,11 +250,16 @@ npm run test:coverage
 
 이 프로젝트는 MIT 라이선스 하에 배포됩니다.
 
+## 🎯 대상 사용자
+
+개발자, 데이터 분석가, 복잡한 중첩 구조를 효율적으로 시각화하고 탐색해야 하는 JSON 데이터 작업자
+
 ## 🙏 감사의 말
 
 - Vue.js 팀의 훌륭한 프레임워크
 - Pinia 팀의 직관적인 상태 관리 라이브러리
 - Vite 팀의 빠른 빌드 도구
+- Lucide Vue Next 아이콘 라이브러리
 - 모든 오픈소스 기여자들
 
 ---
