@@ -117,6 +117,70 @@ export default function useTextEditor() {
       return
     }
 
+    // Home/End 키 처리 (스크롤 위치 조정)
+    if (event.key === 'Home' || event.key === 'End') {
+      const textarea = textareaRef.value
+      if (!textarea) return
+
+      if (event.ctrlKey) {
+        // Ctrl+Home/End: 문서 전체의 시작/끝으로 이동
+        // 기본 동작을 허용하고 스크롤 조정
+        nextTick(() => {
+          if (event.key === 'Home') {
+            textarea.scrollLeft = 0
+            textarea.scrollTop = 0
+          } else {
+            textarea.scrollLeft = textarea.scrollWidth - textarea.clientWidth
+            textarea.scrollTop = textarea.scrollHeight - textarea.clientHeight
+          }
+        })
+      } else {
+        // Home/End: 현재 줄의 시작/끝으로 이동
+        event.preventDefault()
+        
+        const start = textarea.selectionStart
+        const value = textarea.value
+        
+        if (event.key === 'Home') {
+          // 현재 줄의 시작으로 이동
+          const lineStart = value.lastIndexOf('\n', start - 1) + 1
+          textarea.selectionStart = lineStart
+          textarea.selectionEnd = lineStart
+          
+          // 스크롤을 왼쪽으로 조정
+          nextTick(() => {
+            textarea.scrollLeft = 0
+          })
+        } else {
+          // 현재 줄의 끝으로 이동
+          let lineEnd = value.indexOf('\n', start)
+          if (lineEnd === -1) lineEnd = value.length
+          
+          textarea.selectionStart = lineEnd
+          textarea.selectionEnd = lineEnd
+          
+          // 커서 위치가 보이도록 스크롤 조정
+          nextTick(() => {
+            // 커서가 화면에 보이도록 스크롤 조정
+            const cursorPosition = textarea.selectionStart
+            const beforeCursor = value.substring(0, cursorPosition)
+            const currentLineStart = beforeCursor.lastIndexOf('\n') + 1
+            const currentLineText = value.substring(currentLineStart, cursorPosition)
+            
+            // 대략적인 문자 너비 계산 (모노스페이스 폰트 기준)
+            const charWidth = 8 // 픽셀 단위 추정값
+            const cursorX = currentLineText.length * charWidth
+            
+            // 커서가 보이도록 스크롤 조정
+            if (cursorX > textarea.scrollLeft + textarea.clientWidth - 50) {
+              textarea.scrollLeft = cursorX - textarea.clientWidth + 100
+            }
+          })
+        }
+      }
+      return
+    }
+
     // Tab 키 처리 (들여쓰기)
     if (event.key === 'Tab') {
       event.preventDefault()
