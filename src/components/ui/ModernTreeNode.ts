@@ -1,6 +1,7 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { TypeIcon } from '../icons'
 import { SlideTransition } from '../transitions'
+import TextModal from './TextModal.vue'
 import { useJsonTreeStore } from '../../stores'
 import type { ParsedNode } from '../../types'
 
@@ -11,6 +12,7 @@ interface Props {
 
 export default function useModernTreeNode(props: Props) {
   const store = useJsonTreeStore()
+  const showTextModal = ref(false)
 
   const isExpanded = computed(() => props.node.isExpanded)
 
@@ -67,6 +69,10 @@ export default function useModernTreeNode(props: Props) {
     return props.node.type !== 'object' && props.node.type !== 'array'
   })
 
+  const isStringValue = computed(() => {
+    return props.node.type === 'string'
+  })
+
   const toggleExpanded = (event?: Event) => {
     if (event) {
       event.stopPropagation()
@@ -79,6 +85,13 @@ export default function useModernTreeNode(props: Props) {
   const handleExpandClick = (event: Event) => {
     event.stopPropagation()
     toggleExpanded()
+  }
+
+  const handleValueClick = (event: Event) => {
+    if (isStringValue.value && typeof props.node.value === 'string') {
+      event.stopPropagation()
+      showTextModal.value = true
+    }
   }
 
   const handleKeydown = (event: KeyboardEvent) => {
@@ -110,9 +123,11 @@ export default function useModernTreeNode(props: Props) {
     // Components
     TypeIcon,
     SlideTransition,
+    TextModal,
     
     // Reactive state
     isExpanded,
+    showTextModal,
     
     // Computed properties
     hasChildren,
@@ -123,11 +138,13 @@ export default function useModernTreeNode(props: Props) {
     valueClasses,
     nodeStyle,
     showTypeInfo,
+    isStringValue,
     
     // Methods
     toggleExpanded,
     handleExpandClick,
-    handleKeydown
+    handleKeydown,
+    handleValueClick
   }
 }
 

@@ -1,0 +1,12 @@
+{
+  "message": "안녕하세요!\n이것은 줄바꿈이 포함된 텍스트입니다.\r\n윈도우 스타일 줄바꿈도 있습니다.\n\n빈 줄도 있어요!",
+  "multiline_text": "첫 번째 줄\n두 번째 줄\r\n세 번째 줄\n\n다섯 번째 줄",
+  "simple_text": "단순한 텍스트",
+  "number": 42,
+  "boolean": true,
+  "null_value": null,
+  "array": ["첫 번째\n항목", "두 번째\r\n항목", "세 번째 항목"],
+  "nested": {
+    "description": "중첩된 객체의\n설명 텍스트입니다.\r\n여러 줄로 되어 있어요!"
+  }
+}

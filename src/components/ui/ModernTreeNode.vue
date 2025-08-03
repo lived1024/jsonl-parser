@@ -54,7 +54,14 @@
         <div class="node-header">
           <span v-if="node.key" class="node-key">{{ node.key }}</span>
           <span class="node-separator" v-if="node.key">:</span>
-          <span class="node-value" :class="valueClasses">{{ displayValue }}</span>
+          <span 
+            class="node-value" 
+            :class="valueClasses"
+            @click="handleValueClick"
+            :style="{ cursor: isStringValue ? 'pointer' : 'default' }"
+          >
+            {{ displayValue }}
+          </span>
           <span v-if="hasChildren" class="node-count">{{ childrenCount }}</span>
         </div>
         
@@ -78,6 +85,14 @@
         />
       </div>
     </SlideTransition>
+    
+    <!-- 텍스트 모달 -->
+    <TextModal
+      :is-visible="showTextModal"
+      :text="node.value"
+      :title="`텍스트 보기: ${node.key || 'value'}`"
+      @close="showTextModal = false"
+    />
   </div>
 </template>
 
@@ -91,6 +106,7 @@ const props = withDefaults(defineProps<Props>(), {
 const {
   TypeIcon,
   SlideTransition,
+  TextModal,
   isExpanded,
   hasChildren,
   nodeIconType,
@@ -100,9 +116,12 @@ const {
   valueClasses,
   nodeStyle,
   showTypeInfo,
+  showTextModal,
+  isStringValue,
   toggleExpanded,
   handleExpandClick,
-  handleKeydown
+  handleKeydown,
+  handleValueClick
 } = useModernTreeNode(props)
 </script>
 
