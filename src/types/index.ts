@@ -37,6 +37,7 @@ export interface ParseError {
 export interface LocalStorageData {
   inputText: string
   inputType: InputType
+  preserveLineBreaks?: boolean
   timestamp: number
 }
 
@@ -47,6 +48,7 @@ export interface JsonTreeState {
   parsedData: ParsedNode[]
   parseError: ParseError | null
   isLoading: boolean
+  preserveLineBreaks: boolean
 }
 
 // Pinia store actions interface
@@ -55,6 +57,7 @@ export interface JsonTreeActions {
   setInputType(type: InputType): void
   parseInput(): void
   toggleNode(nodeId: string): void
+  setPreserveLineBreaks(preserve: boolean): void
   saveToLocalStorage(): void
   loadFromLocalStorage(): void
 }

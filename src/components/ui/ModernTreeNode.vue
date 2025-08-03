@@ -56,7 +56,7 @@
           <span class="node-separator" v-if="node.key">:</span>
           <span 
             class="node-value" 
-            :class="valueClasses"
+            :class="[valueClasses, { 'node-value--preserve-breaks': isStringValue && store.preserveLineBreaks }]"
             @click="handleValueClick"
             :style="{ cursor: isStringValue ? 'pointer' : 'default' }"
           >
@@ -89,8 +89,8 @@
     <!-- 텍스트 모달 -->
     <TextModal
       :is-visible="showTextModal"
-      :text="node.value"
-      :title="`텍스트 보기: ${node.key || 'value'}`"
+      :text="String(node.value || '')"
+      :title="`Text Viewer: ${node.key || 'value'}`"
       @close="showTextModal = false"
     />
   </div>
@@ -107,6 +107,7 @@ const {
   TypeIcon,
   SlideTransition,
   TextModal,
+  store,
   isExpanded,
   hasChildren,
   nodeIconType,

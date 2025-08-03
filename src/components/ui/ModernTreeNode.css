@@ -153,6 +153,12 @@
   transform: scale(1.02);
 }
 
+.node-value--preserve-breaks {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
 .node-value--number {
   color: var(--color-number);
 }

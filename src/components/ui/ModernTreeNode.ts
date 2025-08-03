@@ -29,8 +29,20 @@ export default function useModernTreeNode(props: Props) {
 
   const displayValue = computed(() => {
     switch (props.node.type) {
-      case 'string':
-        return `"${props.node.value}"`
+      case 'string': {
+        const stringValue = String(props.node.value || '')
+        if (store.preserveLineBreaks) {
+          // 줄바꿈을 보존하여 표시
+          return `"${stringValue}"`
+        } else {
+          // 줄바꿈 문자를 시각적으로 표시
+          const processedValue = stringValue
+            .replace(/\r\n/g, '\\r\\n')
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r')
+          return `"${processedValue}"`
+        }
+      }
       case 'null':
         return 'null'
       case 'boolean':
@@ -70,7 +82,7 @@ export default function useModernTreeNode(props: Props) {
   })
 
   const isStringValue = computed(() => {
-    return props.node.type === 'string'
+    return props.node.type === 'string' && typeof props.node.value === 'string' && props.node.value !== null
   })
 
   const toggleExpanded = (event?: Event) => {
@@ -88,7 +100,7 @@ export default function useModernTreeNode(props: Props) {
   }
 
   const handleValueClick = (event: Event) => {
-    if (isStringValue.value && typeof props.node.value === 'string') {
+    if (isStringValue.value && typeof props.node.value === 'string' && props.node.value !== null) {
       event.stopPropagation()
       showTextModal.value = true
     }
@@ -124,6 +136,9 @@ export default function useModernTreeNode(props: Props) {
     TypeIcon,
     SlideTransition,
     TextModal,
+    
+    // Store
+    store,
     
     // Reactive state
     isExpanded,

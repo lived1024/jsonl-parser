@@ -12,7 +12,8 @@ import {
   Trash as TrashIcon,
   X as XIcon,
   ChevronDown as ExpandAllIcon,
-  ChevronRight as CollapseAllIcon
+  ChevronRight as CollapseAllIcon,
+  WrapText as WrapTextIcon
 } from 'lucide-vue-next'
 import { useJsonTreeStore } from '../../stores'
 import ModernTreeNode from '../ui/ModernTreeNode.vue'
@@ -103,6 +104,10 @@ export default function useOutputPanel() {
     store.expandToLevel(level)
   }
 
+  const handleLineBreakToggle = () => {
+    store.setPreserveLineBreaks(!store.preserveLineBreaks)
+  }
+
   return {
     // Icons
     TreePineIcon,
@@ -118,6 +123,7 @@ export default function useOutputPanel() {
     XIcon,
     ExpandAllIcon,
     CollapseAllIcon,
+    WrapTextIcon,
 
     // Components
     ModernTreeNode,
@@ -141,6 +147,7 @@ export default function useOutputPanel() {
     dismissPartialError,
     expandAll,
     collapseAll,
-    expandToLevel
+    expandToLevel,
+    handleLineBreakToggle
   }
 }

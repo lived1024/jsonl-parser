@@ -10,7 +10,7 @@
     >
       <div class="text-modal" @click.stop>
         <div class="modal-header">
-          <h3 id="modal-title" class="modal-title">텍스트 보기</h3>
+          <h3 id="modal-title" class="modal-title">Text Viewer</h3>
           <div class="modal-options">
             <label class="option-toggle">
               <input 
@@ -18,13 +18,13 @@
                 v-model="preserveLineBreaks"
                 @change="updateDisplayText"
               />
-              <span class="toggle-text">줄바꿈 문자 표시</span>
+              <span class="toggle-text">Preserve Line Breaks</span>
             </label>
             <button 
               type="button" 
               class="close-button"
               @click="close"
-              aria-label="닫기"
+              aria-label="Close"
             >
               <XIcon :size="20" />
             </button>
@@ -44,14 +44,14 @@
             @click="copyToClipboard($event)"
           >
             <CopyIcon :size="16" />
-            복사
+            Copy
           </button>
           <button 
             type="button" 
             class="close-button-secondary"
             @click="close"
           >
-            닫기
+            Close
           </button>
         </div>
       </div>
@@ -65,7 +65,7 @@ import { X as XIcon, Copy as CopyIcon } from 'lucide-vue-next'
 
 interface Props {
   isVisible: boolean
-  text: string
+  text: string | null | undefined
   title?: string
 }
 
@@ -74,12 +74,12 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: '텍스트 보기'
+  title: 'Text Viewer'
 })
 
 const emit = defineEmits<Emits>()
 
-const preserveLineBreaks = ref(false)
+const preserveLineBreaks = ref(true)
 const displayText = ref('')
 
 const updateDisplayText = () => {
@@ -113,12 +113,12 @@ const copyToClipboard = async (event: Event) => {
     // 성공 피드백을 위한 간단한 알림 (추후 토스트로 개선 가능)
     const button = event.target as HTMLButtonElement
     const originalText = button.textContent
-    button.textContent = '복사됨!'
+    button.textContent = 'Copied!'
     setTimeout(() => {
       button.textContent = originalText
     }, 1000)
   } catch (err) {
-    console.error('클립보드 복사 실패:', err)
+    console.error('Failed to copy to clipboard:', err)
   }
 }
 

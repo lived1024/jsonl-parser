@@ -143,6 +143,46 @@
   margin-right: 0.75rem;
 }
 
+.toggle-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.toggle-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.toggle-button--active {
+  background: linear-gradient(135deg, var(--color-primary) 0%, rgba(99, 102, 241, 0.9) 100%);
+  border-color: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25), 0 2px 4px rgba(99, 102, 241, 0.15);
+}
+
+.toggle-button--active::before {
+  opacity: 1;
+}
+
+.toggle-button--active:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, var(--color-primary) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3), 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.toggle-button:not(.toggle-button--active):hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(99, 102, 241, 0.02) 100%);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: var(--color-primary);
+}
+
 .level-controls {
   display: flex;
   align-items: center;

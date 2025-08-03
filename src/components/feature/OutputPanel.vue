@@ -81,6 +81,20 @@
           </button>
         </div>
         
+        <div class="control-group">
+          <button 
+            type="button"
+            class="control-button toggle-button"
+            :class="{ 'toggle-button--active': store.preserveLineBreaks }"
+            @click="handleLineBreakToggle"
+            title="Toggle line break preservation"
+            aria-label="Toggle line break preservation"
+          >
+            <WrapTextIcon :size="16" />
+            <span class="control-label">Preserve Breaks</span>
+          </button>
+        </div>
+        
         <div class="control-group level-controls" :class="{ 'level-controls--scrollable': needsScroll }"  style="overflow: auto;">
           <span class="control-label-small">By Level:</span>
           <div class="level-buttons-container level-buttons--scrollable" :class="{ 'level-buttons--scrollable': needsScroll }">
@@ -257,6 +271,7 @@ const {
   XIcon,
   ExpandAllIcon,
   CollapseAllIcon,
+  WrapTextIcon,
   ModernTreeNode,
   TypeIcon,
   FadeTransition,
@@ -272,7 +287,8 @@ const {
   dismissPartialError,
   expandAll,
   collapseAll,
-  expandToLevel
+  expandToLevel,
+  handleLineBreakToggle
 } = useOutputPanel()
 </script>
 

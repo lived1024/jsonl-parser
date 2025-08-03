@@ -24,6 +24,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
     parsedData: [],
     parseError: null,
     isLoading: false,
+    preserveLineBreaks: true,
     _parseCache: new Map()
   }),
 
@@ -141,6 +142,11 @@ export const useJsonTreeStore = defineStore('jsonTree', {
       this.parsedData = toggleNodeRecursive(this.parsedData)
     },
 
+    setPreserveLineBreaks(preserve: boolean) {
+      this.preserveLineBreaks = preserve
+      this.saveToLocalStorage()
+    },
+
     expandAllNodes() {
       const expandRecursive = (nodes: ParsedNode[]): ParsedNode[] => {
         return nodes.map(node => ({
@@ -182,6 +188,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
         const dataToSave: LocalStorageData = {
           inputText: this.inputText,
           inputType: this.inputType,
+          preserveLineBreaks: this.preserveLineBreaks,
           timestamp: Date.now()
         }
 
@@ -202,6 +209,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
           if (parsedData.inputText !== undefined && parsedData.inputType !== undefined) {
             this.inputText = parsedData.inputText
             this.inputType = parsedData.inputType
+            this.preserveLineBreaks = parsedData.preserveLineBreaks ?? false
 
             // Auto-parse if there's input text
             if (this.inputText.trim()) {
