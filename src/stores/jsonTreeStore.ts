@@ -24,7 +24,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
     parsedData: [],
     parseError: null,
     isLoading: false,
-    preserveLineBreaks: true,
+    preserveLineBreaks: false,
     _parseCache: new Map()
   }),
 
@@ -144,7 +144,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
 
     setPreserveLineBreaks(preserve: boolean) {
       this.preserveLineBreaks = preserve
-      this.saveToLocalStorage()
+      // localStorage에 저장하지 않음 (세션별로 독립적으로 관리)
     },
 
     expandAllNodes() {
@@ -188,7 +188,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
         const dataToSave: LocalStorageData = {
           inputText: this.inputText,
           inputType: this.inputType,
-          preserveLineBreaks: this.preserveLineBreaks,
+          // preserveLineBreaks는 저장하지 않음 (항상 기본값 false로 시작)
           timestamp: Date.now()
         }
 
@@ -209,7 +209,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
           if (parsedData.inputText !== undefined && parsedData.inputType !== undefined) {
             this.inputText = parsedData.inputText
             this.inputType = parsedData.inputType
-            this.preserveLineBreaks = parsedData.preserveLineBreaks ?? false
+            // preserveLineBreaks는 항상 기본값 false로 시작
 
             // Auto-parse if there's input text
             if (this.inputText.trim()) {
