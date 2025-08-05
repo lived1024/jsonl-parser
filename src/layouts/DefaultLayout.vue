@@ -21,20 +21,21 @@
             <div class="icon-glow"></div>
           </div>
           <div class="brand-text">
-            <h1 class="brand-title">JSON Tree Viewer</h1>
-            <p class="brand-subtitle">Parse & Visualize JSON Data</p>
+            <h1 class="brand-title">{{ t('header.title') }}</h1>
+            <p class="brand-subtitle">{{ t('header.subtitle') }}</p>
           </div>
         </div>
         
         <div class="header-info">
           <div class="header-actions">
+            <LanguageSelector />
             <KeyboardShortcuts />
           </div>
         </div>
       </div>
     </header>
     
-    <main class="app-main" :style="mainStyle" role="main" aria-label="JSON 트리 뷰어 메인 영역">
+    <main class="app-main" :style="mainStyle" role="main" :aria-label="t('accessibility.mainArea')">
       <slot />
     </main>
   </div>
@@ -44,10 +45,13 @@
 import { computed } from 'vue'
 import { useApp } from '../composables/useApp'
 import { useJsonTreeStore } from '../stores'
+import { useI18n } from '../composables/useI18n'
 import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
+import LanguageSelector from '../components/ui/LanguageSelector.vue'
 
 const { mainStyle } = useApp()
 const store = useJsonTreeStore()
+const { t } = useI18n()
 
 // 총 노드 개수 계산
 const nodeCount = computed(() => {
@@ -294,6 +298,7 @@ const nodeCount = computed(() => {
 .header-actions {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
 }
 
 .app-main {
@@ -335,6 +340,10 @@ const nodeCount = computed(() => {
   
   .header-info {
     gap: 1rem;
+  }
+  
+  .header-actions {
+    gap: 0.5rem;
   }
   
   .status-indicator {
