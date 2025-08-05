@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
-import { TypeIcon } from '../icons'
-import { SlideTransition } from '../transitions'
+import TypeIcon from '../icons/TypeIcon.vue'
+import SlideTransition from '../transitions/SlideTransition.vue'
 import TextModal from './TextModal.vue'
 import { useJsonTreeStore } from '../../stores'
 import type { ParsedNode } from '../../types'

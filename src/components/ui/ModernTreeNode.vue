@@ -55,12 +55,25 @@
           <span v-if="node.key" class="node-key">{{ node.key }}</span>
           <span class="node-separator" v-if="node.key">:</span>
           <span 
-            class="node-value" 
-            :class="[valueClasses, { 'node-value--preserve-breaks': isStringValue && store.preserveLineBreaks }]"
-            @click="handleValueClick"
-            :style="{ cursor: isStringValue ? 'pointer' : 'default' }"
+            class="node-value-container"
+            :class="{ 'node-value-container--clickable': isStringValue }"
           >
-            {{ displayValue }}
+            <span 
+              class="node-value" 
+              :class="[valueClasses, { 'node-value--preserve-breaks': isStringValue && store.preserveLineBreaks }]"
+              @click="handleValueClick"
+              :style="{ cursor: isStringValue ? 'pointer' : 'default' }"
+              :title="isStringValue ? 'Click to view full text' : undefined"
+            >
+              {{ displayValue }}
+            </span>
+            <span 
+              v-if="isStringValue"
+              class="view-hint"
+              @click="handleValueClick"
+            >
+              VIEW
+            </span>
           </span>
           <span v-if="hasChildren" class="node-count">{{ childrenCount }}</span>
         </div>
