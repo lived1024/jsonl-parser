@@ -183,7 +183,7 @@
               <div class="error-suggestions">
                 <h4 class="suggestions-title">{{ t('output.error.suggestions.title') }}</h4>
                 <ul class="suggestions-list">
-                  <li v-for="suggestion in t('output.error.suggestions.items')" :key="suggestion">
+                  <li v-for="(suggestion, index) in errorSuggestions" :key="index">
                     {{ suggestion }}
                   </li>
                 </ul>
@@ -256,6 +256,8 @@
 <script setup lang="ts">
 import useOutputPanel from './OutputPanel'
 import { useI18n } from '../../composables/useI18n'
+import { useI18nStore } from '../../stores/i18nStore'
+import { computed } from 'vue'
 
 const {
   TreePineIcon,
@@ -292,6 +294,29 @@ const {
 } = useOutputPanel()
 
 const { t } = useI18n()
+const i18nStore = useI18nStore()
+
+// 오류 제안사항을 위한 computed property
+const errorSuggestions = computed(() => {
+  // 현재 언어에 따라 적절한 제안사항 반환
+  const currentLang = i18nStore.currentLanguage
+  
+  if (currentLang === 'ko') {
+    return [
+      '누락되거나 추가된 쉼표 확인',
+      '모든 문자열이 올바르게 인용되었는지 확인', 
+      '대괄호와 중괄호 일치 확인',
+      '객체/배열의 후행 쉼표 제거'
+    ]
+  } else {
+    return [
+      'Check for missing or extra commas',
+      'Ensure all strings are properly quoted',
+      'Verify bracket and brace matching',
+      'Remove trailing commas in objects/arrays'
+    ]
+  }
+})
 </script>
 
 <style scoped src="./OutputPanel.css"></style>
