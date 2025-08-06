@@ -8,11 +8,7 @@
       :title="t('accessibility.keyboardHelp')"
       :class="{ 'shortcuts-toggle--active': isVisible }"
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-        <line x1="12" y1="17" x2="12.01" y2="17"/>
-      </svg>
+      <KeyboardIcon :size="20" />
     </button>
     
     <Transition name="shortcuts-panel" appear>
@@ -20,13 +16,7 @@
         <div class="shortcuts-header">
           <div class="header-content">
             <div class="header-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 12l2 2 4-4"/>
-                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
-                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
-                <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
-                <path d="M12 21c0-1-1-3-3-3s-3 2-3 3 1 3 3 3 3-2 3-3"/>
-              </svg>
+              <SparklesIcon :size="20" />
             </div>
             <div class="header-text">
               <h3>{{ t('shortcuts.title') }}</h3>
@@ -49,10 +39,12 @@
         <div class="shortcut-section">
           <div class="section-header">
             <div class="section-icon">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12,6 12,12 16,14"/>
-              </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 8h4"/>
+        <path d="M8 12h8"/>
+        <path d="M9 16h6"/>
+        <rect x="3" y="4" width="18" height="16" rx="2"/>
+      </svg>
             </div>
             <h4>{{ t('shortcuts.sections.global') }}</h4>
           </div>
@@ -175,6 +167,7 @@
 <script setup lang="ts">
 import useKeyboardShortcuts from './KeyboardShortcuts'
 import { useI18n } from '../../composables/useI18n'
+import { KeyboardIcon, SparklesIcon } from 'lucide-vue-next'
 
 const { isVisible } = useKeyboardShortcuts()
 const { t } = useI18n()

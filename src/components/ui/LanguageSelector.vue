@@ -15,19 +15,12 @@
       :disabled="isChangingLanguage || isLoading"
     >
       <div class="button-content">
-        <span class="language-flag">{{ currentLanguageInfo?.flag || '🌐' }}</span>
-        <span class="language-code">{{ currentLanguage.toUpperCase() }}</span>
+        <span v-if="!(isChangingLanguage || isLoading)" class="language-flag">{{ currentLanguageInfo?.flag || '🌐' }}</span>
         <div v-if="isChangingLanguage || isLoading" class="loading-spinner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 11-6.219-8.56"/>
           </svg>
         </div>
-        <ChevronDownIcon 
-          v-else
-          :size="16" 
-          class="dropdown-icon"
-          :class="{ 'dropdown-icon--rotated': isOpen }"
-        />
       </div>
     </button>
     
@@ -224,18 +217,18 @@ onUnmounted(() => {
 .language-button {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.75rem;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.5rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
   color: white;
-  font-size: 0.875rem;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  min-width: 4rem;
 }
 
 .language-button:hover,
@@ -254,26 +247,12 @@ onUnmounted(() => {
 .button-content {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
 }
 
 .language-flag {
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1;
-}
-
-.language-code {
-  font-weight: 600;
-  letter-spacing: 0.025em;
-}
-
-.dropdown-icon {
-  transition: transform 0.2s ease;
-  opacity: 0.8;
-}
-
-.dropdown-icon--rotated {
-  transform: rotate(180deg);
 }
 
 .loading-spinner {
