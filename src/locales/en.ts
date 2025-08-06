@@ -151,7 +151,10 @@ export default {
     toggleLineBreaks: 'Toggle line break preservation',
     expandToLevel: 'Expand to level {{level}}',
     treeStructure: 'JSON tree structure',
-    languageSelector: 'Language selector',
+    languageSelector: {
+      label: 'Language selector',
+      currentLanguage: 'Current language: {{language}}'
+    },
     panelResizer: 'Panel resizer',
     jsonInput: 'JSON data input',
     errorLocation: 'Error location information'
