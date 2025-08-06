@@ -108,6 +108,11 @@ export default function useOutputPanel() {
     store.setPreserveLineBreaks(!store.preserveLineBreaks)
   }
 
+  // JSONL 모드로 전환 핸들러
+  const handleSwitchToJsonl = () => {
+    store.switchToJsonlMode()
+  }
+
   return {
     // Icons
     TreePineIcon,
@@ -148,6 +153,7 @@ export default function useOutputPanel() {
     expandAll,
     collapseAll,
     expandToLevel,
-    handleLineBreakToggle
+    handleLineBreakToggle,
+    handleSwitchToJsonl
   }
 }

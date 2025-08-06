@@ -31,6 +31,7 @@ export interface ParseError {
   line?: number
   column?: number
   position?: number
+  isJsonlDetected?: boolean // JSONL 형식이 감지되었는지 여부
 }
 
 // Interface for local storage data structure

@@ -65,6 +65,11 @@ export default {
       },
       partial: {
         title: 'Partial Parsing Success'
+      },
+      jsonlDetected: {
+        title: 'JSONL Format Detected',
+        description: 'The input data appears to be in JSONL (JSON Lines) format. Would you like to switch to JSONL mode?',
+        switchButton: 'Switch to JSONL'
       }
     }
   },
