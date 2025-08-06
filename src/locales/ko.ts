@@ -151,7 +151,10 @@ export default {
     toggleLineBreaks: '줄바꿈 유지 토글',
     expandToLevel: '{{level}} 레벨까지 펼치기',
     treeStructure: 'JSON 트리 구조',
-    languageSelector: '언어 선택기',
+    languageSelector: {
+      label: '언어 선택기',
+      currentLanguage: '현재 언어: {{language}}'
+    },
     panelResizer: '패널 크기 조정',
     jsonInput: 'JSON 데이터 입력',
     errorLocation: '오류 위치 정보'

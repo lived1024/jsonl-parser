@@ -7,7 +7,7 @@
       :aria-expanded="isOpen"
       :aria-haspopup="true"
       aria-label="언어 선택"
-      :title="`현재 언어: ${currentLanguageInfo?.nativeName || 'Unknown'}`"
+      :title="t('accessibility.languageSelector.currentLanguage', { language: currentLanguageInfo?.nativeName || 'Unknown' })"
       :class="{ 
         'language-button--active': isOpen,
         'language-button--loading': isChangingLanguage || isLoading
@@ -29,7 +29,7 @@
         v-if="isOpen" 
         class="language-dropdown"
         role="listbox"
-        :aria-label="t('accessibility.languageSelector')"
+        :aria-label="t('accessibility.languageSelector.label')"
       >
         <button 
           v-for="(lang, index) in availableLanguages" 
