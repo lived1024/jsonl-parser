@@ -4,8 +4,8 @@
       class="shortcuts-toggle"
       @click="isVisible = !isVisible"
       :aria-expanded="isVisible"
-      aria-label="키보드 단축키 도움말"
-      title="키보드 단축키 (Alt+H)"
+      :aria-label="t('accessibility.keyboardHelp')"
+      :title="t('accessibility.keyboardHelp')"
       :class="{ 'shortcuts-toggle--active': isVisible }"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -29,14 +29,14 @@
               </svg>
             </div>
             <div class="header-text">
-              <h3>Keyboard Shortcuts</h3>
-              <p>Speed up your workflow</p>
+              <h3>{{ t('shortcuts.title') }}</h3>
+              <p>{{ t('shortcuts.subtitle') }}</p>
             </div>
           </div>
           <button 
             class="close-button"
             @click="isVisible = false"
-            aria-label="닫기"
+            :aria-label="t('shortcuts.close')"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"/>
@@ -54,25 +54,25 @@
                 <polyline points="12,6 12,12 16,14"/>
               </svg>
             </div>
-            <h4>Global</h4>
+            <h4>{{ t('shortcuts.sections.global') }}</h4>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>I</kbd>
             </div>
-            <span class="shortcut-description">Focus input area</span>
+            <span class="shortcut-description">{{ t('shortcuts.global.focusInput') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>Enter</kbd>
             </div>
-            <span class="shortcut-description">Parse JSON</span>
+            <span class="shortcut-description">{{ t('shortcuts.global.parseJson') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Esc</kbd>
             </div>
-            <span class="shortcut-description">Clear focus</span>
+            <span class="shortcut-description">{{ t('shortcuts.global.clearFocus') }}</span>
           </div>
         </div>
         
@@ -87,25 +87,25 @@
                 <polyline points="10,9 9,9 8,9"/>
               </svg>
             </div>
-            <h4>Text Editor</h4>
+            <h4>{{ t('shortcuts.sections.editor') }}</h4>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Tab</kbd>
             </div>
-            <span class="shortcut-description">Add indentation</span>
+            <span class="shortcut-description">{{ t('shortcuts.editor.addIndent') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Shift</kbd> + <kbd>Tab</kbd>
             </div>
-            <span class="shortcut-description">Remove indentation</span>
+            <span class="shortcut-description">{{ t('shortcuts.editor.removeIndent') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>
             </div>
-            <span class="shortcut-description">Format JSON</span>
+            <span class="shortcut-description">{{ t('shortcuts.editor.formatJson') }}</span>
           </div>
         </div>
         
@@ -116,25 +116,25 @@
                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
               </svg>
             </div>
-            <h4>Tree Navigation</h4>
+            <h4>{{ t('shortcuts.sections.navigation') }}</h4>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Enter</kbd> <span class="key-separator">or</span> <kbd>Space</kbd>
             </div>
-            <span class="shortcut-description">Toggle node</span>
+            <span class="shortcut-description">{{ t('shortcuts.navigation.toggleNode') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>→</kbd>
             </div>
-            <span class="shortcut-description">Expand node</span>
+            <span class="shortcut-description">{{ t('shortcuts.navigation.expandNode') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>←</kbd>
             </div>
-            <span class="shortcut-description">Collapse node</span>
+            <span class="shortcut-description">{{ t('shortcuts.navigation.collapseNode') }}</span>
           </div>
         </div>
         
@@ -145,25 +145,25 @@
                 <polyline points="6,9 12,15 18,9"/>
               </svg>
             </div>
-            <h4>Tree Control</h4>
+            <h4>{{ t('shortcuts.sections.control') }}</h4>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>E</kbd>
             </div>
-            <span class="shortcut-description">Expand all nodes</span>
+            <span class="shortcut-description">{{ t('shortcuts.control.expandAll') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>W</kbd>
             </div>
-            <span class="shortcut-description">Collapse all nodes</span>
+            <span class="shortcut-description">{{ t('shortcuts.control.collapseAll') }}</span>
           </div>
           <div class="shortcut-item">
             <div class="shortcut-keys">
               <kbd>Alt</kbd> + <kbd>1-9</kbd>
             </div>
-            <span class="shortcut-description">Expand to level</span>
+            <span class="shortcut-description">{{ t('shortcuts.control.expandToLevel') }}</span>
           </div>
         </div>
       </div>
@@ -174,8 +174,10 @@
 
 <script setup lang="ts">
 import useKeyboardShortcuts from './KeyboardShortcuts'
+import { useI18n } from '../../composables/useI18n'
 
 const { isVisible } = useKeyboardShortcuts()
+const { t } = useI18n()
 </script>
 
 <style scoped src="./KeyboardShortcuts.css"></style>

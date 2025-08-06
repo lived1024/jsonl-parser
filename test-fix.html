@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Fix</title>
+    <style>
+        .error-suggestions {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .suggestions-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #495057;
+        }
+        .suggestions-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .suggestions-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .suggestions-list li:last-child {
+            border-bottom: none;
+        }
+        .suggestions-list li:before {
+            content: "•";
+            color: #6c757d;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Error Suggestions Test</h1>
+    
+    <div class="error-suggestions">
+        <h4 class="suggestions-title">일반적인 해결책:</h4>
+        <ul class="suggestions-list">
+            <li>누락되거나 추가된 쉼표 확인</li>
+            <li>모든 문자열이 올바르게 인용되었는지 확인</li>
+            <li>대괄호와 중괄호 일치 확인</li>
+            <li>객체/배열의 후행 쉼표 제거</li>
+        </ul>
+    </div>
+
+    <p>This is how the error suggestions should look instead of showing numbers and dots.</p>
+</body>
+</html>

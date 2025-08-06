@@ -12,8 +12,8 @@
           </svg>
         </div>
         <div class="title-content">
-          <h2 id="input-panel-title">JSON Input</h2>
-          <p class="title-description">Paste your JSON or JSONL data</p>
+          <h2 id="input-panel-title">{{ t('input.title') }}</h2>
+          <p class="title-description">{{ t('input.description') }}</p>
         </div>
       </div>
       
@@ -34,8 +34,8 @@
               </svg>
             </div>
             <div class="tab-content">
-              <span class="tab-name">JSON</span>
-              <span class="tab-desc">Single object</span>
+              <span class="tab-name">{{ t('input.json.name') }}</span>
+              <span class="tab-desc">{{ t('input.json.description') }}</span>
             </div>
           </label>
           
@@ -58,8 +58,8 @@
               </svg>
             </div>
             <div class="tab-content">
-              <span class="tab-name">JSONL</span>
-              <span class="tab-desc">Multiple lines</span>
+              <span class="tab-name">{{ t('input.jsonl.name') }}</span>
+              <span class="tab-desc">{{ t('input.jsonl.description') }}</span>
             </div>
           </label>
         </div>
@@ -78,6 +78,7 @@
 
 <script setup lang="ts">
 import useInputPanel from './InputPanel'
+import { useI18n } from '../../composables/useI18n'
 
 const {
   TextEditor,
@@ -86,6 +87,8 @@ const {
   InputType,
   handleTypeChange
 } = useInputPanel()
+
+const { t } = useI18n()
 </script>
 
 <style scoped src="./InputPanel.css"></style>

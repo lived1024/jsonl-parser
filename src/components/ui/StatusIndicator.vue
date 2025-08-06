@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="status-content">
-          <span class="status-text">Parsing JSON...</span>
+          <span class="status-text">{{ t('status.loading') }}</span>
           <div class="status-progress">
             <div class="progress-bar"></div>
           </div>
@@ -28,10 +28,10 @@
           </div>
         </div>
         <div class="status-content">
-          <span class="status-text">Parsing Error</span>
+          <span class="status-text">{{ t('status.error') }}</span>
           <div class="error-details">
             <p class="error-message" role="alert">{{ store.parseError?.message }}</p>
-            <div v-if="errorLocation" class="error-location" aria-label="오류 위치 정보">
+            <div v-if="errorLocation" class="error-location" :aria-label="t('accessibility.errorLocation')">
               <div v-if="store.parseError?.line" class="location-tag">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -40,13 +40,13 @@
                   <line x1="16" y1="17" x2="8" y2="17"/>
                   <polyline points="10,9 9,9 8,9"/>
                 </svg>
-                Line {{ store.parseError.line }}
+                {{ t('status.location.line', { line: store.parseError.line }) }}
               </div>
               <div v-if="store.parseError?.column" class="location-tag">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 12h18m-9-9v18"/>
                 </svg>
-                Col {{ store.parseError.column }}
+                {{ t('status.location.column', { column: store.parseError.column }) }}
               </div>
             </div>
           </div>
@@ -65,13 +65,13 @@
           </div>
         </div>
         <div class="status-content">
-          <span class="status-text">Partial Success</span>
+          <span class="status-text">{{ t('status.warning') }}</span>
           <div class="warning-details">
             <p class="warning-message">{{ store.parseError?.message }}</p>
             <div class="success-stats">
               <div class="stat-item">
                 <NodesIcon :size="12" />
-                {{ nodeCount }} nodes
+                {{ t('output.stats.nodes', { count: nodeCount }) }}
               </div>
               <div v-if="store.inputType === 'jsonl'" class="stat-item">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -81,7 +81,7 @@
                   <line x1="16" y1="17" x2="8" y2="17"/>
                   <polyline points="10,9 9,9 8,9"/>
                 </svg>
-                {{ lineCount }} lines
+                {{ t('output.stats.lines', { count: lineCount }) }}
               </div>
             </div>
           </div>
@@ -99,11 +99,11 @@
           </div>
         </div>
         <div class="status-content">
-          <span class="status-text">Successfully Parsed</span>
+          <span class="status-text">{{ t('status.success') }}</span>
           <div class="success-stats">
             <div class="stat-item">
               <NodesIcon :size="12" />
-              {{ formatNumber(nodeCount) }} nodes
+              {{ t('output.stats.nodes', { count: formatNumber(nodeCount) }) }}
             </div>
             <div v-if="store.inputType === 'jsonl'" class="stat-item">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -113,7 +113,7 @@
                 <line x1="16" y1="17" x2="8" y2="17"/>
                 <polyline points="10,9 9,9 8,9"/>
               </svg>
-              {{ lineCount }} lines
+              {{ t('output.stats.lines', { count: lineCount }) }}
             </div>
           </div>
         </div>
@@ -130,8 +130,8 @@
           </div>
         </div>
         <div class="status-content">
-          <span class="status-text">Ready to Parse</span>
-          <p class="status-description">Enter JSON or JSONL data to visualize</p>
+          <span class="status-text">{{ t('status.idle') }}</span>
+          <p class="status-description">{{ t('status.idleDescription') }}</p>
         </div>
       </div>
     </Transition>
@@ -140,6 +140,7 @@
 
 <script setup lang="ts">
 import useStatusIndicator from './StatusIndicator'
+import { useI18n } from '../../composables/useI18n'
 
 const {
   NodesIcon,
@@ -149,6 +150,8 @@ const {
   lineCount,
   formatNumber
 } = useStatusIndicator()
+
+const { t } = useI18n()
 </script>
 
 <style scoped src="./StatusIndicator.css"></style>
