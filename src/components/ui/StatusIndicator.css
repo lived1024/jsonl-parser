@@ -184,6 +184,8 @@
   border-left: 3px solid var(--color-warning);
 }
 
+
+
 /* 성공 통계 */
 .success-stats {
   display: flex;
@@ -309,4 +311,6 @@
   .stat-item {
     border-width: 2px;
   }
+  
+
 }

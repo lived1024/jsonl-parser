@@ -162,25 +162,37 @@
                   <span>{{ t('output.error.detailsHeader') }}</span>
                 </div>
                 <div class="error-message-content">
-                  <p class="error-message">{{ store.parseError?.message || 'Invalid JSON syntax' }}</p>
-                  <div v-if="errorLocation" class="error-location">
-                    <div v-if="store.parseError?.line" class="location-item">
-                      <FileTextIcon :size="14" />
-                      <span>{{ t('output.error.location.line', { line: store.parseError.line }) }}</span>
+                  <!-- JSONL 감지된 경우: JSONL 메시지로 대체 -->
+                  <div v-if="store.parseError?.isJsonlDetected" class="jsonl-detection-message">
+                    <div class="jsonl-warning-text">
+                      <AlertTriangleIcon :size="16" />
+                      <span><strong>{{ t('output.error.jsonlDetected.title') }}</strong> - {{ t('output.error.jsonlDetected.description') }}</span>
                     </div>
-                    <div v-if="store.parseError?.column" class="location-item">
-                      <ZapIcon :size="14" />
-                      <span>{{ t('output.error.location.column', { column: store.parseError.column }) }}</span>
-                    </div>
-                    <div v-if="store.parseError?.position" class="location-item">
-                      <KeyboardIcon :size="14" />
-                      <span>{{ t('output.error.location.position', { position: store.parseError.position }) }}</span>
+                  </div>
+                  
+                  <!-- JSONL이 감지되지 않은 경우: 기존 오류 메시지 -->
+                  <div v-else>
+                    <p class="error-message">{{ store.parseError?.message || 'Invalid JSON syntax' }}</p>
+                    <div v-if="errorLocation" class="error-location">
+                      <div v-if="store.parseError?.line" class="location-item">
+                        <FileTextIcon :size="14" />
+                        <span>{{ t('output.error.location.line', { line: store.parseError.line }) }}</span>
+                      </div>
+                      <div v-if="store.parseError?.column" class="location-item">
+                        <ZapIcon :size="14" />
+                        <span>{{ t('output.error.location.column', { column: store.parseError.column }) }}</span>
+                      </div>
+                      <div v-if="store.parseError?.position" class="location-item">
+                        <KeyboardIcon :size="14" />
+                        <span>{{ t('output.error.location.position', { position: store.parseError.position }) }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
-              <div class="error-suggestions">
+
+              <!-- JSONL이 감지되지 않은 경우에만 오류 해결 제안사항 표시 -->
+              <div v-if="!store.parseError?.isJsonlDetected" class="error-suggestions">
                 <h4 class="suggestions-title">{{ t('output.error.suggestions.title') }}</h4>
                 <ul class="suggestions-list">
                   <li v-for="(suggestion, index) in errorSuggestions" :key="index">
@@ -191,20 +203,35 @@
             </div>
             
             <div class="error-actions">
+              <!-- JSONL 감지된 경우: JSONL 변경 버튼 표시 -->
               <button 
+                v-if="store.parseError?.isJsonlDetected"
                 type="button" 
-                class="retry-button"
-                @click="retryParsing"
+                class="jsonl-switch-button"
+                @click="handleSwitchToJsonl"
+                :aria-label="t('output.error.jsonlDetected.switchButton')"
               >
-                <RefreshCwIcon :size="16" />
-                {{ t('output.error.actions.retry') }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M8 6h13"/>
+                  <path d="M8 12h13"/>
+                  <path d="M8 18h13"/>
+                  <path d="M3 6h.01"/>
+                  <path d="M3 12h.01"/>
+                  <path d="M3 18h.01"/>
+                </svg>
+                {{ t('output.error.jsonlDetected.switchButton') }}
               </button>
+              
               <button 
                 type="button" 
                 class="clear-button"
                 @click="clearInput"
               >
-                <TrashIcon :size="16" />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18"/>
+                  <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                  <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                </svg>
                 {{ t('output.error.actions.clear') }}
               </button>
             </div>
@@ -263,19 +290,16 @@ const {
   TreePineIcon,
   SparklesIcon,
   AlertTriangleIcon,
-  RefreshCwIcon,
   KeyboardIcon,
   ZapIcon,
   LayersIcon,
   FileTextIcon,
   NodesIcon,
-  TrashIcon,
   XIcon,
   ExpandAllIcon,
   CollapseAllIcon,
   WrapTextIcon,
   ModernTreeNode,
-  TypeIcon,
   FadeTransition,
   SlideTransition,
   store,
@@ -284,13 +308,13 @@ const {
   errorLocation,
   levelButtons,
   needsScroll,
-  retryParsing,
   clearInput,
   dismissPartialError,
   expandAll,
   collapseAll,
   expandToLevel,
-  handleLineBreakToggle
+  handleLineBreakToggle,
+  handleSwitchToJsonl
 } = useOutputPanel()
 
 const { t } = useI18n()

@@ -65,6 +65,11 @@ export default {
       },
       partial: {
         title: '부분 파싱 성공'
+      },
+      jsonlDetected: {
+        title: 'JSONL 형식이 감지되었습니다',
+        description: '입력된 데이터가 JSONL(JSON Lines) 형식인 것 같습니다. JSON 타입을 JSONL로 변경하시겠습니까?',
+        switchButton: 'JSONL로 변경'
       }
     }
   },

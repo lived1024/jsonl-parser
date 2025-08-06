@@ -8,6 +8,7 @@ import {
   DataType
 } from '../types'
 import { LOCAL_STORAGE_KEYS, DEFAULT_CONFIG } from '../types/constants'
+import { detectJSONL } from '../utils/validators'
 
 // 파싱 결과 캐시 인터페이스
 interface ParseCache {
@@ -251,11 +252,15 @@ export const useJsonTreeStore = defineStore('jsonTree', {
           column = lines[lines.length - 1].length + 1
         }
 
+        // JSON 파싱 실패 시 JSONL 형식인지 감지
+        const isJsonlDetected = this.inputType === InputType.JSON && detectJSONL(this.inputText)
+
         return {
           message: `JSON Parse Error: ${message}`,
           line,
           column,
-          position
+          position,
+          isJsonlDetected
         }
       }
 
@@ -495,6 +500,11 @@ export const useJsonTreeStore = defineStore('jsonTree', {
     // 캐시 초기화
     clearCache() {
       this._parseCache.clear()
+    },
+
+    // JSONL 모드로 전환하고 다시 파싱
+    switchToJsonlMode() {
+      this.setInputType(InputType.JSONL)
     }
   },
 
