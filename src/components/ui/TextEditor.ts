@@ -1,9 +1,11 @@
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useJsonTreeStore } from '../../stores'
 import { InputType } from '../../types'
+import { useI18n } from '../../composables/useI18n'
 
 export default function useTextEditor() {
   const store = useJsonTreeStore()
+  const { t } = useI18n()
   const textareaRef = ref<HTMLTextAreaElement>()
   const lineNumbersRef = ref<HTMLDivElement>()
   const parseTimeout = ref<number>()
@@ -17,21 +19,9 @@ export default function useTextEditor() {
   // 플레이스홀더 텍스트
   const placeholder = computed(() => {
     if (store.inputType === InputType.JSON) {
-      return `JSON 데이터를 입력하세요...
-
-예시:
-{
-  "name": "홍길동",
-  "age": 30,
-  "hobbies": ["독서", "영화감상"]
-}`
+      return t('editor.placeholders.json')
     } else {
-      return `JSONL 데이터를 입력하세요 (한 줄에 하나의 JSON)...
-
-예시:
-{"name": "홍길동", "age": 30}
-{"name": "김철수", "age": 25}
-{"name": "이영희", "age": 28}`
+      return t('editor.placeholders.jsonl')
     }
   })
 
