@@ -118,6 +118,22 @@ export default {
   },
   editor: {
     placeholder: '여기에 JSON 데이터를 입력하세요...',
+    placeholders: {
+      json: `JSON 데이터를 입력하세요...
+
+예시:
+{
+  "name": "홍길동",
+  "age": 30,
+  "hobbies": ["독서", "영화감상"]
+}`,
+      jsonl: `JSONL 데이터를 입력하세요 (한 줄에 하나의 JSON)...
+
+예시:
+{"name": "홍길동", "age": 30}
+{"name": "김철수", "age": 25}
+{"name": "이영희", "age": 28}`
+    },
     descriptions: {
       json: '단일 JSON 객체나 배열을 입력하세요. 예: {"name": "홍길동", "age": 30}',
       jsonl: '한 줄에 하나씩 JSON 객체를 입력하세요. 각 줄은 유효한 JSON이어야 합니다.'
