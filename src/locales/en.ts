@@ -118,6 +118,22 @@ export default {
   },
   editor: {
     placeholder: 'Enter your JSON data here...',
+    placeholders: {
+      json: `Enter JSON data...
+
+Example:
+{
+  "name": "John Doe",
+  "age": 30,
+  "hobbies": ["reading", "movies"]
+}`,
+      jsonl: `Enter JSONL data (one JSON per line)...
+
+Example:
+{"name": "John Doe", "age": 30}
+{"name": "Jane Smith", "age": 25}
+{"name": "Bob Johnson", "age": 28}`
+    },
     descriptions: {
       json: 'Enter a single JSON object or array. Example: {"name": "John", "age": 30}',
       jsonl: 'Enter one JSON object per line. Each line must be valid JSON.'
