@@ -4,7 +4,7 @@
 
 export default {
   header: {
-    title: 'JSON Tree Viewer',
+    title: 'JSONL Parser',
     subtitle: 'Parse & Visualize JSON Data'
   },
   input: {
@@ -158,7 +158,7 @@ Example:
     partialSuccess: '{{errorCount}} lines had errors. {{successCount}} lines were successfully parsed.'
   },
   accessibility: {
-    mainArea: 'JSON Tree Viewer main area',
+    mainArea: 'JSONL Parser main area',
     inputPanel: 'JSON input panel',
     outputPanel: 'JSON tree output panel',
     keyboardHelp: 'Keyboard shortcuts help',
@@ -176,7 +176,7 @@ Example:
     errorLocation: 'Error location information'
   },
   meta: {
-    title: 'JSON Tree Viewer',
+    title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
   }
 } as const

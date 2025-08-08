@@ -2,7 +2,7 @@
 
 ## 개요
 
-JSON Tree Viewer 애플리케이션에 다국어 지원을 추가하는 기능입니다. Vue 3 Composition API와 Pinia를 활용하여 영어와 한국어 간 실시간 언어 전환을 구현합니다. 언어 선택기는 헤더에 위치하며, 모든 UI 텍스트가 선택된 언어로 즉시 업데이트됩니다.
+JSONL Parser 애플리케이션에 다국어 지원을 추가하는 기능입니다. Vue 3 Composition API와 Pinia를 활용하여 영어와 한국어 간 실시간 언어 전환을 구현합니다. 언어 선택기는 헤더에 위치하며, 모든 UI 텍스트가 선택된 언어로 즉시 업데이트됩니다.
 
 ## 아키텍처
 
@@ -101,7 +101,7 @@ export function useI18n() {
 ```typescript
 export default {
   header: {
-    title: 'JSON Tree Viewer',
+    title: 'JSONL Parser',
     subtitle: 'Parse & Visualize JSON Data'
   },
   input: {
@@ -117,7 +117,7 @@ export default {
 ```typescript
 export default {
   header: {
-    title: 'JSON 트리 뷰어',
+    title: 'JSONL 파서',
     subtitle: 'JSON 데이터 파싱 및 시각화'
   },
   input: {

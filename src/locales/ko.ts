@@ -4,7 +4,7 @@
 
 export default {
   header: {
-    title: 'JSON 트리 뷰어',
+    title: 'JSONL 파서',
     subtitle: 'JSON 데이터 파싱 및 시각화'
   },
   input: {
@@ -158,7 +158,7 @@ export default {
     partialSuccess: '{{errorCount}}개 줄에서 오류가 발생했습니다. {{successCount}}개 줄이 성공적으로 파싱되었습니다.'
   },
   accessibility: {
-    mainArea: 'JSON 트리 뷰어 메인 영역',
+    mainArea: 'JSONL 파서 메인 영역',
     inputPanel: 'JSON 입력 패널',
     outputPanel: 'JSON 트리 출력 패널',
     keyboardHelp: '키보드 단축키 도움말',
@@ -176,7 +176,7 @@ export default {
     errorLocation: '오류 위치 정보'
   },
   meta: {
-    title: 'JSON 트리 뷰어',
+    title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'
   }
 } as const

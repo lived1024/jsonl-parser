@@ -2,7 +2,7 @@
 
 ## 개요
 
-JSON Tree Viewer는 Vue 3 Composition API와 Pinia를 사용하여 구축되는 단일 페이지 애플리케이션입니다. 사용자가 JSON 또는 JSONL 텍스트를 입력하면 실시간으로 파싱하여 상호작용 가능한 트리 구조로 변환합니다.
+JSONL Parser는 Vue 3 Composition API와 Pinia를 사용하여 구축되는 단일 페이지 애플리케이션입니다. 사용자가 JSON 또는 JSONL 텍스트를 입력하면 실시간으로 파싱하여 상호작용 가능한 트리 구조로 변환합니다.
 
 ## 아키텍처
 

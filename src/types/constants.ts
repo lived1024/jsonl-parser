@@ -1,6 +1,6 @@
 // Local storage keys
 export const LOCAL_STORAGE_KEYS = {
-  JSON_TREE_DATA: 'json-tree-viewer-data'
+  JSON_TREE_DATA: 'jsonl-parser-data'
 } as const
 
 // Default configuration values
