@@ -1,4 +1,4 @@
-import { ref, computed, watch, nextTick, onMounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useJsonTreeStore } from '../../stores'
 import { InputType } from '../../types'
 import { useI18n } from '../../composables/useI18n'
@@ -40,6 +40,28 @@ export default function useTextEditor() {
   // 라인 넘버 표시 여부
   const showLineNumbers = computed(() => lineCount.value > 1)
 
+  // 오류 정보
+  const errorInfo = computed(() => store.getErrorLineInfo())
+  
+  // 오류가 있는 줄인지 확인
+  const isErrorLine = (lineNumber: number) => {
+    return errorInfo.value && errorInfo.value.lineNumber === lineNumber
+  }
+
+  // 오류 위치 계산 (픽셀 단위)
+  const getErrorPosition = computed(() => {
+    if (!errorInfo.value || !textareaRef.value) return null
+    
+    const { lineNumber, columnNumber } = errorInfo.value
+    const lineHeight = 1.6 * 14 // line-height * font-size (em to px)
+    const charWidth = 8.4 // 모노스페이스 폰트의 대략적인 문자 너비
+    
+    return {
+      top: (lineNumber - 1) * lineHeight,
+      left: columnNumber * charWidth
+    }
+  })
+
   // 숫자 포맷팅
   const formatNumber = (num: number) => {
     return num.toLocaleString()
@@ -69,6 +91,28 @@ export default function useTextEditor() {
   const clearInput = () => {
     inputText.value = ''
     textareaRef.value?.focus()
+  }
+
+  // 스크롤 동기화
+  const syncLineNumbersScroll = () => {
+    const textarea = textareaRef.value
+    const lineNumbers = lineNumbersRef.value
+    
+    if (textarea && lineNumbers) {
+      lineNumbers.style.transform = `translateY(-${textarea.scrollTop}px)`
+      
+      // 오류 마커와 하이라이트도 스크롤과 동기화
+      const errorMarker = document.querySelector('.error-marker') as HTMLElement
+      const errorHighlight = document.querySelector('.error-line-highlight') as HTMLElement
+      
+      if (errorMarker) {
+        errorMarker.style.transform = `translateY(-${textarea.scrollTop}px)`
+      }
+      
+      if (errorHighlight) {
+        errorHighlight.style.transform = `translateY(-${textarea.scrollTop}px)`
+      }
+    }
   }
 
   // 입력 처리
@@ -210,9 +254,23 @@ export default function useTextEditor() {
     }
   }
 
-  // 컴포넌트 마운트 시 포커스
+  // 컴포넌트 마운트 시 포커스 및 스크롤 이벤트 리스너 등록
   onMounted(() => {
     textareaRef.value?.focus()
+    
+    // 스크롤 이벤트 리스너 등록
+    const textarea = textareaRef.value
+    if (textarea) {
+      textarea.addEventListener('scroll', syncLineNumbersScroll)
+    }
+  })
+
+  // 컴포넌트 언마운트 시 이벤트 리스너 제거
+  onUnmounted(() => {
+    const textarea = textareaRef.value
+    if (textarea) {
+      textarea.removeEventListener('scroll', syncLineNumbersScroll)
+    }
   })
 
   // 입력 타입 변경 시 파싱 재실행
@@ -244,6 +302,11 @@ export default function useTextEditor() {
     formatJson,
     clearInput,
     handleInput,
-    handleKeydown
+    handleKeydown,
+    isErrorLine,
+
+    // Error handling
+    errorInfo,
+    getErrorPosition
   }
 }
