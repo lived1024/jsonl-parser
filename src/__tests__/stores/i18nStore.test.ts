@@ -137,7 +137,7 @@ describe('i18nStore', () => {
 
       // 영어 번역 테스트
       const translation = store.getTranslation('header.title')
-      expect(translation).toBe('JSON Tree Viewer')
+      expect(translation).toBe('JSONL Parser')
     })
 
     it('중첩된 번역 키를 올바르게 처리해야 한다', async () => {

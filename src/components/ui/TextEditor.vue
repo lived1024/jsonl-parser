@@ -28,11 +28,39 @@
             v-for="(line, index) in textLines" 
             :key="index"
             class="line-number"
+            :class="{ 'line-number--error': isErrorLine(index + 1) }"
             :style="{ height: `${1.6}em` }"
           >
             {{ index + 1 }}
           </div>
         </div>
+        
+        <!-- 오류 위치 표시 -->
+        <div 
+          v-if="errorInfo && getErrorPosition" 
+          class="error-marker"
+          :style="{
+            top: `${getErrorPosition.top + 24}px`,
+            left: `${getErrorPosition.left + 56}px`
+          }"
+          :title="store.parseError?.message"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        
+        <!-- 오류 줄 하이라이트 -->
+        <div 
+          v-if="errorInfo" 
+          class="error-line-highlight"
+          :style="{
+            top: `${(errorInfo.lineNumber - 1) * 1.6 * 14 + 24}px`,
+            height: `${1.6 * 14}px`
+          }"
+        ></div>
       </div>
     </div>
     
@@ -119,7 +147,10 @@ const {
   clearInput,
   handleInput,
   handleKeydown,
-  isInputValidJson
+  isInputValidJson,
+  isErrorLine,
+  errorInfo,
+  getErrorPosition
 } = useTextEditor()
 
 const { t } = useI18n()

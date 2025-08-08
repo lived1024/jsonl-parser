@@ -1,4 +1,4 @@
-# JSON Tree Viewer
+# JSONL Parser
 
 JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플리케이션입니다. 실시간 파싱, 계층적 시각화, 복잡한 JSON 데이터에 대한 사용자 친화적 탐색 기능을 제공합니다.
 
@@ -19,4 +19,4 @@ JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플
 ## 라이브 배포
 
 - 주요 사이트: https://jsonl-parser.netlify.app/ (Netlify)
-- 보조 사이트: https://json-tree-viewer-pink.vercel.app/ (Vercel)
+- 보조 사이트: https://jsonl-parser.vercel.app/ (Vercel)
