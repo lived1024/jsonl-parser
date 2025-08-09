@@ -15,7 +15,7 @@ export const AVAILABLE_LANGUAGES: LanguageInfo[] = [
   {
     code: Language.EN,
     name: 'English',
-    nativeName: 'English',
+    nativeName: '영어',
     flag: '🇺🇸'
   },
   {
