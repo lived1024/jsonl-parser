@@ -15,7 +15,14 @@
       :disabled="isChangingLanguage || isLoading"
     >
       <div class="button-content">
-        <span v-if="!(isChangingLanguage || isLoading)" class="language-flag">{{ currentLanguageInfo?.flag || '🌐' }}</span>
+        <div v-if="!(isChangingLanguage || isLoading)" class="language-flag">
+          <component 
+            v-if="getFlagComponent(currentLanguage)" 
+            :is="getFlagComponent(currentLanguage)" 
+            :size="18"
+          />
+          <span v-else>🌐</span>
+        </div>
         <div v-if="isChangingLanguage || isLoading" class="loading-spinner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 11-6.219-8.56"/>
@@ -57,7 +64,14 @@
           :tabindex="focusedIndex === index ? 0 : -1"
         >
           <div class="option-content">
-            <span class="option-flag">{{ lang.flag }}</span>
+            <div class="option-flag">
+              <component 
+                v-if="getFlagComponent(lang.code)" 
+                :is="getFlagComponent(lang.code)" 
+                :size="20"
+              />
+              <span v-else>{{ lang.flag }}</span>
+            </div>
             <div class="option-text">
               <span class="option-name">{{ lang.name }}</span>
               <span class="option-native">{{ lang.nativeName }}</span>
@@ -79,6 +93,8 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ChevronDownIcon, CheckIcon } from 'lucide-vue-next'
 import { useI18n } from '../../composables/useI18n'
 import type { Language } from '../../types/i18n'
+import FlagUS from '../icons/FlagUS.vue'
+import FlagKR from '../icons/FlagKR.vue'
 
 // Composables
 const { t, currentLanguage, changeLanguage, availableLanguages, getCurrentLanguageInfo, isLoading } = useI18n()
@@ -91,6 +107,18 @@ const isChangingLanguage = ref(false)
 
 // Computed
 const currentLanguageInfo = computed(() => getCurrentLanguageInfo.value)
+
+// 국기 컴포넌트 매핑
+const getFlagComponent = (languageCode: Language) => {
+  switch (languageCode) {
+    case 'en':
+      return FlagUS
+    case 'ko':
+      return FlagKR
+    default:
+      return null
+  }
+}
 
 // Methods
 const toggleDropdown = (): void => {
@@ -263,6 +291,9 @@ onUnmounted(() => {
 }
 
 .language-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.125rem;
   line-height: 1;
   flex-shrink: 0;
@@ -389,6 +420,9 @@ onUnmounted(() => {
 }
 
 .option-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.25rem;
   line-height: 1;
   flex-shrink: 0;
