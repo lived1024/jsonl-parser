@@ -28,8 +28,8 @@
         
         <div class="header-info">
           <div class="header-actions">
-            <HelpButton />
             <LanguageSelector />
+            <HelpButton />
             <KeyboardShortcuts />
           </div>
         </div>

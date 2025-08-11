@@ -147,6 +147,14 @@ export default {
       clear: '지우기',
       formatTitle: 'JSON 포맷 (Alt+Shift+F)',
       clearTitle: '입력 지우기 (Alt+I)'
+    },
+    dragDrop: {
+      title: 'JSON 파일 드롭',
+      description: 'JSON 또는 JSONL 파일을 여기에 드래그하세요'
+    },
+    loading: {
+      title: '파일 처리 중...',
+      description: '파일을 읽고 파싱하는 중입니다'
     }
   },
   validation: {
@@ -179,6 +187,15 @@ export default {
     title: '도움말',
     close: '닫기',
     openHelp: '도움말 열기',
+    tabs: {
+      overview: '개요',
+      shortcuts: '단축키',
+      examples: '예제',
+      datatypes: '데이터 타입',
+      faq: 'FAQ',
+      performance: '성능',
+      troubleshooting: '문제 해결'
+    },
     whatIs: {
       title: 'JSONL 파서란?',
       description: 'JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플리케이션입니다. 복잡한 JSON 데이터를 쉽게 탐색하고 이해할 수 있도록 도와줍니다.'
@@ -207,6 +224,14 @@ export default {
       responsive: {
         title: '반응형 디자인',
         description: '모든 기기에서 최적화된 사용자 경험'
+      },
+      lineBreaks: {
+        title: '줄바꿈 유지',
+        description: '문자열 내 줄바꿈을 원본 그대로 표시합니다'
+      },
+      expandLevels: {
+        title: '레벨별 확장',
+        description: '원하는 깊이까지 트리를 자동으로 확장할 수 있습니다'
       }
     },
     shortcuts: {
@@ -222,6 +247,443 @@ export default {
       title: '예제',
       complex: '복합 구조',
       tryIt: '시도해보기'
+    }
+  },
+  onboarding: {
+    close: '닫기',
+    skip: '건너뛰기',
+    next: '다음',
+    previous: '이전',
+    finish: '완료',
+    steps: {
+      welcome: {
+        title: 'JSONL 파서에 오신 것을 환영합니다!',
+        description: 'JSON과 JSONL 데이터를 아름다운 트리 구조로 시각화하는 도구입니다.',
+        tip1: 'F1 키를 눌러 언제든지 도움말을 볼 수 있습니다',
+        tip2: '키보드 단축키를 활용하면 더 빠르게 작업할 수 있습니다'
+      },
+      inputPanel: {
+        title: '입력 패널',
+        description: '여기에 JSON 또는 JSONL 데이터를 입력하세요. 실시간으로 파싱됩니다.',
+        tip1: 'Alt+I를 눌러 빠르게 입력 영역에 포커스할 수 있습니다',
+        tip2: '파일을 드래그 앤 드롭으로 업로드할 수도 있습니다'
+      },
+      formatSelector: {
+        title: '형식 선택기',
+        description: 'JSON과 JSONL 형식을 선택할 수 있습니다. 자동 감지도 지원합니다.'
+      },
+      outputPanel: {
+        title: '출력 패널',
+        description: '파싱된 데이터가 대화형 트리로 표시됩니다. 노드를 클릭하여 탐색하세요.',
+        tip1: '노드를 클릭하거나 Enter/Space 키로 확장/축소할 수 있습니다',
+        tip2: '데이터 타입별로 색상이 구분되어 표시됩니다'
+      },
+      shortcuts: {
+        title: '키보드 단축키',
+        description: '이 버튼을 클릭하면 사용 가능한 모든 키보드 단축키를 볼 수 있습니다.',
+        tip1: 'Alt+H를 눌러 단축키 패널을 열 수 있습니다',
+        tip2: '단축키를 익히면 작업 효율이 크게 향상됩니다'
+      }
+    }
+  },
+  tooltip: {
+    shortcut: '단축키',
+    tips: '팁'
+  },
+  faq: {
+    title: '자주 묻는 질문',
+    subtitle: '일반적인 질문과 답변을 확인하세요',
+    searchPlaceholder: 'FAQ 검색...',
+    clearSearch: '검색 지우기',
+    noResults: '검색 결과가 없습니다',
+    noResultsDescription: '다른 키워드로 검색하거나 필터를 초기화해보세요.',
+    clearFilters: '필터 초기화',
+    relatedLinks: '관련 링크',
+    example: '예제',
+    categories: {
+      all: '전체',
+      basics: '기본 사용법',
+      parsing: '파싱',
+      navigation: '탐색',
+      performance: '성능',
+      troubleshooting: '문제 해결'
+    },
+    items: {
+      whatIsJsonl: {
+        question: 'JSONL이 무엇인가요?',
+        answer: 'JSONL(JSON Lines)은 각 줄에 하나의 JSON 객체가 있는 텍스트 형식입니다. 대용량 데이터 스트리밍과 로그 파일에 자주 사용됩니다.'
+      },
+      jsonVsJsonl: {
+        question: 'JSON과 JSONL의 차이점은 무엇인가요?',
+        answer: 'JSON은 단일 구조화된 데이터를 나타내고, JSONL은 여러 JSON 객체를 줄바꿈으로 구분하여 나열합니다. JSONL은 스트리밍 데이터 처리에 더 적합합니다.'
+      },
+      largeFiles: {
+        question: '큰 파일을 처리할 수 있나요?',
+        answer: '최대 10MB까지 지원하며, 대용량 데이터는 지연 로딩으로 성능을 최적화합니다. 50개 이상의 자식 노드가 있으면 점진적으로 로딩됩니다.'
+      },
+      parsingErrors: {
+        question: '파싱 오류가 발생하면 어떻게 하나요?',
+        answer: '오류 메시지에서 정확한 위치와 원인을 확인할 수 있습니다. 일반적인 원인은 누락된 쉼표, 잘못된 따옴표, 괄호 불일치입니다.'
+      },
+      keyboardShortcuts: {
+        question: '키보드 단축키가 있나요?',
+        answer: '네, 다양한 단축키를 지원합니다. Alt+H로 단축키 목록을 보거나, F1로 도움말을 열 수 있습니다.'
+      },
+      dataPersistence: {
+        question: '입력한 데이터가 저장되나요?',
+        answer: '입력 데이터는 브라우저의 로컬 스토리지에 자동 저장되어 페이지를 새로고침해도 유지됩니다. 서버로는 전송되지 않습니다.'
+      }
+    }
+  },
+  dataTypeGuide: {
+    title: 'JSON 데이터 타입 가이드',
+    subtitle: 'JSON에서 사용할 수 있는 모든 데이터 타입과 사용법을 알아보세요',
+    examples: '예제',
+    rules: '규칙',
+    tips: '팁',
+    commonErrors: '일반적인 오류',
+    wrong: '잘못된 예',
+    correct: '올바른 예',
+    types: {
+      string: {
+        name: '문자열 (String)',
+        description: '텍스트 데이터를 나타냅니다. 반드시 큰따옴표로 감싸야 합니다.',
+        examples: {
+          basic: '기본 문자열',
+          empty: '빈 문자열',
+          special: '특수 문자',
+          unicode: '유니코드'
+        },
+        rules: [
+          '반드시 큰따옴표(")로 감싸야 합니다',
+          '특수 문자는 백슬래시(\\)로 이스케이프해야 합니다',
+          '유니코드 문자를 지원합니다'
+        ],
+        tips: [
+          '여러 줄 문자열은 \\n을 사용하세요',
+          '작은따옴표(\')는 JSON에서 유효하지 않습니다'
+        ]
+      },
+      number: {
+        name: '숫자 (Number)',
+        description: '정수와 소수를 나타냅니다. 따옴표 없이 작성합니다.',
+        examples: {
+          integer: '정수',
+          decimal: '소수',
+          negative: '음수',
+          scientific: '과학적 표기법'
+        },
+        rules: [
+          '따옴표로 감싸지 않습니다',
+          '소수점은 마침표(.)를 사용합니다',
+          '과학적 표기법(e, E)을 지원합니다'
+        ],
+        tips: [
+          '매우 큰 숫자는 정밀도 손실이 있을 수 있습니다',
+          'Infinity와 NaN은 JSON에서 유효하지 않습니다'
+        ]
+      },
+      boolean: {
+        name: '불린 (Boolean)',
+        description: '참(true) 또는 거짓(false) 값을 나타냅니다.',
+        examples: {
+          true: '참',
+          false: '거짓'
+        },
+        rules: [
+          '소문자로만 작성합니다 (true, false)',
+          '따옴표로 감싸지 않습니다'
+        ],
+        tips: [
+          '조건부 로직에 사용됩니다',
+          '플래그나 상태를 나타낼 때 유용합니다'
+        ]
+      },
+      null: {
+        name: '널 (Null)',
+        description: '값이 없음을 나타냅니다.',
+        examples: {
+          basic: '기본 null'
+        },
+        rules: [
+          '소문자로만 작성합니다 (null)',
+          '따옴표로 감싸지 않습니다'
+        ],
+        tips: [
+          '누락된 값이나 알 수 없는 값을 나타냅니다',
+          'undefined는 JSON에서 유효하지 않습니다'
+        ]
+      },
+      array: {
+        name: '배열 (Array)',
+        description: '순서가 있는 값들의 목록입니다. 대괄호로 감쌉니다.',
+        examples: {
+          numbers: '숫자 배열',
+          strings: '문자열 배열',
+          mixed: '혼합 타입',
+          empty: '빈 배열'
+        },
+        rules: [
+          '대괄호 []로 감쌉니다',
+          '요소들은 쉼표로 구분합니다',
+          '마지막 요소 뒤에는 쉼표를 붙이지 않습니다'
+        ],
+        tips: [
+          '요소의 순서가 중요합니다',
+          '중첩된 배열도 가능합니다'
+        ]
+      },
+      object: {
+        name: '객체 (Object)',
+        description: '키-값 쌍의 집합입니다. 중괄호로 감쌉니다.',
+        examples: {
+          simple: '간단한 객체',
+          nested: '중첩된 객체',
+          empty: '빈 객체'
+        },
+        rules: [
+          '중괄호 {}로 감쌉니다',
+          '키는 반드시 문자열이어야 합니다',
+          '키와 값은 콜론(:)으로 구분합니다',
+          '키-값 쌍들은 쉼표로 구분합니다'
+        ],
+        tips: [
+          '키의 순서는 보장되지 않습니다',
+          '깊은 중첩도 가능합니다'
+        ]
+      }
+    },
+    nesting: {
+      title: '중첩 구조',
+      description: 'JSON은 객체와 배열을 중첩하여 복잡한 데이터 구조를 만들 수 있습니다.'
+    },
+    validation: {
+      title: '유효성 검사 팁',
+      tips: [
+        '모든 괄호와 중괄호가 올바르게 닫혔는지 확인하세요',
+        '문자열 키와 값에 따옴표가 있는지 확인하세요',
+        '불필요한 쉼표가 없는지 확인하세요',
+        '데이터 타입이 올바른지 확인하세요',
+        '전체 구조가 유효한 JSON인지 확인하세요'
+      ]
+    }
+  },
+  performanceTips: {
+    title: '성능 최적화 팁',
+    subtitle: '대용량 데이터를 효율적으로 처리하는 방법을 알아보세요',
+    example: '예제',
+    metrics: '성능 지표',
+    actions: '권장 조치',
+    recommended: '권장',
+    maximum: '최대',
+    warning: '주의',
+    critical: '위험',
+    optimal: '최적',
+    lazyLoading: '지연 로딩',
+    threshold: '임계값',
+    batchSize: '배치 크기',
+    cacheSize: '캐시 크기',
+    cacheExpiry: '캐시 만료',
+    categories: {
+      fileSize: {
+        title: '파일 크기 최적화',
+        description: '대용량 파일을 효율적으로 처리하는 방법',
+        tips: {
+          largeFiles: {
+            title: '대용량 파일 처리',
+            description: '5MB 이상의 파일은 성능에 영향을 줄 수 있습니다. 파일을 분할하거나 압축하는 것을 고려하세요.',
+            actions: {
+              split: '파일을 작은 단위로 분할하세요',
+              compress: '불필요한 데이터를 제거하세요',
+              sample: '샘플 데이터로 테스트하세요'
+            }
+          },
+          jsonlStreaming: {
+            title: 'JSONL 스트리밍 활용',
+            description: '대용량 데이터는 JSONL 형식을 사용하면 메모리 효율성이 향상됩니다.'
+          }
+        }
+      },
+      structure: {
+        title: '데이터 구조 최적화',
+        description: '효율적인 JSON 구조 설계 방법',
+        tips: {
+          deepNesting: {
+            title: '깊은 중첩 구조 피하기',
+            description: '10레벨 이상의 깊은 중첩은 렌더링 성능을 저하시킬 수 있습니다.'
+          },
+          arraySize: {
+            title: '배열 크기 관리',
+            description: '50개 이상의 요소를 가진 배열은 지연 로딩으로 처리됩니다.'
+          }
+        }
+      },
+      memory: {
+        title: '메모리 관리',
+        description: '브라우저 메모리 사용량 최적화',
+        tips: {
+          browserLimits: {
+            title: '브라우저 메모리 한계',
+            description: '브라우저는 탭당 메모리 사용량에 제한이 있습니다. 메모리 부족 시 브라우저가 느려지거나 충돌할 수 있습니다.',
+            actions: {
+              close: '사용하지 않는 탭을 닫으세요',
+              reduce: '입력 데이터 크기를 줄이세요',
+              refresh: '페이지를 새로고침하세요'
+            }
+          },
+          caching: {
+            title: '캐싱 최적화',
+            description: '파싱 결과는 자동으로 캐시되어 재사용됩니다. 캐시는 10개 항목까지 5분간 유지됩니다.'
+          }
+        }
+      },
+      rendering: {
+        title: '렌더링 최적화',
+        description: '트리 렌더링 성능 향상 방법',
+        tips: {
+          lazyLoading: {
+            title: '지연 로딩 활용',
+            description: '50개 이상의 자식 노드가 있는 경우 자동으로 지연 로딩이 적용됩니다.'
+          },
+          expandLevels: {
+            title: '확장 레벨 제한',
+            description: '모든 노드를 한 번에 확장하지 말고 필요한 부분만 선택적으로 확장하세요.',
+            actions: {
+              selective: '필요한 노드만 선택적으로 확장',
+              levels: '레벨별 확장 기능 활용',
+              collapse: '사용하지 않는 노드는 접기'
+            }
+          }
+        }
+      }
+    },
+    monitor: {
+      title: '성능 모니터링',
+      description: '현재 시스템 상태를 실시간으로 확인하세요',
+      fileSize: '파일 크기',
+      nodeCount: '노드 수',
+      parseTime: '파싱 시간',
+      memoryUsage: '메모리 사용량'
+    }
+  },
+  troubleshooting: {
+    title: '문제 해결 가이드',
+    subtitle: '일반적인 문제와 해결 방법을 확인하세요',
+    searchPlaceholder: '문제 검색...',
+    clearSearch: '검색 지우기',
+    noResults: '검색 결과가 없습니다',
+    noResultsDescription: '다른 키워드로 검색하거나 필터를 초기화해보세요.',
+    clearFilters: '필터 초기화',
+    quickFix: '빠른 해결책',
+    detailedSteps: '상세 단계',
+    example: '예제',
+    wrongExample: '잘못된 예',
+    correctExample: '올바른 예',
+    prevention: '예방 방법',
+    relatedProblems: '관련 문제',
+    stillNeedHelp: '여전히 도움이 필요하신가요?',
+    contactDescription: '문제가 해결되지 않으면 아래 옵션을 이용해주세요.',
+    checkFAQ: 'FAQ 확인',
+    reportIssue: '문제 신고',
+    frequency: {
+      rare: '드물게',
+      occasional: '가끔',
+      common: '자주',
+      frequent: '매우 자주'
+    },
+    categories: {
+      all: '전체',
+      parsing: '파싱',
+      display: '표시',
+      performance: '성능',
+      navigation: '탐색',
+      input: '입력'
+    },
+    problems: {
+      jsonSyntaxError: {
+        title: 'JSON 구문 오류',
+        description: 'JSON 데이터에 구문 오류가 있어 파싱할 수 없습니다.',
+        quickFixes: {
+          checkCommas: '쉼표 누락이나 추가 확인',
+          checkQuotes: '따옴표 누락 확인',
+          checkBrackets: '괄호 일치 확인'
+        },
+        steps: {
+          locate: '오류 메시지에서 정확한 위치 확인',
+          identify: '오류 유형 식별 (쉼표, 따옴표, 괄호 등)',
+          fix: '해당 위치의 구문 수정',
+          validate: '수정 후 다시 파싱 시도'
+        },
+        prevention: {
+          validator: 'JSON 검증 도구 사용',
+          formatter: 'JSON 포맷터로 구조 확인',
+          careful: '수동 편집 시 주의 깊게 작업'
+        }
+      },
+      largeFileSlow: {
+        title: '대용량 파일 처리 속도 저하',
+        description: '파일이 너무 커서 파싱이나 렌더링이 느려집니다.',
+        quickFixes: {
+          reduce: '파일 크기 줄이기',
+          collapse: '모든 노드 접기',
+          refresh: '페이지 새로고침'
+        },
+        steps: {
+          check: '파일 크기 확인 (5MB 이하 권장)',
+          split: '파일을 작은 단위로 분할',
+          optimize: '불필요한 데이터 제거',
+          monitor: '성능 모니터 확인'
+        },
+        prevention: {
+          limit: '파일 크기를 5MB 이하로 유지',
+          jsonl: 'JSONL 형식 사용 고려',
+          sample: '샘플 데이터로 먼저 테스트'
+        }
+      },
+      treeNotExpanding: {
+        title: '트리 노드가 확장되지 않음',
+        description: '노드를 클릭해도 확장되지 않거나 반응이 없습니다.',
+        quickFixes: {
+          click: '노드 아이콘을 직접 클릭',
+          keyboard: 'Enter 또는 Space 키 사용',
+          refresh: '페이지 새로고침'
+        },
+        steps: {
+          verify: '노드에 자식 요소가 있는지 확인',
+          try: '다른 노드에서도 같은 문제인지 확인',
+          check: '브라우저 콘솔에서 오류 확인',
+          reload: '페이지 새로고침 후 재시도'
+        }
+      },
+      jsonlNotDetected: {
+        title: 'JSONL 형식이 감지되지 않음',
+        description: 'JSONL 데이터가 JSON으로 잘못 인식되어 파싱 오류가 발생합니다.',
+        quickFixes: {
+          manual: '수동으로 JSONL 형식 선택',
+          format: '각 줄이 유효한 JSON인지 확인',
+          validate: '줄바꿈 문자 확인'
+        }
+      },
+      memoryError: {
+        title: '메모리 부족 오류',
+        description: '브라우저 메모리가 부족하여 처리할 수 없습니다.',
+        quickFixes: {
+          close: '다른 탭 닫기',
+          reduce: '데이터 크기 줄이기',
+          restart: '브라우저 재시작'
+        },
+        steps: {
+          save: '현재 작업 저장',
+          close: '사용하지 않는 탭 모두 닫기',
+          restart: '브라우저 완전히 재시작',
+          reduce: '더 작은 데이터로 재시도'
+        },
+        prevention: {
+          monitor: '메모리 사용량 정기적으로 확인',
+          limit: '파일 크기 제한 준수',
+          close: '사용하지 않는 탭 정리'
+        }
+      }
     }
   },
   meta: {
