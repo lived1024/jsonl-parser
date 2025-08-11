@@ -1,0 +1,12 @@
+{
+  "name": "홍길동",
+  "age": 30,
+  "hobbies": ["독서", "영화감상", "등산"],
+  "address": {
+    "city": "서울",
+    "district": "강남구",
+    "zipcode": "12345"
+  },
+  "isActive": true,
+  "score": null
+}

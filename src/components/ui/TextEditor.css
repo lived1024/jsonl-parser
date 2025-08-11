@@ -11,6 +11,48 @@
   overflow: hidden;
   border-radius: var(--radius-md);
   background: var(--color-background);
+  transition: all var(--transition-fast);
+}
+
+.editor-container--drag-over {
+  border: 2px dashed var(--color-primary);
+  background: rgba(99, 102, 241, 0.02);
+}
+
+.drag-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: var(--radius-md);
+}
+
+.drag-overlay-content {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-primary);
+}
+
+.drag-overlay-content svg {
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.drag-overlay-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.drag-overlay-content p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 .editor-background {
@@ -376,6 +418,13 @@
   }
 }
 
+/* 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  .drag-overlay {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
 /* 고대비 모드 */
 @media (prefers-contrast: high) {
   .editor-footer {
@@ -398,5 +447,9 @@
   .error-line-highlight {
     border-left-width: 4px;
     background: rgba(239, 68, 68, 0.1);
+  }
+
+  .drag-overlay {
+    border: 2px solid var(--color-primary);
   }
 }

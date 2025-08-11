@@ -9,6 +9,8 @@ export default function useTextEditor() {
   const textareaRef = ref<HTMLTextAreaElement>()
   const lineNumbersRef = ref<HTMLDivElement>()
   const parseTimeout = ref<number>()
+  const isDragOver = ref(false)
+  const isFileLoading = ref(false)
 
   // 입력 텍스트 양방향 바인딩
   const inputText = computed({
@@ -39,6 +41,9 @@ export default function useTextEditor() {
 
   // 라인 넘버 표시 여부
   const showLineNumbers = computed(() => lineCount.value > 1)
+
+  // 전체 로딩 상태 (파일 로딩 + 스토어 파싱)
+  const isOverallLoading = computed(() => isFileLoading.value || store.isLoading)
 
   // 오류 정보
   const errorInfo = computed(() => store.getErrorLineInfo())
@@ -91,6 +96,144 @@ export default function useTextEditor() {
   const clearInput = () => {
     inputText.value = ''
     textareaRef.value?.focus()
+  }
+
+  // 파일 읽기 함수
+  const readFile = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const result = e.target?.result
+        if (typeof result === 'string') {
+          resolve(result)
+        } else {
+          reject(new Error('Failed to read file as text'))
+        }
+      }
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsText(file, 'utf-8')
+    })
+  }
+
+  // 파일 타입 감지 함수
+  const detectFileType = (filename: string, content: string): InputType => {
+    // 파일 확장자로 먼저 판단
+    if (filename.toLowerCase().endsWith('.jsonl')) {
+      return InputType.JSONL
+    }
+    if (filename.toLowerCase().endsWith('.json')) {
+      return InputType.JSON
+    }
+    
+    // 내용으로 판단 - JSONL은 여러 줄에 각각 JSON 객체가 있음
+    const lines = content.trim().split('\n')
+    if (lines.length > 1) {
+      // 각 줄이 유효한 JSON인지 확인
+      const validJsonLines = lines.filter(line => {
+        const trimmed = line.trim()
+        if (!trimmed) return false
+        try {
+          JSON.parse(trimmed)
+          return true
+        } catch {
+          return false
+        }
+      })
+      
+      // 대부분의 줄이 유효한 JSON이면 JSONL로 판단
+      if (validJsonLines.length >= lines.length * 0.8) {
+        return InputType.JSONL
+      }
+    }
+    
+    // 기본값은 JSON
+    return InputType.JSON
+  }
+
+  // 드래그 앤 드롭 이벤트 핸들러
+  const handleDragOver = (event: DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    isDragOver.value = true
+  }
+
+  const handleDragLeave = (event: DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    // 실제로 컨테이너를 벗어났는지 확인
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+    const x = event.clientX
+    const y = event.clientY
+    
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      isDragOver.value = false
+    }
+  }
+
+  const handleDrop = async (event: DragEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    isDragOver.value = false
+
+    // 드롭 즉시 로딩 시작
+    isFileLoading.value = true
+
+    const files = event.dataTransfer?.files
+    if (!files || files.length === 0) {
+      isFileLoading.value = false
+      return
+    }
+
+    const file = files[0]
+    
+    // JSON 또는 JSONL 파일만 허용
+    const allowedExtensions = ['.json', '.jsonl']
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'))
+    
+    if (!allowedExtensions.includes(fileExtension)) {
+      // 에러 메시지 표시 (향후 토스트 알림으로 개선 가능)
+      console.warn('Only JSON and JSONL files are supported')
+      isFileLoading.value = false
+      return
+    }
+
+    try {
+      const content = await readFile(file)
+      const detectedType = detectFileType(file.name, content)
+      const currentType = store.inputType
+      
+      // 입력 타입 설정
+      store.setInputType(detectedType)
+      
+      // 내용 설정
+      inputText.value = content
+      
+      // 타입이 동일한 경우 명시적으로 파싱 호출
+      if (currentType === detectedType) {
+        // nextTick을 사용하여 inputText 설정이 완료된 후 파싱
+        await nextTick()
+        store.parseInput()
+      }
+      
+      // 스토어의 파싱이 완료될 때까지 대기
+      await nextTick()
+      
+      // 스토어 로딩이 완료될 때까지 추가 대기
+      while (store.isLoading) {
+        await new Promise(resolve => setTimeout(resolve, 50))
+      }
+      
+      // 포커스
+      textareaRef.value?.focus()
+      
+    } catch (error) {
+      console.error('Failed to read file:', error)
+    } finally {
+      // 로딩 종료 (최소 표시 시간 보장)
+      setTimeout(() => {
+        isFileLoading.value = false
+      }, 200)
+    }
   }
 
   // 스크롤 동기화
@@ -296,6 +439,9 @@ export default function useTextEditor() {
     lineCount,
     showLineNumbers,
     isInputValidJson,
+    isDragOver,
+    isFileLoading,
+    isOverallLoading,
 
     // Methods
     formatNumber,
@@ -304,6 +450,11 @@ export default function useTextEditor() {
     handleInput,
     handleKeydown,
     isErrorLine,
+
+    // Drag and drop handlers
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
 
     // Error handling
     errorInfo,
