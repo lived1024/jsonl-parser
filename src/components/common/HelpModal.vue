@@ -32,108 +32,132 @@
         </div>
         
         <div class="help-modal-content">
-          <section class="help-section">
-            <h3>{{ t('help.whatIs.title') }}</h3>
-            <p>{{ t('help.whatIs.description') }}</p>
-          </section>
-          
-          <section class="help-section">
-            <h3>{{ t('help.howToUse.title') }}</h3>
-            <ul class="help-list">
-              <li>{{ t('help.howToUse.step1') }}</li>
-              <li>{{ t('help.howToUse.step2') }}</li>
-              <li>{{ t('help.howToUse.step3') }}</li>
-              <li>{{ t('help.howToUse.step4') }}</li>
-            </ul>
-          </section>
-          
-          <section class="help-section">
-            <h3>{{ t('help.features.title') }}</h3>
-            <div class="feature-grid">
-              <div class="feature-item">
-                <div class="feature-icon">📄</div>
-                <div class="feature-text">
-                  <strong>{{ t('help.features.multiFormat.title') }}</strong>
-                  <p>{{ t('help.features.multiFormat.description') }}</p>
+          <div class="help-tabs">
+            <button
+              v-for="tab in helpTabs"
+              :key="tab.id"
+              class="help-tab"
+              :class="{ active: activeTab === tab.id }"
+              @click="activeTab = tab.id"
+            >
+              <span class="tab-icon">{{ tab.icon }}</span>
+              <span>{{ tab.title }}</span>
+            </button>
+          </div>
+
+          <div class="help-tab-content">
+            <!-- 기본 도움말 -->
+            <div v-if="activeTab === 'overview'" class="tab-panel">
+              <section class="help-section">
+                <h3>{{ t('help.whatIs.title') }}</h3>
+                <p>{{ t('help.whatIs.description') }}</p>
+              </section>
+              
+              <section class="help-section">
+                <h3>{{ t('help.howToUse.title') }}</h3>
+                <ol class="help-list">
+                  <li>{{ t('help.howToUse.step1') }}</li>
+                  <li>{{ t('help.howToUse.step2') }}</li>
+                  <li>{{ t('help.howToUse.step3') }}</li>
+                  <li>{{ t('help.howToUse.step4') }}</li>
+                </ol>
+              </section>
+              
+              <section class="help-section">
+                <h3>{{ t('help.features.title') }}</h3>
+                <div class="feature-grid">
+                  <div class="feature-item">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.multiFormat.title') }}</strong>
+                      <p>{{ t('help.features.multiFormat.description') }}</p>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon">🌳</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.treeView.title') }}</strong>
+                      <p>{{ t('help.features.treeView.description') }}</p>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.realtime.title') }}</strong>
+                      <p>{{ t('help.features.realtime.description') }}</p>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.responsive.title') }}</strong>
+                      <p>{{ t('help.features.responsive.description') }}</p>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon">📋</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.lineBreaks.title') }}</strong>
+                      <p>{{ t('help.features.lineBreaks.description') }}</p>
+                    </div>
+                  </div>
+                  <div class="feature-item">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-text">
+                      <strong>{{ t('help.features.expandLevels.title') }}</strong>
+                      <p>{{ t('help.features.expandLevels.description') }}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">🌳</div>
-                <div class="feature-text">
-                  <strong>{{ t('help.features.treeView.title') }}</strong>
-                  <p>{{ t('help.features.treeView.description') }}</p>
+              </section>
+            </div>
+
+
+
+            <!-- 예제 -->
+            <div v-if="activeTab === 'examples'" class="tab-panel">
+              <section class="help-section">
+                <h3>{{ t('help.examples.title') }}</h3>
+                <div class="example-tabs">
+                  <button 
+                    v-for="(example, key) in examples"
+                    :key="key"
+                    class="example-tab"
+                    :class="{ active: activeExample === key }"
+                    @click="activeExample = key"
+                  >
+                    {{ example.title }}
+                  </button>
                 </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">⚡</div>
-                <div class="feature-text">
-                  <strong>{{ t('help.features.realtime.title') }}</strong>
-                  <p>{{ t('help.features.realtime.description') }}</p>
+                <div class="example-content">
+                  <pre><code>{{ examples[activeExample].content }}</code></pre>
+                  <button 
+                    class="example-try-button"
+                    @click="tryExample(examples[activeExample])"
+                  >
+                    {{ t('help.examples.tryIt') }}
+                  </button>
                 </div>
-              </div>
-              <div class="feature-item">
-                <div class="feature-icon">📱</div>
-                <div class="feature-text">
-                  <strong>{{ t('help.features.responsive.title') }}</strong>
-                  <p>{{ t('help.features.responsive.description') }}</p>
-                </div>
-              </div>
+              </section>
             </div>
-          </section>
-          
-          <section class="help-section">
-            <h3>{{ t('help.shortcuts.title') }}</h3>
-            <div class="shortcuts-grid">
-              <div class="shortcut-item">
-                <kbd>Alt</kbd> + <kbd>I</kbd>
-                <span>{{ t('help.shortcuts.focusInput') }}</span>
-              </div>
-              <div class="shortcut-item">
-                <kbd>Alt</kbd> + <kbd>Enter</kbd>
-                <span>{{ t('help.shortcuts.parseJson') }}</span>
-              </div>
-              <div class="shortcut-item">
-                <kbd>Alt</kbd> + <kbd>E</kbd>
-                <span>{{ t('help.shortcuts.expandAll') }}</span>
-              </div>
-              <div class="shortcut-item">
-                <kbd>Alt</kbd> + <kbd>W</kbd>
-                <span>{{ t('help.shortcuts.collapseAll') }}</span>
-              </div>
-              <div class="shortcut-item">
-                <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F</kbd>
-                <span>{{ t('help.shortcuts.formatJson') }}</span>
-              </div>
-              <div class="shortcut-item">
-                <kbd>F1</kbd>
-                <span>{{ t('help.shortcuts.help') }}</span>
-              </div>
+
+            <!-- 데이터 타입 가이드 -->
+            <div v-if="activeTab === 'datatypes'" class="tab-panel">
+              <DataTypeGuide />
             </div>
-          </section>
-          
-          <section class="help-section">
-            <h3>{{ t('help.examples.title') }}</h3>
-            <div class="example-tabs">
-              <button 
-                v-for="(example, key) in examples"
-                :key="key"
-                class="example-tab"
-                :class="{ active: activeExample === key }"
-                @click="activeExample = key"
-              >
-                {{ example.title }}
-              </button>
+
+            <!-- FAQ -->
+            <div v-if="activeTab === 'faq'" class="tab-panel">
+              <FAQSection />
             </div>
-            <div class="example-content">
-              <pre><code>{{ examples[activeExample].content }}</code></pre>
-              <button 
-                class="example-try-button"
-                @click="tryExample(examples[activeExample])"
-              >
-                {{ t('help.examples.tryIt') }}
-              </button>
+
+
+
+            <!-- 문제 해결 -->
+            <div v-if="activeTab === 'troubleshooting'" class="tab-panel">
+              <TroubleshootingGuide />
             </div>
-          </section>
+          </div>
         </div>
       </div>
     </div>
@@ -141,11 +165,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from '../../composables/useI18n'
 import { useJsonTreeStore } from '../../stores'
 import { InputType } from '../../types'
 import HelpIcon from '../icons/HelpIcon.vue'
+import DataTypeGuide from './DataTypeGuide.vue'
+import FAQSection from './FAQSection.vue'
+
+import TroubleshootingGuide from './TroubleshootingGuide.vue'
 
 interface Props {
   isOpen: boolean
@@ -162,7 +190,22 @@ const { t } = useI18n()
 const store = useJsonTreeStore()
 
 const modalRef = ref<HTMLElement>()
-const activeExample = ref<keyof typeof examples>('json')
+const activeTab = ref('overview')
+const activeExample = ref('json')
+
+interface HelpTab {
+  id: string
+  title: string
+  icon: string
+}
+
+const helpTabs = computed<HelpTab[]>(() => [
+  { id: 'overview', title: t('help.tabs.overview'), icon: '📖' },
+  { id: 'examples', title: t('help.tabs.examples'), icon: '💡' },
+  { id: 'datatypes', title: t('help.tabs.datatypes'), icon: '🏷️' },
+  { id: 'faq', title: t('help.tabs.faq'), icon: '❓' },
+  { id: 'troubleshooting', title: t('help.tabs.troubleshooting'), icon: '🔧' }
+])
 
 interface ExampleData {
   title: string
@@ -170,7 +213,7 @@ interface ExampleData {
   type: InputType
 }
 
-const examples: Record<string, ExampleData> = {
+const examples = computed<Record<string, ExampleData>>(() => ({
   json: {
     title: 'JSON',
     type: InputType.JSON,
@@ -223,7 +266,7 @@ const examples: Record<string, ExampleData> = {
   ]
 }`
   }
-}
+}))
 
 const closeModal = () => {
   emit('close')
@@ -281,9 +324,11 @@ onUnmounted(() => {
   box-shadow: 
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
-  max-height: 90vh;
+  height: 80vh;
+  max-height: 800px;
+  min-height: 600px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -333,7 +378,56 @@ onUnmounted(() => {
 
 .help-modal-content {
   flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.help-tabs {
+  display: flex;
+  background: var(--color-surface-elevated);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+.help-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  border-bottom: 2px solid transparent;
+}
+
+.help-tab:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text-primary);
+}
+
+.help-tab.active {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.tab-icon {
+  font-size: 1rem;
+}
+
+.help-tab-content {
+  flex: 1;
   overflow-y: auto;
+  min-height: 0; /* flexbox에서 스크롤이 제대로 작동하도록 */
+}
+
+.tab-panel {
   padding: 2rem;
 }
 
@@ -403,37 +497,7 @@ onUnmounted(() => {
   color: var(--color-text-secondary);
 }
 
-.shortcuts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
 
-.shortcut-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background: var(--color-surface-elevated);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-border);
-}
-
-.shortcut-item kbd {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-family: monospace;
-  color: var(--color-text-primary);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.shortcut-item span {
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
-}
 
 .example-tabs {
   display: flex;
@@ -508,14 +572,16 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .help-modal {
     margin: 0.5rem;
-    max-height: 95vh;
+    height: 90vh;
+    max-height: 90vh;
+    min-height: 500px;
   }
   
   .help-modal-header {
     padding: 1rem 1.5rem;
   }
   
-  .help-modal-content {
+  .tab-panel {
     padding: 1.5rem;
   }
   
@@ -523,9 +589,7 @@ onUnmounted(() => {
     grid-template-columns: 1fr;
   }
   
-  .shortcuts-grid {
-    grid-template-columns: 1fr;
-  }
+
   
   .example-tabs {
     flex-wrap: wrap;
@@ -544,6 +608,8 @@ onUnmounted(() => {
     background: rgba(0, 0, 0, 0.8);
   }
 }
+
+
 
 /* 접근성 */
 @media (prefers-reduced-motion: reduce) {
