@@ -147,6 +147,14 @@ Example:
       clear: 'Clear',
       formatTitle: 'Format JSON (Alt+Shift+F)',
       clearTitle: 'Clear input (Alt+I)'
+    },
+    dragDrop: {
+      title: 'Drop JSON File',
+      description: 'Drag and drop JSON or JSONL files here'
+    },
+    loading: {
+      title: 'Processing file...',
+      description: 'Reading and parsing the file'
     }
   },
   validation: {

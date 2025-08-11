@@ -147,6 +147,14 @@ export default {
       clear: '지우기',
       formatTitle: 'JSON 포맷 (Alt+Shift+F)',
       clearTitle: '입력 지우기 (Alt+I)'
+    },
+    dragDrop: {
+      title: 'JSON 파일 드롭',
+      description: 'JSON 또는 JSONL 파일을 여기에 드래그하세요'
+    },
+    loading: {
+      title: '파일 처리 중...',
+      description: '파일을 읽고 파싱하는 중입니다'
     }
   },
   validation: {
