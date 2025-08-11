@@ -4,12 +4,7 @@ JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플
 
 ## 🌐 라이브 배포
 
-> ### 🚀 **라이브 데모를 확인해보세요!**
-> 
-> | 사이트 | 링크 | 호스팅 |
-> |--------|------|--------|
-> | **주요 사이트** | 🔗 **[https://jsonl-parser.netlify.app/](https://jsonl-parser.netlify.app/)** | Netlify |
-> | **보조 사이트** | 🔗 **[https://jsonl-parser.vercel.app/](https://jsonl-parser.vercel.app/)** | Vercel |
+🚀 **[https://jsonl-parser.netlify.app/](https://jsonl-parser.netlify.app/)** - 지금 바로 사용해보세요!
 
 ## 🚀 주요 기능
 

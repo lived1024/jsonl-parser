@@ -15,12 +15,29 @@
       :disabled="isChangingLanguage || isLoading"
     >
       <div class="button-content">
-        <span v-if="!(isChangingLanguage || isLoading)" class="language-flag">{{ currentLanguageInfo?.flag || '🌐' }}</span>
+        <div v-if="!(isChangingLanguage || isLoading)" class="language-flag">
+          <component 
+            v-if="getFlagComponent(currentLanguage)" 
+            :is="getFlagComponent(currentLanguage)" 
+            :size="18"
+          />
+          <span v-else>🌐</span>
+        </div>
         <div v-if="isChangingLanguage || isLoading" class="loading-spinner">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12a9 9 0 11-6.219-8.56"/>
           </svg>
         </div>
+        <div v-if="!(isChangingLanguage || isLoading)" class="language-text">
+          <span class="language-name">{{ currentLanguageInfo?.name || 'Language' }}</span>
+          <span class="language-native">{{ currentLanguageInfo?.nativeName || '' }}</span>
+        </div>
+        <ChevronDownIcon 
+          v-if="!(isChangingLanguage || isLoading)"
+          :size="16" 
+          class="dropdown-icon"
+          :class="{ 'dropdown-icon--rotated': isOpen }"
+        />
       </div>
     </button>
     
@@ -47,7 +64,14 @@
           :tabindex="focusedIndex === index ? 0 : -1"
         >
           <div class="option-content">
-            <span class="option-flag">{{ lang.flag }}</span>
+            <div class="option-flag">
+              <component 
+                v-if="getFlagComponent(lang.code)" 
+                :is="getFlagComponent(lang.code)" 
+                :size="20"
+              />
+              <span v-else>{{ lang.flag }}</span>
+            </div>
             <div class="option-text">
               <span class="option-name">{{ lang.name }}</span>
               <span class="option-native">{{ lang.nativeName }}</span>
@@ -69,6 +93,8 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ChevronDownIcon, CheckIcon } from 'lucide-vue-next'
 import { useI18n } from '../../composables/useI18n'
 import type { Language } from '../../types/i18n'
+import FlagUS from '../icons/FlagUS.vue'
+import FlagKR from '../icons/FlagKR.vue'
 
 // Composables
 const { t, currentLanguage, changeLanguage, availableLanguages, getCurrentLanguageInfo, isLoading } = useI18n()
@@ -81,6 +107,18 @@ const isChangingLanguage = ref(false)
 
 // Computed
 const currentLanguageInfo = computed(() => getCurrentLanguageInfo.value)
+
+// 국기 컴포넌트 매핑
+const getFlagComponent = (languageCode: Language) => {
+  switch (languageCode) {
+    case 'en':
+      return FlagUS
+    case 'ko':
+      return FlagKR
+    default:
+      return null
+  }
+}
 
 // Methods
 const toggleDropdown = (): void => {
@@ -218,12 +256,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
+  min-width: 7rem;
   height: 2.5rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   color: white;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -248,11 +286,54 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
 }
 
 .language-flag {
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
   line-height: 1;
+  flex-shrink: 0;
+}
+
+.language-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.125rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.language-name {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.language-native {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1;
+}
+
+.dropdown-icon {
+  color: rgba(255, 255, 255, 0.8);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dropdown-icon--rotated {
+  transform: rotate(180deg);
 }
 
 .loading-spinner {
@@ -339,6 +420,9 @@ onUnmounted(() => {
 }
 
 .option-flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.25rem;
   line-height: 1;
   flex-shrink: 0;
@@ -399,9 +483,9 @@ onUnmounted(() => {
 /* 반응형 디자인 */
 @media (max-width: 768px) {
   .language-button {
+    min-width: 5.5rem;
+    height: 2.25rem;
     padding: 0.375rem 0.625rem;
-    font-size: 0.8125rem;
-    min-width: 3.5rem;
   }
   
   .button-content {
@@ -409,7 +493,20 @@ onUnmounted(() => {
   }
   
   .language-flag {
-    font-size: 0.875rem;
+    font-size: 1rem;
+  }
+  
+  .language-name {
+    font-size: 0.6875rem;
+  }
+  
+  .language-native {
+    font-size: 0.5625rem;
+  }
+  
+  .dropdown-icon {
+    width: 14px;
+    height: 14px;
   }
   
   .language-dropdown {
@@ -435,6 +532,21 @@ onUnmounted(() => {
   
   .option-native {
     font-size: 0.6875rem;
+  }
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .language-button {
+    min-width: 6.5rem;
+  }
+  
+  .language-name {
+    font-size: 0.6875rem;
+  }
+  
+  .language-native {
+    font-size: 0.5625rem;
   }
 }
 

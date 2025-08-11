@@ -134,11 +134,11 @@
             <div class="empty-tips">
               <div class="tip-item">
                 <KeyboardIcon :size="16" />
-                <span>{{ t('output.empty.tips.focus', { key: 'Ctrl+K' }) }}</span>
+                <span>{{ t('output.empty.tips.focus', { key: 'Alt+I' }) }}</span>
               </div>
               <div class="tip-item">
                 <ZapIcon :size="16" />
-                <span>{{ t('output.empty.tips.parse', { key: 'Ctrl+Enter' }) }}</span>
+                <span>{{ t('output.empty.tips.parse', { key: 'Alt+Enter' }) }}</span>
               </div>
             </div>
           </div>
