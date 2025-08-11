@@ -175,6 +175,55 @@ Example:
     jsonInput: 'JSON data input',
     errorLocation: 'Error location information'
   },
+  help: {
+    title: 'Help',
+    close: 'Close',
+    openHelp: 'Open help',
+    whatIs: {
+      title: 'What is JSONL Parser?',
+      description: 'A web application that visualizes JSON and JSONL data in an interactive tree structure. It helps you easily navigate and understand complex JSON data.'
+    },
+    howToUse: {
+      title: 'How to Use',
+      step1: 'Enter JSON or JSONL data in the left panel',
+      step2: 'Select the data format (JSON/JSONL)',
+      step3: 'View the automatically generated tree structure on the right',
+      step4: 'Click nodes to expand or collapse them'
+    },
+    features: {
+      title: 'Key Features',
+      multiFormat: {
+        title: 'Multi-format Support',
+        description: 'Supports both JSON and JSONL formats'
+      },
+      treeView: {
+        title: 'Interactive Tree View',
+        description: 'Color-coded by data type with expand/collapse functionality'
+      },
+      realtime: {
+        title: 'Real-time Parsing',
+        description: 'Automatically parses input and displays errors in real-time'
+      },
+      responsive: {
+        title: 'Responsive Design',
+        description: 'Optimized user experience on all devices'
+      }
+    },
+    shortcuts: {
+      title: 'Keyboard Shortcuts',
+      focusInput: 'Focus input area',
+      parseJson: 'Parse JSON',
+      expandAll: 'Expand all nodes',
+      collapseAll: 'Collapse all nodes',
+      formatJson: 'Format JSON',
+      help: 'Open help'
+    },
+    examples: {
+      title: 'Examples',
+      complex: 'Complex Structure',
+      tryIt: 'Try it'
+    }
+  },
   meta: {
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
