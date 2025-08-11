@@ -175,6 +175,55 @@ export default {
     jsonInput: 'JSON 데이터 입력',
     errorLocation: '오류 위치 정보'
   },
+  help: {
+    title: '도움말',
+    close: '닫기',
+    openHelp: '도움말 열기',
+    whatIs: {
+      title: 'JSONL 파서란?',
+      description: 'JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하는 웹 애플리케이션입니다. 복잡한 JSON 데이터를 쉽게 탐색하고 이해할 수 있도록 도와줍니다.'
+    },
+    howToUse: {
+      title: '사용 방법',
+      step1: '왼쪽 패널에 JSON 또는 JSONL 데이터를 입력하세요',
+      step2: '데이터 형식(JSON/JSONL)을 선택하세요',
+      step3: '오른쪽에서 자동으로 생성되는 트리 구조를 확인하세요',
+      step4: '노드를 클릭하여 펼치거나 접을 수 있습니다'
+    },
+    features: {
+      title: '주요 기능',
+      multiFormat: {
+        title: '다중 형식 지원',
+        description: 'JSON과 JSONL 형식을 모두 지원합니다'
+      },
+      treeView: {
+        title: '대화형 트리 뷰',
+        description: '데이터 타입별 색상 구분과 확장/축소 기능'
+      },
+      realtime: {
+        title: '실시간 파싱',
+        description: '입력과 동시에 자동으로 파싱하고 오류를 표시'
+      },
+      responsive: {
+        title: '반응형 디자인',
+        description: '모든 기기에서 최적화된 사용자 경험'
+      }
+    },
+    shortcuts: {
+      title: '키보드 단축키',
+      focusInput: '입력 영역에 포커스',
+      parseJson: 'JSON 파싱',
+      expandAll: '모든 노드 펼치기',
+      collapseAll: '모든 노드 접기',
+      formatJson: 'JSON 포맷',
+      help: '도움말 열기'
+    },
+    examples: {
+      title: '예제',
+      complex: '복합 구조',
+      tryIt: '시도해보기'
+    }
+  },
   meta: {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'

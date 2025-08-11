@@ -28,6 +28,7 @@
         
         <div class="header-info">
           <div class="header-actions">
+            <HelpButton />
             <LanguageSelector />
             <KeyboardShortcuts />
           </div>
@@ -48,6 +49,7 @@ import { useJsonTreeStore } from '../stores'
 import { useI18n } from '../composables/useI18n'
 import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
 import LanguageSelector from '../components/ui/LanguageSelector.vue'
+import HelpButton from '../components/common/HelpButton.vue'
 
 const { mainStyle } = useApp()
 const store = useJsonTreeStore()

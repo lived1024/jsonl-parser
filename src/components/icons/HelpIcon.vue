@@ -1,0 +1,20 @@
+<template>
+  <svg 
+    width="20" 
+    height="20" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+    <point cx="12" cy="17" r="0.5"/>
+  </svg>
+</template>
+
+<script setup lang="ts">
+// 도움말 아이콘 컴포넌트
+</script>
