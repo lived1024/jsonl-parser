@@ -26,6 +26,10 @@
           </div>
         </div>
         
+        <div class="header-navigation">
+          <MainNavigation />
+        </div>
+        
         <div class="header-info">
           <div class="header-actions">
             <LanguageSelector />
@@ -43,33 +47,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useApp } from '../composables/useApp'
-import { useJsonTreeStore } from '../stores'
 import { useI18n } from '../composables/useI18n'
 import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
 import LanguageSelector from '../components/ui/LanguageSelector.vue'
 import HelpButton from '../components/common/HelpButton.vue'
+import MainNavigation from '../components/common/MainNavigation.vue'
 
 const { mainStyle } = useApp()
-const store = useJsonTreeStore()
 const { t } = useI18n()
-
-// 총 노드 개수 계산
-const nodeCount = computed(() => {
-  const countNodes = (nodes: any[]): number => {
-    let count = 0
-    for (const node of nodes) {
-      count++
-      if (node.children) {
-        count += countNodes(node.children)
-      }
-    }
-    return count
-  }
-
-  return countNodes(store.parsedData)
-})
 </script>
 
 <style scoped>
@@ -155,6 +141,13 @@ const nodeCount = computed(() => {
   max-width: 1200px;
   margin: 0 auto;
   z-index: 10;
+  gap: 2rem;
+}
+
+.header-navigation {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .header-brand {
@@ -305,11 +298,34 @@ const nodeCount = computed(() => {
 
 .app-main {
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 1rem;
   gap: 1rem;
   background: var(--color-surface);
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  /* 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.app-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.app-main::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.app-main::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
 }
 
 /* 반응형 디자인 - 모바일 */
@@ -321,6 +337,14 @@ const nodeCount = computed(() => {
   
   .app-header {
     padding: 1rem;
+  }
+  
+  .header-content {
+    gap: 1rem;
+  }
+  
+  .header-navigation {
+    flex: none;
   }
   
   .header-brand {
