@@ -27,13 +27,13 @@
     </div>
     
     <!-- 하단 광고 -->
-    <div class="footer-ad-container">
+    <!-- <div class="footer-ad-container">
       <AdSenseContainer 
         ad-slot="footer-banner"
         ad-format="banner"
         class-name="footer-ad"
       />
-    </div>
+    </div> -->
   </DefaultLayout>
 </template>
 
