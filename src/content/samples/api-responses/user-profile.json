@@ -1,0 +1,32 @@
+{
+  "id": 12345,
+  "username": "john_doe",
+  "email": "john@example.com",
+  "profile": {
+    "firstName": "John",
+    "lastName": "Doe",
+    "avatar": "https://example.com/avatar.jpg",
+    "bio": "Software developer passionate about clean code and user experience",
+    "location": {
+      "city": "Seoul",
+      "country": "South Korea",
+      "timezone": "Asia/Seoul"
+    }
+  },
+  "preferences": {
+    "theme": "dark",
+    "language": "ko",
+    "notifications": {
+      "email": true,
+      "push": false,
+      "sms": false
+    }
+  },
+  "stats": {
+    "loginCount": 247,
+    "lastLogin": "2024-01-15T09:30:00Z",
+    "accountCreated": "2023-03-10T14:22:00Z"
+  },
+  "roles": ["user", "beta_tester"],
+  "isActive": true
+}

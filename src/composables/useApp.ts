@@ -19,7 +19,7 @@ export function useApp() {
       }
     }
     return {
-      display: 'flex'
+      // display: 'flex'
     }
   })
 
