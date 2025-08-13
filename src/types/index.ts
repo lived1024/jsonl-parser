@@ -73,3 +73,8 @@ export interface JsonTreeStore extends JsonTreeState {
   saveToLocalStorage: JsonTreeActions['saveToLocalStorage']
   loadFromLocalStorage: JsonTreeActions['loadFromLocalStorage']
 }
+
+// Export content and ads types
+export * from './content'
+export * from './ads'
+export * from './reference'

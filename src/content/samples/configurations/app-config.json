@@ -1,0 +1,54 @@
+{
+  "app": {
+    "name": "MyApp",
+    "version": "1.2.3",
+    "environment": "production",
+    "debug": false
+  },
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "myapp_db",
+    "username": "app_user",
+    "ssl": true,
+    "pool": {
+      "min": 2,
+      "max": 10,
+      "idle": 10000
+    }
+  },
+  "redis": {
+    "host": "localhost",
+    "port": 6379,
+    "db": 0,
+    "ttl": 3600
+  },
+  "features": {
+    "authentication": true,
+    "analytics": false,
+    "beta_features": ["new_ui", "advanced_search", "ai_suggestions"],
+    "rate_limiting": {
+      "enabled": true,
+      "requests_per_minute": 100
+    }
+  },
+  "logging": {
+    "level": "info",
+    "outputs": ["console", "file"],
+    "file": {
+      "path": "/var/log/myapp.log",
+      "max_size": "10MB",
+      "max_files": 5
+    }
+  },
+  "security": {
+    "jwt": {
+      "secret": "your-secret-key",
+      "expires_in": "24h"
+    },
+    "cors": {
+      "origins": ["https://myapp.com", "https://admin.myapp.com"],
+      "methods": ["GET", "POST", "PUT", "DELETE"]
+    }
+  }
+}

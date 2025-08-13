@@ -4,6 +4,7 @@ import router from './router'
 import './styles/variables.css'
 import './styles/global.css'
 import './styles/components.css'
+import 'highlight.js/styles/github.css'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -24,7 +25,7 @@ const removeInitialLoading = () => {
   }
 }
 
-// i18n 초기화
+// i18n 및 AdSense 초기화
 const initializeApp = async () => {
   try {
     // Pinia가 설치된 후에 store를 사용할 수 있음
@@ -33,6 +34,23 @@ const initializeApp = async () => {
     
     // i18n 초기화
     await i18nStore.initialize()
+    
+    // AdSense 초기화 (프로덕션 환경에서만)
+    if (import.meta.env.PROD) {
+      const { AdSenseService } = await import('./services/AdSenseService')
+      const adSenseService = AdSenseService.getInstance()
+      
+      // 실제 AdSense 설정으로 교체 필요
+      await adSenseService.init({
+        publisherId: 'ca-pub-XXXXXXXXXXXXXXXXX', // 실제 Publisher ID로 교체
+        adSlots: {
+          header: '1234567890',
+          sidebar: '1234567891', 
+          content: '1234567892',
+          footer: '1234567893'
+        }
+      })
+    }
     
     // 애플리케이션 마운트
     app.mount('#app')
