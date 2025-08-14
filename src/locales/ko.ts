@@ -686,6 +686,171 @@ export default {
       }
     }
   },
+  infoHub: {
+    title: '정보 허브',
+    description: 'JSON과 API 개발에 대한 포괄적인 가이드와 정보를 제공합니다',
+    searchPlaceholder: '가이드 검색...',
+    relatedTools: '관련 도구',
+    categories: {
+      all: '전체',
+      'getting-started': '시작하기',
+      'api-development': 'API 개발',
+      'data-processing': '데이터 처리',
+      'performance': '성능 최적화'
+    },
+    categoryDescriptions: {
+      'getting-started': 'JSON과 JSONL의 기본 개념을 학습합니다',
+      'api-development': 'REST API 설계와 JSON 스키마 활용법을 배웁니다',
+      'data-processing': '대용량 데이터 처리와 변환 기법을 다룹니다',
+      'performance': 'JSON 처리 성능을 향상시키는 방법을 학습합니다'
+    }
+  },
+  guide: {
+    tableOfContents: '목차',
+    relatedTools: '관련 도구',
+    relatedGuides: '관련 가이드',
+    tryItOut: '직접 해보기',
+    loadInParser: '파서에서 실행',
+    loadError: '가이드를 불러오는 중 오류가 발생했습니다',
+    previous: '이전',
+    next: '다음'
+  },
+  guides: {
+    'json-basics': {
+      title: 'JSON 기초',
+      description: 'JSON의 기본 개념과 구조를 학습합니다'
+    },
+    'jsonl-introduction': {
+      title: 'JSONL 소개',
+      description: 'JSONL(JSON Lines) 형식의 특징과 활용법을 배웁니다'
+    },
+    'parser-overview': {
+      title: '파서 개요',
+      description: 'JSONL 파서의 주요 기능과 사용법을 알아봅니다'
+    },
+    'rest-api-design': {
+      title: 'REST API 설계 모범 사례',
+      description: 'JSON을 사용하는 REST API 설계의 모범 사례를 학습합니다'
+    },
+    'json-schema-guide': {
+      title: 'JSON 스키마 가이드',
+      description: 'JSON 스키마를 사용한 데이터 검증 방법을 배웁니다'
+    },
+    'api-versioning': {
+      title: 'API 버전 관리',
+      description: 'API 버전 관리 전략과 모범 사례를 다룹니다'
+    },
+    'large-datasets': {
+      title: '대용량 데이터셋 처리',
+      description: '대용량 JSON 데이터를 효율적으로 처리하는 방법을 학습합니다'
+    },
+    'data-transformation': {
+      title: '데이터 변환 기법',
+      description: 'JSON 데이터 변환과 ETL 프로세스를 다룹니다'
+    },
+    'error-handling': {
+      title: '오류 처리',
+      description: 'JSON 파싱과 처리 중 발생하는 오류를 다루는 방법을 배웁니다'
+    },
+    'optimization-tips': {
+      title: '성능 최적화 팁',
+      description: 'JSON 처리 성능을 향상시키는 다양한 기법을 학습합니다'
+    },
+    'caching-strategies': {
+      title: '캐싱 전략',
+      description: 'JSON 데이터 캐싱을 통한 성능 향상 방법을 다룹니다'
+    }
+  },
+  tools: {
+    'json-validator': {
+      name: 'JSON 검증기',
+      description: 'JSON 구문을 검증하고 오류를 찾아줍니다'
+    },
+    'data-converter': {
+      name: '데이터 변환기',
+      description: 'JSON을 다른 형식으로 변환합니다'
+    },
+    'schema-generator': {
+      name: '스키마 생성기',
+      description: 'JSON 데이터에서 스키마를 자동 생성합니다'
+    },
+    'api-tester': {
+      name: 'API 테스터',
+      description: 'REST API를 테스트하고 응답을 확인합니다'
+    },
+    'mock-server': {
+      name: 'Mock 서버',
+      description: 'API 개발을 위한 모킹 서버를 제공합니다'
+    }
+  },
+  tags: {
+    json: 'JSON',
+    jsonl: 'JSONL',
+    basics: '기초',
+    syntax: '구문',
+    format: '형식',
+    streaming: '스트리밍',
+    parser: '파서',
+    tool: '도구',
+    features: '기능',
+    api: 'API',
+    rest: 'REST',
+    design: '설계',
+    'best-practices': '모범 사례',
+    schema: '스키마',
+    validation: '검증',
+    versioning: '버전 관리',
+    maintenance: '유지보수',
+    performance: '성능',
+    memory: '메모리',
+    transformation: '변환',
+    etl: 'ETL',
+    processing: '처리',
+    errors: '오류',
+    debugging: '디버깅',
+    optimization: '최적화',
+    caching: '캐싱',
+    scalability: '확장성'
+  },
+  common: {
+    loading: '로딩 중...',
+    error: '오류',
+    backToHub: '허브로 돌아가기',
+    lastUpdated: '최종 업데이트',
+    author: '작성자',
+    minutes: '분',
+    difficulty: {
+      beginner: '초급',
+      intermediate: '중급',
+      advanced: '고급'
+    }
+  },
+  navigation: {
+    mainLabel: '주요 네비게이션',
+    toggleMenu: '메뉴 열기/닫기',
+    items: {
+      parser: {
+        label: '파서',
+        description: 'JSON/JSONL 파싱 도구'
+      },
+      learn: {
+        label: '학습',
+        description: '튜토리얼과 가이드'
+      },
+      tools: {
+        label: '도구',
+        description: '변환 및 검증 도구'
+      },
+      reference: {
+        label: '참조',
+        description: '구문 및 패턴 가이드'
+      },
+      samples: {
+        label: '샘플',
+        description: '예제 데이터 라이브러리'
+      }
+    }
+  },
   meta: {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'

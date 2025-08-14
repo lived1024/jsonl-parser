@@ -138,6 +138,67 @@ defineEmits<Emits>()
   border-color: #e1bee7;
 }
 
+/* Sample library specific meta styles */
+.meta-item.category-api {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #bbdefb;
+}
+
+.meta-item.category-config {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border-color: #e1bee7;
+}
+
+.meta-item.category-data {
+  background: #e8f5e8;
+  color: #388e3c;
+  border-color: #c8e6c9;
+}
+
+.meta-item.category-complex {
+  background: #fff3e0;
+  color: #f57c00;
+  border-color: #ffcc02;
+}
+
+.meta-item.difficulty-simple {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border-color: #c8e6c9;
+}
+
+.meta-item.difficulty-medium {
+  background: #fff8e1;
+  color: #f57c00;
+  border-color: #ffcc02;
+}
+
+.meta-item.difficulty-complex {
+  background: #ffebee;
+  color: #d32f2f;
+  border-color: #ffcdd2;
+}
+
+.meta-item.size-small {
+  background: #f1f8e9;
+  color: #558b2f;
+  border-color: #dcedc8;
+}
+
+.meta-item.size-medium {
+  background: #fff8e1;
+  color: #f57c00;
+  border-color: #ffcc02;
+}
+
+.meta-item.size-large {
+  background: #fce4ec;
+  color: #c2185b;
+  border-color: #f8bbd9;
+}
+
 .card-content {
   flex: 1;
   margin-bottom: 1rem;

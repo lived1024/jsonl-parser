@@ -588,6 +588,32 @@ Example:
       }
     }
   },
+  navigation: {
+    mainLabel: 'Main navigation',
+    toggleMenu: 'Toggle menu',
+    items: {
+      parser: {
+        label: 'Parser',
+        description: 'JSON/JSONL parsing tool'
+      },
+      learn: {
+        label: 'Learn',
+        description: 'Tutorials and guides'
+      },
+      tools: {
+        label: 'Tools',
+        description: 'Conversion and validation tools'
+      },
+      reference: {
+        label: 'Reference',
+        description: 'Syntax and pattern guides'
+      },
+      samples: {
+        label: 'Samples',
+        description: 'Example data library'
+      }
+    }
+  },
   meta: {
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
