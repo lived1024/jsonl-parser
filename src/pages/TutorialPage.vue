@@ -38,16 +38,70 @@ const router = useRouter()
 // 라우트에서 튜토리얼 ID 추출
 const tutorialId = computed(() => route.params.id as string)
 
+// 진행률 추적을 위한 상수
+const PROGRESS_KEY = 'jsonl-parser-learning-progress'
+
+interface LearningProgress {
+  completedTutorials: string[]
+  tutorialProgress: Record<string, number>
+  lastAccessed: Date
+}
+
+// 진행률 로드
+const loadProgress = (): LearningProgress => {
+  try {
+    const saved = localStorage.getItem(PROGRESS_KEY)
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      return {
+        completedTutorials: parsed.completedTutorials || [],
+        tutorialProgress: parsed.tutorialProgress || {},
+        lastAccessed: new Date(parsed.lastAccessed || Date.now())
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load progress:', err)
+  }
+  
+  return {
+    completedTutorials: [],
+    tutorialProgress: {},
+    lastAccessed: new Date()
+  }
+}
+
+// 진행률 저장
+const saveProgress = (progress: LearningProgress) => {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress))
+  } catch (err) {
+    console.error('Failed to save progress:', err)
+  }
+}
+
 // 튜토리얼 완료 처리
 const handleTutorialComplete = (completedTutorialId: string) => {
-  console.log('Tutorial completed:', completedTutorialId)
-  // 추가적인 완료 처리 로직 (예: 분석 이벤트 전송)
+  const progress = loadProgress()
+  if (!progress.completedTutorials.includes(completedTutorialId)) {
+    progress.completedTutorials.push(completedTutorialId)
+    progress.tutorialProgress[completedTutorialId] = 100
+    progress.lastAccessed = new Date()
+    saveProgress(progress)
+  }
 }
 
 // 진행률 업데이트 처리
-const handleProgressUpdate = (tutorialId: string, progress: number) => {
-  console.log('Progress updated:', tutorialId, progress)
-  // 추가적인 진행률 처리 로직 (예: 분석 이벤트 전송)
+const handleProgressUpdate = (tutorialId: string, progressPercent: number) => {
+  const progress = loadProgress()
+  progress.tutorialProgress[tutorialId] = progressPercent
+  progress.lastAccessed = new Date()
+  
+  // 90% 이상 진행 시 자동으로 완료 처리
+  if (progressPercent >= 90 && !progress.completedTutorials.includes(tutorialId)) {
+    progress.completedTutorials.push(tutorialId)
+  }
+  
+  saveProgress(progress)
 }
 
 // 뒤로 가기

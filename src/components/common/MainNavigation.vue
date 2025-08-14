@@ -1,5 +1,5 @@
 <template>
-  <nav class="main-navigation" role="navigation" aria-label="주요 네비게이션">
+  <nav class="main-navigation" role="navigation" :aria-label="t('navigation.mainLabel')">
     <div class="nav-container">
       <!-- Desktop Navigation -->
       <ul class="nav-menu desktop-nav" v-if="!isMobile">
@@ -23,7 +23,7 @@
           class="mobile-menu-button"
           :aria-expanded="isMobileMenuOpen"
           aria-controls="mobile-menu"
-          aria-label="메뉴 열기/닫기"
+          :aria-label="t('navigation.toggleMenu')"
         >
           <Menu v-if="!isMobileMenuOpen" :size="20" />
           <X v-else :size="20" />
@@ -71,6 +71,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApp } from '../../composables/useApp'
+import { useI18nStore } from '../../stores/i18nStore'
 import { 
   Home, 
   BookOpen, 
@@ -90,40 +91,44 @@ interface NavigationItem {
 
 const route = useRoute()
 const { isMobile } = useApp()
+const { getTranslation } = useI18nStore()
 const isMobileMenuOpen = ref(false)
 
-const navigationItems: NavigationItem[] = [
+// 번역 함수 단축키
+const t = (key: string) => getTranslation(key)
+
+const navigationItems = computed((): NavigationItem[] => [
   {
     path: '/',
-    label: '파서',
+    label: t('navigation.items.parser.label'),
     icon: Home,
-    description: 'JSON/JSONL 파싱 도구'
+    description: t('navigation.items.parser.description')
   },
   {
     path: '/learn',
-    label: '학습',
+    label: t('navigation.items.learn.label'),
     icon: BookOpen,
-    description: '튜토리얼과 가이드'
+    description: t('navigation.items.learn.description')
   },
   {
     path: '/tools',
-    label: '도구',
+    label: t('navigation.items.tools.label'),
     icon: Wrench,
-    description: '변환 및 검증 도구'
+    description: t('navigation.items.tools.description')
   },
   {
     path: '/reference',
-    label: '참조',
+    label: t('navigation.items.reference.label'),
     icon: FileText,
-    description: '구문 및 패턴 가이드'
+    description: t('navigation.items.reference.description')
   },
   {
     path: '/samples',
-    label: '샘플',
+    label: t('navigation.items.samples.label'),
     icon: Database,
-    description: '예제 데이터 라이브러리'
+    description: t('navigation.items.samples.description')
   }
-]
+])
 
 const isActive = (path: string): boolean => {
   if (path === '/') {

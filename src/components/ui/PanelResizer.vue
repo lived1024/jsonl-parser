@@ -3,7 +3,7 @@
     class="panel-resizer"
     :class="{ 'panel-resizer--active': isResizing }"
     @mousedown="startResize"
-    @touchstart="startResize"
+    @touchstart.prevent="startResize"
     role="separator"
     aria-orientation="vertical"
     aria-label="패널 크기 조정"
