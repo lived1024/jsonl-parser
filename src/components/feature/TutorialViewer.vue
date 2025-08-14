@@ -18,13 +18,13 @@
       <!-- 헤더 -->
       <header class="tutorial-header">
         <div class="tutorial-info">
-          <h1>{{ tutorial.title }}</h1>
-          <p class="tutorial-description">{{ tutorial.description }}</p>
+          <h1>{{ tutorial.metadata.title }}</h1>
+          <p class="tutorial-description">{{ tutorial.metadata.description }}</p>
           <div class="tutorial-meta">
-            <span class="difficulty" :class="tutorial.difficulty">
-              {{ getDifficultyLabel(tutorial.difficulty) }}
+            <span class="difficulty" :class="tutorial.metadata.difficulty">
+              {{ getDifficultyLabel(tutorial.metadata.difficulty) }}
             </span>
-            <span class="duration">{{ tutorial.estimatedTime }}분</span>
+            <span class="duration">{{ tutorial.metadata.estimatedReadTime }}분</span>
             <span v-if="isCompleted" class="completed-badge">✓ 완료</span>
           </div>
         </div>
@@ -75,25 +75,25 @@
       ></article>
 
       <!-- 코드 예제 섹션 -->
-      <section v-if="tutorial.examples && tutorial.examples.length > 0" class="examples-section">
+      <section v-if="tutorial.metadata.interactiveExamples && tutorial.metadata.interactiveExamples.length > 0" class="examples-section">
         <h2>코드 예제</h2>
         <div class="examples-grid">
           <div 
-            v-for="(example, index) in tutorial.examples" 
+            v-for="(example, index) in tutorial.metadata.interactiveExamples" 
             :key="index"
             class="example-card"
           >
             <div class="example-header">
               <h3 v-if="example.description">{{ example.description }}</h3>
-              <span class="language-tag">{{ example.language }}</span>
+              <span class="language-tag">{{ example.type }}</span>
             </div>
             <div class="code-container">
               <pre><code 
-                :class="`language-${example.language}`"
-                v-html="highlightCode(example.code, example.language)"
+                :class="`language-${example.type}`"
+                v-html="highlightCode(example.data, example.type)"
               ></code></pre>
               <button 
-                @click="copyCode(example.code)"
+                @click="copyCode(example.data)"
                 class="copy-button"
                 :class="{ copied: copiedIndex === index }"
               >
@@ -103,8 +103,8 @@
             
             <!-- 파서 연동 버튼 (JSON/JSONL 예제인 경우) -->
             <button 
-              v-if="isJsonExample(example.language)"
-              @click="loadInParser(example.code)"
+              v-if="isJsonExample(example.type)"
+              @click="loadInParser(example.data)"
               class="load-parser-button"
             >
               파서에서 열기
@@ -143,7 +143,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import AdSenseContainer from '../common/AdSenseContainer.vue'
-import { ContentService, type Tutorial } from '../../services/ContentService'
+import { ContentService, type GuideContent } from '../../services/ContentService'
 import hljs from 'highlight.js'
 
 interface Props {
@@ -164,12 +164,16 @@ const router = useRouter()
 const contentService = ContentService.getInstance()
 
 // 상태 관리
-const tutorial = ref<Tutorial | null>(null)
+const tutorial = ref<GuideContent | null>(null)
 const loading = ref(true)
 const error = ref<string | null>(null)
 const readingProgress = ref(0)
 const copiedIndex = ref<number | null>(null)
 const contentRef = ref<HTMLElement | null>(null)
+
+// 스크롤 이벤트 정리를 위한 변수
+let scrollCleanup: (() => void) | null = null
+let intersectionObserver: IntersectionObserver | null = null
 
 // 진행 상황 관리
 const PROGRESS_KEY = 'jsonl-parser-learning-progress'
@@ -190,12 +194,20 @@ const progress = ref<LearningProgress>({
 onMounted(async () => {
   await loadTutorial()
   loadProgress()
+  await nextTick()
   setupScrollTracking()
+  setupIntersectionObserver()
 })
 
 // 컴포넌트 언마운트
 onUnmounted(() => {
   saveProgress()
+  if (scrollCleanup) {
+    scrollCleanup()
+  }
+  if (intersectionObserver) {
+    intersectionObserver.disconnect()
+  }
 })
 
 // 튜토리얼 로드
@@ -203,7 +215,7 @@ const loadTutorial = async () => {
   try {
     loading.value = true
     error.value = null
-    tutorial.value = await contentService.loadTutorial(props.tutorialId)
+    tutorial.value = await contentService.getGuide(props.tutorialId)
     
     if (!tutorial.value) {
       error.value = '튜토리얼을 찾을 수 없습니다.'
@@ -223,12 +235,13 @@ const loadProgress = () => {
     if (saved) {
       const parsed = JSON.parse(saved)
       progress.value = {
-        ...parsed,
-        lastAccessed: new Date(parsed.lastAccessed)
+        completedTutorials: parsed.completedTutorials || [],
+        tutorialProgress: parsed.tutorialProgress || {},
+        lastAccessed: new Date(parsed.lastAccessed || Date.now())
       }
       
       // 저장된 읽기 진행률 복원
-      if (progress.value.tutorialProgress[props.tutorialId]) {
+      if (progress.value.tutorialProgress && progress.value.tutorialProgress[props.tutorialId]) {
         readingProgress.value = progress.value.tutorialProgress[props.tutorialId]
       }
     }
@@ -243,6 +256,8 @@ const saveProgress = () => {
     progress.value.lastAccessed = new Date()
     progress.value.tutorialProgress[props.tutorialId] = readingProgress.value
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress.value))
+    
+
   } catch (err) {
     console.error('Failed to save progress:', err)
   }
@@ -256,15 +271,28 @@ const setupScrollTracking = () => {
       updateReadingProgress()
     }
     
-    // 부모 컨테이너에서 스크롤 이벤트 감지
-    const scrollContainer = document.querySelector('.tutorial-container')
-    if (scrollContainer) {
+    // 다양한 스크롤 컨테이너 시도
+    const scrollContainer = 
+      document.querySelector('.page-content') || 
+      document.querySelector('.tutorial-container') || 
+      document.querySelector('main') ||
+      document.documentElement ||
+      window
+    
+    if (scrollContainer && scrollContainer !== window) {
       scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
       
-      // 컴포넌트 언마운트 시 이벤트 리스너 제거
-      onUnmounted(() => {
+      // 정리 함수 저장
+      scrollCleanup = () => {
         scrollContainer.removeEventListener('scroll', handleScroll)
-      })
+      }
+    } else {
+      // window 스크롤 이벤트 사용
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      
+      scrollCleanup = () => {
+        window.removeEventListener('scroll', handleScroll)
+      }
     }
     
     // 초기 진행률 계산
@@ -274,22 +302,46 @@ const setupScrollTracking = () => {
 
 // 읽기 진행률 업데이트
 const updateReadingProgress = () => {
-  const scrollContainer = document.querySelector('.tutorial-container')
-  if (!scrollContainer) return
+  // 다양한 스크롤 컨테이너 시도
+  const scrollContainer = 
+    document.querySelector('.page-content') || 
+    document.querySelector('.tutorial-container') || 
+    document.querySelector('main')
   
-  const scrollTop = scrollContainer.scrollTop
-  const scrollHeight = scrollContainer.scrollHeight - scrollContainer.clientHeight
+  let scrollTop = 0
+  let scrollHeight = 0
+  let clientHeight = 0
   
-  if (scrollHeight > 0) {
-    const newProgress = Math.min((scrollTop / scrollHeight) * 100, 100)
-    readingProgress.value = newProgress
+  if (scrollContainer) {
+    scrollTop = scrollContainer.scrollTop
+    scrollHeight = scrollContainer.scrollHeight
+    clientHeight = scrollContainer.clientHeight
+  } else {
+    // window 스크롤 사용
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    scrollHeight = document.documentElement.scrollHeight
+    clientHeight = window.innerHeight
+  }
+  
+  const maxScroll = scrollHeight - clientHeight
+  
+  if (maxScroll > 0) {
+    const newProgress = Math.min((scrollTop / maxScroll) * 100, 100)
     
-    // 진행률 변경 이벤트 발생
-    emit('progress', props.tutorialId, newProgress)
-    
-    // 주기적으로 진행 상황 저장
-    if (Math.abs(newProgress - (progress.value.tutorialProgress[props.tutorialId] || 0)) > 5) {
-      saveProgress()
+    // 진행률이 실제로 변경된 경우에만 업데이트
+    if (Math.abs(newProgress - readingProgress.value) > 0.5) {
+      readingProgress.value = newProgress
+      
+      // 진행률 변경 이벤트 발생
+      emit('progress', props.tutorialId, newProgress)
+      
+      // 주기적으로 진행 상황 저장 (5% 이상 변경 시)
+      const savedProgress = progress.value.tutorialProgress[props.tutorialId] || 0
+      if (Math.abs(newProgress - savedProgress) > 5) {
+        saveProgress()
+      }
+      
+
     }
   }
 }
@@ -297,7 +349,7 @@ const updateReadingProgress = () => {
 // 마크다운 렌더링
 const renderedContent = computed(() => {
   if (!tutorial.value) return ''
-  return contentService.renderMarkdown(tutorial.value.content)
+  return tutorial.value.renderedContent || contentService.renderMarkdown(tutorial.value.content)
 })
 
 // 완료 상태 확인
@@ -352,7 +404,7 @@ const highlightCode = (code: string, language: string): string => {
 const copyCode = async (code: string) => {
   try {
     await navigator.clipboard.writeText(code)
-    const index = tutorial.value?.examples.findIndex(ex => ex.code === code) ?? -1
+    const index = tutorial.value?.metadata.interactiveExamples?.findIndex((ex: any) => ex.data === code) ?? -1
     copiedIndex.value = index
     setTimeout(() => {
       copiedIndex.value = null
@@ -374,6 +426,32 @@ const loadInParser = (code: string) => {
     path: '/',
     query: { data: encodeURIComponent(code) }
   })
+}
+
+// IntersectionObserver 설정 (추가적인 진행률 추적)
+const setupIntersectionObserver = () => {
+  if (!contentRef.value || typeof IntersectionObserver === 'undefined') return
+  
+  try {
+    intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // 콘텐츠가 화면에 보이면 진행률 업데이트
+            updateReadingProgress()
+          }
+        })
+      },
+      {
+        threshold: [0.1, 0.5, 0.9],
+        rootMargin: '0px 0px -10% 0px'
+      }
+    )
+    
+    intersectionObserver.observe(contentRef.value)
+  } catch (error) {
+    console.warn('IntersectionObserver not supported:', error)
+  }
 }
 </script>
 

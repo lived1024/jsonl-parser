@@ -20,13 +20,11 @@ export default function usePanelResizer(emit: (event: 'resize', width: number) =
     
     document.addEventListener('mousemove', handleResize)
     document.addEventListener('mouseup', stopResize)
-    document.addEventListener('touchmove', handleResize)
+    document.addEventListener('touchmove', handleResize, { passive: false })
     document.addEventListener('touchend', stopResize)
     
     document.body.style.cursor = 'col-resize'
     document.body.style.userSelect = 'none'
-    
-    event.preventDefault()
   }
 
   const handleResize = (event: MouseEvent | TouchEvent) => {

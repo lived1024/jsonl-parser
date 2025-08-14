@@ -74,6 +74,25 @@ export interface JsonTreeStore extends JsonTreeState {
   loadFromLocalStorage: JsonTreeActions['loadFromLocalStorage']
 }
 
+// Sample data interfaces
+export interface SampleMetadata {
+  source: string
+  useCase: string
+  features: string[]
+  learningPoints: string[]
+}
+
+export interface SampleData {
+  id: string
+  name: string
+  description: string
+  category: 'api' | 'config' | 'data' | 'complex'
+  difficulty: 'simple' | 'medium' | 'complex'
+  size: 'small' | 'medium' | 'large'
+  data: string
+  metadata: SampleMetadata
+}
+
 // Export content and ads types
 export * from './content'
 export * from './ads'
