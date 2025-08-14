@@ -44,6 +44,21 @@ export const useJsonTreeStore = defineStore('jsonTree', {
       }
     },
 
+    setInputData(data: string) {
+      // 샘플 데이터를 입력으로 설정하고 자동으로 파싱
+      this.setInputText(data)
+      
+      // 데이터 형식 자동 감지
+      if (detectJSONL(data)) {
+        this.setInputType(InputType.JSONL)
+      } else {
+        this.setInputType(InputType.JSON)
+      }
+      
+      // 자동 파싱
+      this.parseInput()
+    },
+
     setInputType(type: InputType) {
       this.inputType = type
       this.parseError = null

@@ -58,8 +58,9 @@
           <ItemCard
             :title="tutorial.title"
             :description="tutorial.description"
+            :icon="getTutorialIcon(tutorial.id)"
             :is-completed="isCompleted(tutorial.id)"
-            :badge="isCompleted(tutorial.id) ? { text: '✓ 완료', type: 'success' } : undefined"
+            :badge="getBadgeForTutorial(tutorial.id)"
             :meta="[
               { 
                 key: 'difficulty', 
@@ -68,8 +69,13 @@
               },
               { 
                 key: 'duration', 
-                label: `${tutorial.estimatedTime}분`,
+                label: `${tutorial.estimatedReadTime}분`,
                 type: 'duration'
+              },
+              { 
+                key: 'progress', 
+                label: getProgressLabel(tutorial.id),
+                type: getProgressType(tutorial.id)
               }
             ]"
             @click="openTutorial(tutorial.id)"
@@ -90,8 +96,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { 
+  BookOpen, 
+  FileText, 
+  Settings, 
+  Database, 
+  Zap, 
+  Shield, 
+  Layers,
+  Code,
+  GitBranch,
+  HardDrive
+} from 'lucide-vue-next'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
 import FilterSidebar, { type FilterSection } from '../components/common/FilterSidebar.vue'
@@ -149,11 +167,13 @@ const PROGRESS_KEY = 'jsonl-parser-learning-progress'
 
 interface LearningProgress {
   completedTutorials: string[]
+  tutorialProgress: Record<string, number>
   lastAccessed: Date
 }
 
 const progress = ref<LearningProgress>({
   completedTutorials: [],
+  tutorialProgress: {},
   lastAccessed: new Date()
 })
 
@@ -161,14 +181,35 @@ const progress = ref<LearningProgress>({
 onMounted(async () => {
   await loadTutorials()
   loadProgress()
+  
+  // localStorage 변경 감지 (다른 탭에서 진행률 업데이트 시)
+  window.addEventListener('storage', handleStorageChange)
+  
+  // 같은 탭에서 진행률 업데이트 감지를 위한 주기적 체크
+  const progressCheckInterval = setInterval(() => {
+    loadProgress()
+  }, 2000) // 2초마다 체크
+  
+  // 컴포넌트 언마운트 시 정리
+  onUnmounted(() => {
+    window.removeEventListener('storage', handleStorageChange)
+    clearInterval(progressCheckInterval)
+  })
 })
+
+// localStorage 변경 처리
+const handleStorageChange = (event: StorageEvent) => {
+  if (event.key === PROGRESS_KEY) {
+    loadProgress()
+  }
+}
 
 // 튜토리얼 로드
 const loadTutorials = async () => {
   try {
     loading.value = true
     error.value = false
-    tutorials.value = await contentService.getAllTutorials()
+    tutorials.value = await contentService.getTutorials()
   } catch (err) {
     console.error('Failed to load tutorials:', err)
     error.value = true
@@ -184,8 +225,9 @@ const loadProgress = () => {
     if (saved) {
       const parsed = JSON.parse(saved)
       progress.value = {
-        ...parsed,
-        lastAccessed: new Date(parsed.lastAccessed)
+        completedTutorials: parsed.completedTutorials || [],
+        tutorialProgress: parsed.tutorialProgress || {},
+        lastAccessed: new Date(parsed.lastAccessed || Date.now())
       }
     }
   } catch (err) {
@@ -241,6 +283,48 @@ const isCompleted = (tutorialId: string): boolean => {
   return progress.value.completedTutorials.includes(tutorialId)
 }
 
+// 진행률 라벨 생성
+const getProgressLabel = (tutorialId: string): string => {
+  if (isCompleted(tutorialId)) {
+    return '완료'
+  }
+  
+  const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
+  if (progressPercent > 0) {
+    return `${Math.round(progressPercent)}%`
+  }
+  
+  return '시작 전'
+}
+
+// 진행률 타입 생성
+const getProgressType = (tutorialId: string): string => {
+  if (isCompleted(tutorialId)) {
+    return 'progress-completed'
+  }
+  
+  const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
+  if (progressPercent > 0) {
+    return 'progress-in-progress'
+  }
+  
+  return 'progress-not-started'
+}
+
+// 배지 정보 생성
+const getBadgeForTutorial = (tutorialId: string) => {
+  if (isCompleted(tutorialId)) {
+    return { text: '✓ 완료', type: 'success' }
+  }
+  
+  const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
+  if (progressPercent > 0) {
+    return { text: `${Math.round(progressPercent)}%`, type: 'progress' }
+  }
+  
+  return undefined
+}
+
 // 난이도 라벨 변환
 const getDifficultyLabel = (difficulty: string): string => {
   const labels: Record<string, string> = {
@@ -251,6 +335,24 @@ const getDifficultyLabel = (difficulty: string): string => {
   return labels[difficulty] || difficulty
 }
 
+// 튜토리얼 아이콘 매핑
+const getTutorialIcon = (tutorialId: string) => {
+  const iconMap: Record<string, any> = {
+    'json-basics': BookOpen,
+    'jsonl-introduction': FileText,
+    'parser-overview': Settings,
+    'rest-api-design': Code,
+    'json-schema-guide': Shield,
+    'api-versioning': GitBranch,
+    'large-datasets': Database,
+    'data-transformation': Layers,
+    'error-handling': Shield,
+    'optimization-tips': Zap,
+    'caching-strategies': HardDrive
+  }
+  return iconMap[tutorialId] || BookOpen
+}
+
 // 튜토리얼 열기
 const openTutorial = (tutorialId: string) => {
   // 마지막 접근 시간 업데이트
@@ -259,6 +361,32 @@ const openTutorial = (tutorialId: string) => {
   
   router.push(`/learn/${tutorialId}`)
 }
+
+// 튜토리얼 완료 처리
+const handleTutorialComplete = (tutorialId: string) => {
+  if (!progress.value.completedTutorials.includes(tutorialId)) {
+    progress.value.completedTutorials.push(tutorialId)
+    saveProgress()
+  }
+}
+
+// 튜토리얼 진행률 업데이트 처리
+const handleTutorialProgress = (tutorialId: string, progressPercent: number) => {
+  if (!progress.value.tutorialProgress) {
+    progress.value.tutorialProgress = {}
+  }
+  progress.value.tutorialProgress[tutorialId] = progressPercent
+  
+  // 90% 이상 진행 시 자동으로 완료 처리
+  if (progressPercent >= 90 && !progress.value.completedTutorials.includes(tutorialId)) {
+    handleTutorialComplete(tutorialId)
+  }
+  
+  saveProgress()
+}
+
+// 사용하지 않는 import 제거를 위한 참조
+console.log('Unused imports:', handleTutorialProgress)
 
 // 필터 초기화
 const resetFilters = () => {
@@ -337,6 +465,87 @@ const resetFilters = () => {
   margin: 2rem 0;
   display: flex;
   justify-content: center;
+}
+
+/* 메타 정보 버튼 스타일 개선 */
+:deep(.item-meta) {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+:deep(.item-meta::-webkit-scrollbar) {
+  display: none;
+}
+
+:deep(.meta-item) {
+  padding: 0.4rem 0.8rem;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 난이도별 색상 - TutorialViewer와 동일한 스타일 */
+:deep(.meta-item.difficulty-beginner) {
+  background: #e8f5e8 !important;
+  color: #2d5a2d !important;
+  border-color: #c3e6cb !important;
+}
+
+:deep(.meta-item.difficulty-intermediate) {
+  background: #fff3cd !important;
+  color: #856404 !important;
+  border-color: #ffeaa7 !important;
+}
+
+:deep(.meta-item.difficulty-advanced) {
+  background: #f8d7da !important;
+  color: #721c24 !important;
+  border-color: #f5c6cb !important;
+}
+
+/* 시간 표시 스타일 */
+:deep(.meta-item.duration) {
+  background: var(--color-background-tertiary) !important;
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* 진행률 상태별 스타일 */
+:deep(.meta-item.progress-completed) {
+  background: var(--color-success) !important;
+  color: white !important;
+  border-color: var(--color-success) !important;
+}
+
+:deep(.meta-item.progress-in-progress) {
+  background: #f3e5f5 !important;
+  color: #6a1b9a !important;
+  border-color: #ce93d8 !important;
+}
+
+:deep(.meta-item.progress-not-started) {
+  background: var(--color-background-tertiary) !important;
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* 배지 스타일 */
+:deep(.badge.progress) {
+  background: #9C27B0;
+  color: white;
+}
+
+:deep(.badge.success) {
+  background: #4CAF50;
+  color: white;
 }
 
 /* 반응형 디자인 */
