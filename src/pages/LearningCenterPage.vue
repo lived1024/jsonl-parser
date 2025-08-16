@@ -468,28 +468,24 @@ const resetFilters = () => {
 }
 
 /* 메타 정보 버튼 스타일 개선 */
-:deep(.item-meta) {
+:deep(.card-meta) {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-:deep(.item-meta::-webkit-scrollbar) {
-  display: none;
 }
 
 :deep(.meta-item) {
-  padding: 0.4rem 0.8rem;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  display: inline-block;
-  white-space: nowrap;
-  flex-shrink: 0;
+  padding: 0.4rem 0.8rem !important;
+  border-radius: 16px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-width: fit-content !important;
+  width: auto !important;
+  max-width: none !important;
 }
 
 /* 난이도별 색상 - TutorialViewer와 동일한 스타일 */
@@ -523,18 +519,25 @@ const resetFilters = () => {
   background: var(--color-success) !important;
   color: white !important;
   border-color: var(--color-success) !important;
+  min-width: 50px !important;
+  text-align: center !important;
 }
 
 :deep(.meta-item.progress-in-progress) {
   background: #f3e5f5 !important;
   color: #6a1b9a !important;
   border-color: #ce93d8 !important;
+  min-width: 50px !important;
+  text-align: center !important;
 }
 
 :deep(.meta-item.progress-not-started) {
   background: var(--color-background-tertiary) !important;
   color: var(--color-text-secondary) !important;
   border-color: var(--color-border) !important;
+  min-width: 60px !important;
+  text-align: center !important;
+  padding: 0.25rem 0.5rem !important;
 }
 
 /* 배지 스타일 */
