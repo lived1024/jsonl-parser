@@ -77,8 +77,10 @@ class ContentService {
       gfm: true
     })
 
-    // Set up custom renderer for code highlighting
+    // Set up custom renderer for code highlighting and heading IDs
     const renderer = new marked.Renderer()
+    
+    // Custom code highlighting
     renderer.code = function ({ text, lang }: { text: string; lang?: string; escaped?: boolean }) {
       if (lang && hljs.getLanguage(lang)) {
         const highlighted = hljs.highlight(text, { language: lang }).value
@@ -86,6 +88,15 @@ class ContentService {
       }
       const highlighted = hljs.highlightAuto(text).value
       return `<pre><code class="hljs">${highlighted}</code></pre>`
+    }
+    
+    // Custom heading renderer with consistent ID generation
+    renderer.heading = function ({ text, depth }: { text: string; depth: number }) {
+      const id = text.toLowerCase()
+        .replace(/[^a-z0-9가-힣\s]/g, '')
+        .replace(/\s+/g, '-')
+      
+      return `<h${depth} id="${id}">${text}</h${depth}>`
     }
 
     marked.setOptions({ renderer })

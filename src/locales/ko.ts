@@ -837,6 +837,10 @@ export default {
         label: '학습',
         description: '튜토리얼과 가이드'
       },
+      info: {
+        label: '정보 허브',
+        description: 'JSON과 API 개발 가이드'
+      },
       tools: {
         label: '도구',
         description: '변환 및 검증 도구'
