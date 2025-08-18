@@ -57,17 +57,44 @@ const {
   handlePanelResize
 } = useApp()
 
-// 컴포넌트 마운트 시 쿼리 파라미터 확인
+// 컴포넌트 마운트 시 쿼리 파라미터 및 예제 데이터 확인
 onMounted(() => {
+  // URL 쿼리 파라미터에서 데이터 로드
   const dataParam = route.query.data
   if (dataParam && typeof dataParam === 'string') {
     try {
       // URL 디코딩 후 JSON 데이터 로드
       const decodedData = decodeURIComponent(dataParam)
-      jsonTreeStore.setInput(decodedData)
-      jsonTreeStore.parseInput()
+      jsonTreeStore.setInputData(decodedData)
     } catch (error) {
       console.error('Failed to load data from query parameter:', error)
+    }
+  }
+  
+  // 가이드에서 온 예제 데이터 확인
+  const exampleParam = route.query.example
+  if (exampleParam && typeof exampleParam === 'string') {
+    try {
+      // localStorage에서 예제 데이터 로드
+      const exampleData = localStorage.getItem('parser-example-data')
+      const exampleType = localStorage.getItem('parser-example-type')
+      const exampleTitle = localStorage.getItem('parser-example-title')
+      
+      if (exampleData) {
+        jsonTreeStore.setInputData(exampleData)
+        
+        // 예제 정보를 사용자에게 표시 (선택적)
+        if (exampleTitle) {
+          console.log(`Loaded example: ${exampleTitle}`)
+        }
+        
+        // 사용 후 localStorage 정리
+        localStorage.removeItem('parser-example-data')
+        localStorage.removeItem('parser-example-type')
+        localStorage.removeItem('parser-example-title')
+      }
+    } catch (error) {
+      console.error('Failed to load example data:', error)
     }
   }
 })

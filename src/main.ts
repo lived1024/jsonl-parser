@@ -35,6 +35,19 @@ const initializeApp = async () => {
     // i18n 초기화
     await i18nStore.initialize()
     
+    // Google Analytics 초기화
+    const { AnalyticsService } = await import('./services/AnalyticsService')
+    const analyticsService = AnalyticsService.getInstance()
+    
+    await analyticsService.init({
+      measurementId: 'G-PX3P01GVCR', // HTML에서 이미 설정된 측정 ID 사용
+      enableDebug: import.meta.env.DEV, // 개발 환경에서만 디버그 모드
+      customDimensions: {
+        app_version: '1.0.0',
+        app_name: 'JSONL Parser'
+      }
+    })
+
     // AdSense 초기화 (프로덕션 환경에서만)
     if (import.meta.env.PROD) {
       const { AdSenseService } = await import('./services/AdSenseService')

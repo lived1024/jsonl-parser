@@ -1,11 +1,18 @@
 <template>
   <div id="app">
     <router-view />
+    <AnalyticsDashboard />
+    <AnalyticsDemo />
   </div>
 </template>
 
 <script setup lang="ts">
-// App.vue는 이제 라우터의 진입점 역할만 합니다
+import AnalyticsDashboard from './components/common/AnalyticsDashboard.vue'
+import AnalyticsDemo from './components/common/AnalyticsDemo.vue'
+import { useUserTracking } from './composables/useUserTracking'
+
+// Initialize user tracking for the entire app
+useUserTracking()
 </script>
 
 <style>

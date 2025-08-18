@@ -75,6 +75,8 @@ defineEmits<Emits>()
   align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .card-icon {
@@ -89,6 +91,7 @@ defineEmits<Emits>()
 .card-title-section {
   flex: 1;
   min-width: 0;
+  overflow: visible;
 }
 
 .card-title {
@@ -103,15 +106,23 @@ defineEmits<Emits>()
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  align-items: center;
+  min-width: max-content;
 }
 
 .meta-item {
   background: var(--color-background-primary);
   color: var(--color-text-secondary);
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 4px;
   font-size: 0.8rem;
   border: 1px solid var(--color-border);
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-block;
+  min-width: fit-content;
+  width: auto;
+  box-sizing: border-box;
 }
 
 .meta-item.category-cheatsheet {
