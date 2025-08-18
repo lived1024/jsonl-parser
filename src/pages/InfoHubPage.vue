@@ -1,281 +1,352 @@
 <template>
-  <div class="info-hub">
-    <div class="info-hub__header">
-      <h1 class="info-hub__title">{{ $t('infoHub.title') }}</h1>
-      <p class="info-hub__description">{{ $t('infoHub.description') }}</p>
-    </div>
-
-    <div class="info-hub__content">
-      <!-- Search and Filter -->
-      <div class="info-hub__controls">
-        <div class="search-box">
-          <input
-            v-model="searchQuery"
-            type="text"
-            :placeholder="$t('infoHub.searchPlaceholder')"
-            class="search-input"
-          />
-        </div>
-        <div class="category-filter">
-          <button
-            v-for="category in categories"
-            :key="category.id"
-            :class="['category-btn', { active: selectedCategory === category.id }]"
-            @click="selectedCategory = category.id"
-          >
-            {{ $t(`infoHub.categories.${category.id}`) }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Guide Categories -->
-      <div class="guide-categories">
-        <div
-          v-for="category in filteredCategories"
-          :key="category.id"
-          class="category-section"
+  <DefaultLayout>
+    <PageLayout 
+      title="정보 허브" 
+      description="JSON과 API 개발에 관한 포괄적인 가이드와 정보"
+    >
+      <template #sidebar>
+        <FilterSidebar 
+          v-model="filters"
+          :filter-sections="filterSections"
         >
-          <h2 class="category-title">
-            <component :is="category.icon" class="category-icon" />
-            {{ $t(`infoHub.categories.${category.id}`) }}
-          </h2>
-          <p class="category-description">
-            {{ $t(`infoHub.categoryDescriptions.${category.id}`) }}
-          </p>
-          
-          <div class="guides-grid">
-            <div
-              v-for="guide in category.guides"
-              :key="guide.id"
-              class="guide-card"
-              @click="navigateToGuide(guide.id)"
-            >
-              <div class="guide-card__header">
-                <h3 class="guide-title">{{ $t(`guides.${guide.id}.title`) }}</h3>
-                <span class="guide-difficulty" :class="`difficulty-${guide.difficulty}`">
-                  {{ $t(`common.difficulty.${guide.difficulty}`) }}
-                </span>
-              </div>
-              <p class="guide-description">
-                {{ $t(`guides.${guide.id}.description`) }}
-              </p>
-              <div class="guide-meta">
-                <span class="read-time">
-                  <Clock class="meta-icon" />
-                  {{ guide.estimatedReadTime }}{{ $t('common.minutes') }}
-                </span>
-                <span class="last-updated">
-                  <Calendar class="meta-icon" />
-                  {{ formatDate(guide.lastUpdated) }}
-                </span>
-              </div>
-              <div class="guide-tags">
-                <span
-                  v-for="tag in guide.tags"
-                  :key="tag"
-                  class="tag"
-                >
-                  {{ $t(`tags.${tag}`) }}
-                </span>
+          <template #additional>
+            <div class="search-section">
+              <h3>검색</h3>
+              <div class="search-box">
+                <input
+                  v-model="searchQuery"
+                  type="text"
+                  placeholder="가이드 검색..."
+                  class="search-input"
+                />
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+            
+            <div class="stats-section">
+              <h3>가이드 통계</h3>
+              <div class="stats-grid">
+                <div class="stat">
+                  <span class="stat-number">{{ totalCount }}</span>
+                  <span class="stat-label">전체</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-number">{{ categoryCount }}</span>
+                  <span class="stat-label">카테고리</span>
+                </div>
+              </div>
+              <div class="difficulty-breakdown">
+                <div class="difficulty-item">
+                  <span class="difficulty-dot beginner"></span>
+                  <span class="difficulty-label">초급 {{ beginnerCount }}개</span>
+                </div>
+                <div class="difficulty-item">
+                  <span class="difficulty-dot intermediate"></span>
+                  <span class="difficulty-label">중급 {{ intermediateCount }}개</span>
+                </div>
+                <div class="difficulty-item">
+                  <span class="difficulty-dot advanced"></span>
+                  <span class="difficulty-label">고급 {{ advancedCount }}개</span>
+                </div>
+              </div>
+            </div>
+          </template>
+        </FilterSidebar>
+      </template>
 
-      <!-- Related Tools Section -->
-      <div class="related-tools">
-        <h2 class="section-title">{{ $t('infoHub.relatedTools') }}</h2>
-        <div class="tools-grid">
-          <router-link
-            v-for="tool in relatedTools"
-            :key="tool.id"
-            :to="`/tools/${tool.id}`"
-            class="tool-card"
-          >
-            <component :is="tool.icon" class="tool-icon" />
-            <h3 class="tool-name">{{ $t(`tools.${tool.id}.name`) }}</h3>
-            <p class="tool-description">{{ $t(`tools.${tool.id}.description`) }}</p>
-          </router-link>
-        </div>
-      </div>
-    </div>
+      <template #default>
+        <!-- 상단 광고 -->
+        <SafeAdContainer 
+          ad-slot="header-banner"
+          ad-format="banner"
+          class-name="header-ad"
+        />
 
-    <!-- AdSense Integration -->
-    <AdSenseContainer
-      ad-slot="info-hub-sidebar"
-      ad-format="vertical"
-      class="info-hub__ad"
-    />
-  </div>
+        <ItemGrid
+          :items="filteredGuides"
+          :loading="loading"
+          :error="error"
+          loading-text="가이드를 불러오는 중..."
+          error-text="가이드를 불러오는 중 오류가 발생했습니다."
+          empty-text="선택한 조건에 맞는 가이드가 없습니다."
+          reset-button-text="필터 초기화"
+          :show-ad="true"
+          :ad-after-index="3"
+          :on-retry="loadGuides"
+          :on-reset="resetFilters"
+        >
+          <template #item="{ item: guide }">
+            <ItemCard
+              :title="guide.title"
+              :description="guide.description"
+              :icon="getGuideIcon(guide.id)"
+              :meta="[
+                { 
+                  key: 'difficulty', 
+                  label: getDifficultyLabel(guide.difficulty),
+                  type: `difficulty-${guide.difficulty}`
+                },
+                { 
+                  key: 'duration', 
+                  label: `${guide.estimatedReadTime}분`,
+                  type: 'duration'
+                },
+                { 
+                  key: 'category', 
+                  label: getCategoryLabel(guide.category),
+                  type: `category-${guide.category}`
+                }
+              ]"
+              @click="navigateToGuide(guide.id)"
+            />
+          </template>
+
+          <template #ad>
+            <SafeAdContainer 
+              ad-slot="content-rectangle"
+              ad-format="rectangle"
+              class-name="content-ad"
+            />
+          </template>
+        </ItemGrid>
+
+
+      </template>
+    </PageLayout>
+  </DefaultLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { Clock, Calendar, Book, Code, Settings, Database, Globe, Zap } from 'lucide-vue-next'
-import AdSenseContainer from '../components/common/AdSenseContainer.vue'
-import contentService, { type GuideCategory } from '../services/ContentService'
+import { 
+  BookOpen, 
+  FileText, 
+  Settings, 
+  Database, 
+  Zap, 
+  Shield, 
+  Layers,
+  Code,
+  GitBranch,
+  HardDrive,
+  Globe,
+  Users,
+  TrendingUp
+} from 'lucide-vue-next'
+import DefaultLayout from '../layouts/DefaultLayout.vue'
+import PageLayout from '../components/common/PageLayout.vue'
+import FilterSidebar, { type FilterSection } from '../components/common/FilterSidebar.vue'
+import ItemGrid from '../components/common/ItemGrid.vue'
+import ItemCard from '../components/common/ItemCard.vue'
+import SafeAdContainer from '../components/tools/SafeAdContainer.vue'
+import { ContentService, type GuideContent } from '../services/ContentService'
 
 interface GuideInfo {
   id: string
+  title: string
+  description: string
+  category: string
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   estimatedReadTime: number
   lastUpdated: Date
   tags: string[]
+  relatedTools?: string[]
 }
 
-interface DisplayCategory {
-  id: string
-  icon: any
-  guides: GuideInfo[]
-}
 
-interface RelatedTool {
-  id: string
-  icon: any
-}
 
 const router = useRouter()
-const { t } = useI18n()
+const contentService = ContentService.getInstance()
 
-const searchQuery = ref('')
-const selectedCategory = ref('all')
+// 상태 관리
+const guides = ref<GuideInfo[]>([])
 const loading = ref(true)
-const categories = ref<DisplayCategory[]>([])
+const error = ref(false)
+const searchQuery = ref('')
 
-const categoryIcons: Record<string, any> = {
-  'getting-started': Book,
-  'api-development': Globe,
-  'data-processing': Database,
-  'performance': Zap
-}
+// 필터 상태
+const filters = ref({
+  // 카테고리 필터
+  'getting-started': true,
+  'api-development': true,
+  'data-processing': true,
+  'performance': true,
+  // 난이도 필터
+  beginner: true,
+  intermediate: true,
+  advanced: true
+})
 
-const relatedTools: RelatedTool[] = [
-  { id: 'json-validator', icon: Code },
-  { id: 'data-converter', icon: Settings },
-  { id: 'schema-generator', icon: Database }
+// 필터 섹션 정의
+const filterSections: FilterSection[] = [
+  {
+    key: 'category',
+    title: '카테고리',
+    options: [
+      { key: 'getting-started', label: '시작하기' },
+      { key: 'api-development', label: 'API 개발' },
+      { key: 'data-processing', label: '데이터 처리' },
+      { key: 'performance', label: '성능 최적화' }
+    ]
+  },
+  {
+    key: 'difficulty',
+    title: '난이도',
+    options: [
+      { key: 'beginner', label: '초급' },
+      { key: 'intermediate', label: '중급' },
+      { key: 'advanced', label: '고급' }
+    ]
+  }
 ]
 
-const loadCategories = async () => {
+// 관련 도구 정의
+const relatedTools: RelatedTool[] = [
+  { 
+    id: 'json-validator', 
+    name: 'JSON 검증기',
+    description: 'JSON 구문과 구조를 검증합니다',
+    icon: Shield 
+  },
+  { 
+    id: 'data-converter', 
+    name: '데이터 변환기',
+    description: 'JSON을 다양한 형식으로 변환합니다',
+    icon: Settings 
+  },
+  { 
+    id: 'schema-generator', 
+    name: '스키마 생성기',
+    description: 'JSON 스키마를 자동으로 생성합니다',
+    icon: Database 
+  },
+  { 
+    id: 'api-tester', 
+    name: 'API 테스터',
+    description: 'REST API를 테스트하고 검증합니다',
+    icon: Globe 
+  }
+]
+
+// 컴포넌트 마운트 시 데이터 로드
+onMounted(async () => {
+  await loadGuides()
+})
+
+// 가이드 로드
+const loadGuides = async () => {
   try {
     loading.value = true
-    const guideCategories = await contentService.getGuideCategories()
+    error.value = false
     
-    categories.value = guideCategories.map(category => ({
-      id: category.id,
-      icon: categoryIcons[category.id] || Book,
-      guides: category.guides.map(guideId => ({
-        id: guideId,
-        difficulty: getGuideDifficulty(guideId),
-        estimatedReadTime: getGuideReadTime(guideId),
-        lastUpdated: getGuideLastUpdated(guideId),
-        tags: getGuideTags(guideId)
-      }))
+    // ContentService에서 튜토리얼 데이터를 가이드로 사용 (학습 센터와 동일한 데이터)
+    const tutorials = await contentService.getTutorials()
+    guides.value = tutorials.map(tutorial => ({
+      id: tutorial.id,
+      title: tutorial.title,
+      description: tutorial.description,
+      category: tutorial.category,
+      difficulty: tutorial.difficulty,
+      estimatedReadTime: tutorial.estimatedReadTime,
+      lastUpdated: tutorial.lastUpdated,
+      tags: tutorial.tags,
+      relatedTools: [] // 기본값
     }))
-  } catch (error) {
-    console.error('Failed to load categories:', error)
+  } catch (err) {
+    console.error('Failed to load guides:', err)
+    error.value = true
   } finally {
     loading.value = false
   }
 }
 
-// Helper functions to get guide metadata (in real implementation, this would come from ContentService)
-const getGuideDifficulty = (guideId: string): 'beginner' | 'intermediate' | 'advanced' => {
-  const difficulties: Record<string, 'beginner' | 'intermediate' | 'advanced'> = {
-    'json-basics': 'beginner',
-    'jsonl-introduction': 'beginner',
-    'parser-overview': 'beginner',
-    'rest-api-design': 'intermediate',
-    'json-schema-guide': 'intermediate',
-    'api-versioning': 'advanced',
-    'large-datasets': 'intermediate',
-    'data-transformation': 'intermediate',
-    'error-handling': 'advanced',
-    'optimization-tips': 'advanced',
-    'caching-strategies': 'advanced'
-  }
-  return difficulties[guideId] || 'beginner'
-}
+// 필터링된 가이드
+const filteredGuides = computed(() => {
+  let filtered = guides.value
 
-const getGuideReadTime = (guideId: string): number => {
-  const readTimes: Record<string, number> = {
-    'json-basics': 5,
-    'jsonl-introduction': 7,
-    'parser-overview': 10,
-    'rest-api-design': 15,
-    'json-schema-guide': 12,
-    'api-versioning': 20,
-    'large-datasets': 18,
-    'data-transformation': 14,
-    'error-handling': 16,
-    'optimization-tips': 22,
-    'caching-strategies': 19
-  }
-  return readTimes[guideId] || 10
-}
-
-const getGuideLastUpdated = (guideId: string): Date => {
-  const dates: Record<string, Date> = {
-    'json-basics': new Date('2024-01-15'),
-    'jsonl-introduction': new Date('2024-01-20'),
-    'parser-overview': new Date('2024-02-01'),
-    'rest-api-design': new Date('2024-01-25'),
-    'json-schema-guide': new Date('2024-02-05'),
-    'api-versioning': new Date('2024-02-10'),
-    'large-datasets': new Date('2024-01-30'),
-    'data-transformation': new Date('2024-02-08'),
-    'error-handling': new Date('2024-02-12'),
-    'optimization-tips': new Date('2024-02-15'),
-    'caching-strategies': new Date('2024-02-18')
-  }
-  return dates[guideId] || new Date()
-}
-
-const getGuideTags = (guideId: string): string[] => {
-  const tags: Record<string, string[]> = {
-    'json-basics': ['json', 'basics', 'syntax'],
-    'jsonl-introduction': ['jsonl', 'format', 'streaming'],
-    'parser-overview': ['parser', 'tool', 'features'],
-    'rest-api-design': ['api', 'rest', 'design', 'best-practices'],
-    'json-schema-guide': ['schema', 'validation', 'api'],
-    'api-versioning': ['api', 'versioning', 'maintenance'],
-    'large-datasets': ['performance', 'streaming', 'memory'],
-    'data-transformation': ['transformation', 'etl', 'processing'],
-    'error-handling': ['errors', 'validation', 'debugging'],
-    'optimization-tips': ['performance', 'optimization', 'memory'],
-    'caching-strategies': ['caching', 'performance', 'scalability']
-  }
-  return tags[guideId] || []
-}
-
-const filteredCategories = computed(() => {
-  let filtered = categories
-
-  if (selectedCategory.value !== 'all') {
-    filtered = categories.filter(cat => cat.id === selectedCategory.value)
+  // 카테고리 필터 적용
+  const selectedCategories = Object.keys(filters.value)
+    .filter(key => key.includes('-') && filters.value[key as keyof typeof filters.value])
+  
+  if (selectedCategories.length > 0) {
+    filtered = filtered.filter(guide => selectedCategories.includes(guide.category))
   }
 
+  // 난이도 필터 적용
+  const selectedDifficulties = ['beginner', 'intermediate', 'advanced']
+    .filter(difficulty => filters.value[difficulty as keyof typeof filters.value])
+  
+  if (selectedDifficulties.length > 0) {
+    filtered = filtered.filter(guide => selectedDifficulties.includes(guide.difficulty))
+  }
+
+  // 검색 필터 적용
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    filtered = filtered.map(category => ({
-      ...category,
-      guides: category.guides.filter(guide => 
-        t(`guides.${guide.id}.title`).toLowerCase().includes(query) ||
-        t(`guides.${guide.id}.description`).toLowerCase().includes(query) ||
-        guide.tags.some(tag => tag.toLowerCase().includes(query))
-      )
-    })).filter(category => category.guides.length > 0)
+    filtered = filtered.filter(guide => 
+      guide.title.toLowerCase().includes(query) ||
+      guide.description.toLowerCase().includes(query) ||
+      guide.tags.some(tag => tag.toLowerCase().includes(query))
+    )
   }
 
   return filtered
 })
 
-const navigateToGuide = (guideId: string) => {
-  router.push(`/info/${guideId}`)
+// 통계 계산
+const totalCount = computed(() => guides.value.length)
+const categoryCount = computed(() => {
+  const categories = new Set(guides.value.map(guide => guide.category))
+  return categories.size
+})
+const beginnerCount = computed(() => guides.value.filter(guide => guide.difficulty === 'beginner').length)
+const intermediateCount = computed(() => guides.value.filter(guide => guide.difficulty === 'intermediate').length)
+const advancedCount = computed(() => guides.value.filter(guide => guide.difficulty === 'advanced').length)
+
+// 카테고리 라벨 변환
+const getCategoryLabel = (category: string): string => {
+  const labels: Record<string, string> = {
+    'getting-started': '시작하기',
+    'api-development': 'API 개발',
+    'data-processing': '데이터 처리',
+    'performance': '성능 최적화'
+  }
+  return labels[category] || category
 }
 
+// 난이도 라벨 변환
+const getDifficultyLabel = (difficulty: string): string => {
+  const labels: Record<string, string> = {
+    beginner: '초급',
+    intermediate: '중급',
+    advanced: '고급'
+  }
+  return labels[difficulty] || difficulty
+}
+
+// 가이드 아이콘 매핑
+const getGuideIcon = (guideId: string) => {
+  const iconMap: Record<string, any> = {
+    'json-basics': BookOpen,
+    'jsonl-introduction': FileText,
+    'parser-overview': Settings,
+    'rest-api-design': Globe,
+    'json-schema-guide': Shield,
+    'api-versioning': GitBranch,
+    'large-datasets': Database,
+    'data-transformation': Layers,
+    'error-handling': Shield,
+    'optimization-tips': Zap,
+    'caching-strategies': HardDrive,
+    'graphql-vs-rest': Code,
+    'microservices-api': Users,
+    'api-security': Shield,
+    'performance-monitoring': TrendingUp
+  }
+  return iconMap[guideId] || BookOpen
+}
+
+// 날짜 포맷팅
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('ko-KR', {
     year: 'numeric',
@@ -284,58 +355,38 @@ const formatDate = (date: Date) => {
   }).format(date)
 }
 
-onMounted(async () => {
-  await loadCategories()
-  
-  // Track page view for analytics
-  if (typeof gtag !== 'undefined') {
-    gtag('event', 'page_view', {
-      page_title: 'Info Hub',
-      page_location: window.location.href
-    })
+// 가이드로 이동
+const navigateToGuide = (guideId: string) => {
+  router.push(`/info/${guideId}`)
+}
+
+// 필터 초기화
+const resetFilters = () => {
+  filters.value = {
+    'getting-started': true,
+    'api-development': true,
+    'data-processing': true,
+    'performance': true,
+    beginner: true,
+    intermediate: true,
+    advanced: true
   }
-})
+  searchQuery.value = ''
+}
 </script>
 
 <style scoped>
-.info-hub {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 2rem;
+/* 검색 섹션 */
+.search-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.5rem;
 }
 
-.info-hub__header {
-  grid-column: 1 / -1;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.info-hub__title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--color-text-primary);
+.search-section h3 {
   margin-bottom: 1rem;
-}
-
-.info-hub__description {
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.info-hub__content {
-  grid-column: 1;
-}
-
-.info-hub__controls {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .search-box {
@@ -347,8 +398,10 @@ onMounted(async () => {
   padding: 0.75rem 1rem;
   border: 2px solid var(--color-border);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: border-color 0.2s;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
 }
 
 .search-input:focus {
@@ -356,247 +409,227 @@ onMounted(async () => {
   border-color: var(--color-primary);
 }
 
-.category-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.category-btn {
-  padding: 0.5rem 1rem;
-  border: 2px solid var(--color-border);
-  background: var(--color-background);
+.search-input::placeholder {
   color: var(--color-text-secondary);
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
 }
 
-.category-btn:hover,
-.category-btn.active {
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: white;
+/* 통계 섹션 */
+.stats-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-.category-section {
-  margin-bottom: 3rem;
-}
-
-.category-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: 600;
+.stats-section h3 {
+  margin-bottom: 1rem;
   color: var(--color-text-primary);
-  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
-.category-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: var(--color-primary);
-}
-
-.category-description {
-  color: var(--color-text-secondary);
-  margin-bottom: 1.5rem;
-}
-
-.guides-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-}
-
-.guide-card {
-  background: var(--color-background-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.guide-card:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.guide-card__header {
+.stats-grid {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.75rem;
-}
-
-.guide-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin: 0;
-  flex: 1;
-}
-
-.guide-difficulty {
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  margin-left: 0.5rem;
-}
-
-.difficulty-beginner {
-  background: var(--color-success-light);
-  color: var(--color-success);
-}
-
-.difficulty-intermediate {
-  background: var(--color-warning-light);
-  color: var(--color-warning);
-}
-
-.difficulty-advanced {
-  background: var(--color-error-light);
-  color: var(--color-error);
-}
-
-.guide-description {
-  color: var(--color-text-secondary);
   margin-bottom: 1rem;
-  line-height: 1.5;
 }
 
-.guide-meta {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-  color: var(--color-text-secondary);
+.stat {
+  text-align: center;
 }
 
-.read-time,
-.last-updated {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.meta-icon {
-  width: 0.875rem;
-  height: 0.875rem;
-}
-
-.guide-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag {
-  padding: 0.25rem 0.5rem;
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  font-size: 0.75rem;
-  color: var(--color-text-secondary);
-}
-
-.related-tools {
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.section-title {
+.stat-number {
+  display: block;
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--color-text-primary);
-  margin-bottom: 1rem;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.tool-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 1rem;
-  background: var(--color-background-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
-}
-
-.tool-card:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-2px);
-}
-
-.tool-icon {
-  width: 2rem;
-  height: 2rem;
   color: var(--color-primary);
-  margin-bottom: 0.5rem;
 }
 
-.tool-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.tool-description {
+.stat-label {
   font-size: 0.8rem;
   color: var(--color-text-secondary);
 }
 
-.info-hub__ad {
-  grid-column: 2;
-  position: sticky;
-  top: 2rem;
-  height: fit-content;
+.difficulty-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-@media (max-width: 1024px) {
-  .info-hub {
+.difficulty-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.difficulty-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.difficulty-dot.beginner {
+  background: #2d5a2d;
+}
+
+.difficulty-dot.intermediate {
+  background: #856404;
+}
+
+.difficulty-dot.advanced {
+  background: #721c24;
+}
+
+.difficulty-label {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* 광고 스타일 */
+.header-ad {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: var(--color-background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.content-ad {
+  grid-column: 1 / -1;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* 가이드 태그 스타일 */
+.guide-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tag {
+  padding: 0.25rem 0.5rem;
+  background: var(--color-background-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.tag-more {
+  padding: 0.25rem 0.5rem;
+  background: var(--color-primary);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+
+
+/* 메타 정보 스타일 개선 */
+:deep(.card-meta) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+:deep(.meta-item) {
+  padding: 0.4rem 0.8rem !important;
+  border-radius: 16px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-width: fit-content !important;
+  width: auto !important;
+  max-width: none !important;
+}
+
+/* 카테고리별 색상 */
+:deep(.meta-item.category-getting-started) {
+  background: #e8f5e8 !important;
+  color: #2d5a2d !important;
+  border-color: #c3e6cb !important;
+}
+
+:deep(.meta-item.category-api-development) {
+  background: #e3f2fd !important;
+  color: #1565c0 !important;
+  border-color: #bbdefb !important;
+}
+
+:deep(.meta-item.category-data-processing) {
+  background: #f3e5f5 !important;
+  color: #7b1fa2 !important;
+  border-color: #e1bee7 !important;
+}
+
+:deep(.meta-item.category-performance) {
+  background: #fff3e0 !important;
+  color: #ef6c00 !important;
+  border-color: #ffcc02 !important;
+}
+
+/* 난이도별 색상 */
+:deep(.meta-item.difficulty-beginner) {
+  background: #e8f5e8 !important;
+  color: #2d5a2d !important;
+  border-color: #c3e6cb !important;
+}
+
+:deep(.meta-item.difficulty-intermediate) {
+  background: #fff3cd !important;
+  color: #856404 !important;
+  border-color: #ffeaa7 !important;
+}
+
+:deep(.meta-item.difficulty-advanced) {
+  background: #f8d7da !important;
+  color: #721c24 !important;
+  border-color: #f5c6cb !important;
+}
+
+/* 기타 메타 정보 스타일 */
+:deep(.meta-item.duration) {
+  background: var(--color-background-tertiary) !important;
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+:deep(.meta-item.updated) {
+  background: var(--color-background-tertiary) !important;
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border) !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .header-ad {
+    margin: 1rem 0;
+    padding: 0.5rem;
+  }
+  
+  .content-ad {
+    margin: 1rem 0;
+  }
+  
+  .tools-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .tool-card {
     padding: 1rem;
   }
-
-  .info-hub__ad {
-    grid-column: 1;
-    position: static;
-    margin-top: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .info-hub__title {
-    font-size: 2rem;
-  }
-
-  .guides-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .tools-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-
-  .category-filter {
-    justify-content: center;
+  
+  .tool-icon {
+    width: 2rem;
+    height: 2rem;
   }
 }
 </style>
