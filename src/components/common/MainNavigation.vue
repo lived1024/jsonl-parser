@@ -78,6 +78,7 @@ import {
   Wrench, 
   FileText, 
   Database,
+  Info,
   Menu,
   X
 } from 'lucide-vue-next'
@@ -109,6 +110,12 @@ const navigationItems = computed((): NavigationItem[] => [
     label: t('navigation.items.learn.label'),
     icon: BookOpen,
     description: t('navigation.items.learn.description')
+  },
+  {
+    path: '/info',
+    label: t('navigation.items.info.label') || '정보 허브',
+    icon: Info,
+    description: t('navigation.items.info.description') || 'JSON과 API 개발 가이드'
   },
   {
     path: '/tools',

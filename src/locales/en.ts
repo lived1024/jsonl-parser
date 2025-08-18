@@ -600,6 +600,10 @@ Example:
         label: 'Learn',
         description: 'Tutorials and guides'
       },
+      info: {
+        label: 'Info Hub',
+        description: 'JSON and API development guides'
+      },
       tools: {
         label: 'Tools',
         description: 'Conversion and validation tools'
