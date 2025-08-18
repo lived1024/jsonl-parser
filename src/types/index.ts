@@ -97,3 +97,4 @@ export interface SampleData {
 export * from './content'
 export * from './ads'
 export * from './reference'
+export * from './analytics'

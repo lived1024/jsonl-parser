@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
+import { AnalyticsService } from '../services/AnalyticsService'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -58,5 +59,58 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+// Add analytics tracking to router
+router.beforeEach((to, from, next) => {
+  // Track navigation events
+  const analyticsService = AnalyticsService.getInstance()
+  
+  if (analyticsService.getState().isInitialized) {
+    // Track page view
+    analyticsService.trackPageView({
+      path: to.path,
+      title: getPageTitle(to.name as string),
+      customParameters: {
+        route_name: to.name,
+        route_params: to.params,
+        from_route: from.name
+      }
+    })
+
+    // Track navigation event if coming from another page
+    if (from.name && from.name !== to.name) {
+      analyticsService.trackNavigationEvent({
+        category: 'navigation',
+        action: 'page_view',
+        from_page: from.name as string,
+        to_page: to.name as string,
+        customParameters: {
+          from_path: from.path,
+          to_path: to.path
+        }
+      })
+    }
+  }
+  
+  next()
+})
+
+// Helper function to get page titles for analytics
+function getPageTitle(routeName: string): string {
+  const titleMap: Record<string, string> = {
+    'Home': 'JSONL Parser - Home',
+    'LearningCenter': 'Learning Center',
+    'Tutorial': 'Tutorial',
+    'ToolsHub': 'Tools Hub',
+    'Tool': 'Tool',
+    'ReferenceHub': 'Reference Hub',
+    'Reference': 'Reference',
+    'SampleLibrary': 'Sample Library',
+    'InfoHub': 'Info Hub',
+    'InfoGuide': 'Info Guide'
+  }
+  
+  return titleMap[routeName] || routeName
+}
 
 export default router
