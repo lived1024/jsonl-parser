@@ -7,123 +7,6 @@ export default {
     title: 'JSONL Parser',
     subtitle: 'Parse & Visualize JSON Data'
   },
-  common: {
-    cancel: 'Cancel',
-    confirm: 'Confirm',
-    save: 'Save',
-    delete: 'Delete',
-    export: 'Export',
-    loading: 'Loading...'
-  },
-  privacy: {
-    pageTitle: 'Privacy Settings',
-    pageDescription: 'Manage your privacy and data usage preferences',
-    title: 'Privacy & Data Protection',
-    description: 'Control how your data is collected and used. All data is stored locally and never transmitted externally.',
-    tracking: {
-      title: 'Tracking Settings',
-      enabled: 'Enable user behavior tracking',
-      enabledDescription: 'Analyze usage patterns to provide better experience.'
-    },
-    analytics: {
-      consent: 'Analytics data collection consent',
-      consentDescription: 'Collect anonymized usage statistics to improve the service.'
-    },
-    personalization: {
-      enabled: 'Enable personalized content',
-      enabledDescription: 'Provide customized recommendations based on usage patterns.'
-    },
-    dataRetention: {
-      title: 'Data Retention',
-      period: 'Retention period',
-      days: '{days} days',
-      periodDescription: 'Set how long to keep your user data.'
-    },
-    cookies: {
-      title: 'Cookie Settings',
-      consent: 'Cookie usage consent',
-      consentDescription: 'Consent to use cookies for basic functionality.'
-    },
-    dataManagement: {
-      title: 'Data Management',
-      export: 'Export Data',
-      clear: 'Clear All Data'
-    },
-    clearData: {
-      confirmTitle: 'Clear All Data',
-      confirmMessage: 'Are you sure you want to delete all user data? This action cannot be undone.',
-      preferences: 'User preferences',
-      behaviorData: 'Behavior data',
-      analytics: 'Analytics data',
-      settings: 'Privacy settings',
-      confirm: 'Delete'
-    },
-    compliance: {
-      title: 'Compliance Status',
-      compliant: 'Privacy regulations are being complied with',
-      nonCompliant: 'There are privacy compliance issues'
-    }
-  },
-  preferences: {
-    dashboard: {
-      title: 'User Preferences Dashboard',
-      description: 'View your usage patterns and personalized insights'
-    },
-    analytics: {
-      title: 'Usage Analytics',
-      usage: 'Usage Overview',
-      avgSession: 'Avg Session Time',
-      featuresUsed: 'Features Used',
-      learning: 'Learning Progress',
-      completedTutorials: 'Completed Tutorials',
-      learningVelocity: 'Weekly Learning Velocity',
-      tools: 'Tool Usage',
-      favoriteTools: 'Favorite Tools',
-      toolEfficiency: 'Tool Efficiency'
-    },
-    recommendations: {
-      title: 'Personalized Recommendations',
-      tutorials: 'Recommended Tutorials',
-      tools: 'Recommended Tools',
-      content: 'Recommended Content'
-    },
-    activity: {
-      title: 'Recent Activity',
-      recentTools: 'Recent Tools',
-      recentContent: 'Recent Content',
-      recentSamples: 'Recent Samples'
-    },
-    learning: {
-      title: 'Learning Progress',
-      completed: 'Completed',
-      inProgress: 'In Progress'
-    },
-    insights: {
-      title: 'Behavioral Insights',
-      patterns: 'Usage Patterns',
-      behavioral: 'Behavioral Analysis',
-      recommendations: 'Improvement Suggestions'
-    },
-    privacy: {
-      title: 'Privacy Status',
-      tracking: 'Tracking',
-      trackingEnabled: 'Tracking is enabled',
-      trackingDisabled: 'Tracking is disabled',
-      personalization: 'Personalization',
-      personalizationEnabled: 'Personalization is enabled',
-      personalizationDisabled: 'Personalization is disabled',
-      analytics: 'Analytics',
-      analyticsEnabled: 'Analytics is enabled',
-      analyticsDisabled: 'Analytics is disabled',
-      settings: 'Privacy Settings'
-    },
-    actions: {
-      title: 'Actions',
-      refresh: 'Refresh Analytics',
-      privacySettings: 'Privacy Settings',
-      exportData: 'Export Data'
-    }
-  },
   input: {
     title: 'JSON Input',
     description: 'Paste your JSON or JSONL data',
@@ -732,14 +615,6 @@ Example:
       samples: {
         label: 'Samples',
         description: 'Example data library'
-      },
-      preferences: {
-        label: 'Preferences',
-        description: 'Usage patterns and personalization'
-      },
-      privacy: {
-        label: 'Privacy',
-        description: 'Privacy protection and data settings'
       }
     }
   },

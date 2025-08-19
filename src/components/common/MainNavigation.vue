@@ -80,9 +80,7 @@ import {
   Database,
   Info,
   Menu,
-  X,
-  User,
-  Shield
+  X
 } from 'lucide-vue-next'
 
 interface NavigationItem {
@@ -136,18 +134,6 @@ const navigationItems = computed((): NavigationItem[] => [
     label: t('navigation.items.samples.label'),
     icon: Database,
     description: t('navigation.items.samples.description')
-  },
-  {
-    path: '/preferences',
-    label: t('navigation.items.preferences.label') || '사용자 선호도',
-    icon: User,
-    description: t('navigation.items.preferences.description') || '사용 패턴과 개인화 설정'
-  },
-  {
-    path: '/privacy',
-    label: t('navigation.items.privacy.label') || '개인정보',
-    icon: Shield,
-    description: t('navigation.items.privacy.description') || '개인정보 보호 및 데이터 설정'
   }
 ])
 

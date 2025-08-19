@@ -52,16 +52,6 @@ const routes: RouteRecordRaw[] = [
     path: '/info/:guideId',
     name: 'InfoGuide',
     component: () => import('../pages/InfoGuidePage.vue')
-  },
-  {
-    path: '/preferences',
-    name: 'UserPreferences',
-    component: () => import('../pages/UserPreferencesPage.vue')
-  },
-  {
-    path: '/privacy',
-    name: 'PrivacySettings',
-    component: () => import('../pages/PrivacySettingsPage.vue')
   }
 ]
 
@@ -74,7 +64,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // Track navigation events
   const analyticsService = AnalyticsService.getInstance()
-
+  
   if (analyticsService.getState().isInitialized) {
     // Track page view
     analyticsService.trackPageView({
@@ -101,7 +91,7 @@ router.beforeEach((to, from, next) => {
       })
     }
   }
-
+  
   next()
 })
 
@@ -117,11 +107,9 @@ function getPageTitle(routeName: string): string {
     'Reference': 'Reference',
     'SampleLibrary': 'Sample Library',
     'InfoHub': 'Info Hub',
-    'InfoGuide': 'Info Guide',
-    'UserPreferences': 'User Preferences',
-    'PrivacySettings': 'Privacy Settings'
+    'InfoGuide': 'Info Guide'
   }
-
+  
   return titleMap[routeName] || routeName
 }
 
