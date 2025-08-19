@@ -1,13 +1,5 @@
 <template>
   <div class="page-layout">
-    <!-- 페이지 제목 섹션 (DefaultLayout 헤더 아래) -->
-    <div class="page-header">
-      <div class="header-content">
-        <h1 class="page-title">{{ title }}</h1>
-        <p v-if="description" class="page-description">{{ description }}</p>
-      </div>
-    </div>
-    
     <!-- 페이지 본문 -->
     <div class="page-body">
       <div class="page-container">
@@ -16,6 +8,12 @@
         </aside>
         
         <main class="page-main" :class="{ 'full-width': !$slots.sidebar }">
+          <!-- 페이지 제목 섹션 (메인 콘텐츠 영역 내부) -->
+          <div class="page-header">
+            <h1 class="page-title">{{ title }}</h1>
+            <p v-if="description" class="page-description">{{ description }}</p>
+          </div>
+          
           <slot />
         </main>
       </div>
@@ -40,15 +38,10 @@ defineProps<Props>()
 
 .page-header {
   background: var(--color-background-secondary);
-  border-bottom: 1px solid var(--color-border);
-  padding: 1.5rem 0;
-  margin-bottom: 1rem;
-}
-
-.header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
 }
 
 .page-title {
@@ -62,6 +55,7 @@ defineProps<Props>()
   color: var(--color-text-secondary);
   font-size: 1.1rem;
   margin: 0;
+  line-height: 1.6;
 }
 
 .page-body {
@@ -108,9 +102,13 @@ defineProps<Props>()
 }
 
 @media (max-width: 768px) {
-  .header-content,
   .page-container {
     padding: 0 1rem;
+  }
+  
+  .page-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
   }
   
   .page-title {

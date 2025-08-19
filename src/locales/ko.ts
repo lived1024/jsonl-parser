@@ -7,6 +7,123 @@ export default {
     title: 'JSONL 파서',
     subtitle: 'JSON 데이터 파싱 및 시각화'
   },
+  common: {
+    cancel: '취소',
+    confirm: '확인',
+    save: '저장',
+    delete: '삭제',
+    export: '내보내기',
+    loading: '로딩 중...'
+  },
+  privacy: {
+    pageTitle: '개인정보 설정',
+    pageDescription: '개인정보 보호 및 데이터 사용 설정을 관리하세요',
+    title: '개인정보 보호',
+    description: '데이터 수집 및 사용 방식을 제어하세요. 모든 데이터는 로컬에 저장되며 외부로 전송되지 않습니다.',
+    tracking: {
+      title: '추적 설정',
+      enabled: '사용자 행동 추적 활성화',
+      enabledDescription: '사용 패턴을 분석하여 더 나은 경험을 제공합니다.'
+    },
+    analytics: {
+      consent: '분석 데이터 수집 동의',
+      consentDescription: '익명화된 사용 통계를 수집하여 서비스 개선에 활용합니다.'
+    },
+    personalization: {
+      enabled: '개인화 콘텐츠 활성화',
+      enabledDescription: '사용 패턴을 바탕으로 맞춤형 추천을 제공합니다.'
+    },
+    dataRetention: {
+      title: '데이터 보존',
+      period: '보존 기간',
+      days: '{days}일',
+      periodDescription: '사용자 데이터를 보관할 기간을 설정합니다.'
+    },
+    cookies: {
+      title: '쿠키 설정',
+      consent: '쿠키 사용 동의',
+      consentDescription: '기본 기능 제공을 위한 쿠키 사용에 동의합니다.'
+    },
+    dataManagement: {
+      title: '데이터 관리',
+      export: '데이터 내보내기',
+      clear: '모든 데이터 삭제'
+    },
+    clearData: {
+      confirmTitle: '모든 데이터 삭제',
+      confirmMessage: '정말로 모든 사용자 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.',
+      preferences: '사용자 선호도',
+      behaviorData: '행동 데이터',
+      analytics: '분석 데이터',
+      settings: '개인정보 설정',
+      confirm: '삭제'
+    },
+    compliance: {
+      title: '규정 준수 상태',
+      compliant: '개인정보 보호 규정을 준수하고 있습니다',
+      nonCompliant: '개인정보 보호 규정 준수에 문제가 있습니다'
+    }
+  },
+  preferences: {
+    dashboard: {
+      title: '사용자 선호도 대시보드',
+      description: '사용 패턴과 개인화된 인사이트를 확인하세요'
+    },
+    analytics: {
+      title: '사용 분석',
+      usage: '사용 현황',
+      avgSession: '평균 세션 시간',
+      featuresUsed: '사용된 기능',
+      learning: '학습 현황',
+      completedTutorials: '완료된 튜토리얼',
+      learningVelocity: '주간 학습 속도',
+      tools: '도구 사용',
+      favoriteTools: '즐겨찾는 도구',
+      toolEfficiency: '도구 효율성'
+    },
+    recommendations: {
+      title: '맞춤 추천',
+      tutorials: '추천 튜토리얼',
+      tools: '추천 도구',
+      content: '추천 콘텐츠'
+    },
+    activity: {
+      title: '최근 활동',
+      recentTools: '최근 사용한 도구',
+      recentContent: '최근 본 콘텐츠',
+      recentSamples: '최근 사용한 샘플'
+    },
+    learning: {
+      title: '학습 진행도',
+      completed: '완료',
+      inProgress: '진행 중'
+    },
+    insights: {
+      title: '행동 인사이트',
+      patterns: '사용 패턴',
+      behavioral: '행동 분석',
+      recommendations: '개선 제안'
+    },
+    privacy: {
+      title: '개인정보 상태',
+      tracking: '추적',
+      trackingEnabled: '추적이 활성화되어 있습니다',
+      trackingDisabled: '추적이 비활성화되어 있습니다',
+      personalization: '개인화',
+      personalizationEnabled: '개인화가 활성화되어 있습니다',
+      personalizationDisabled: '개인화가 비활성화되어 있습니다',
+      analytics: '분석',
+      analyticsEnabled: '분석이 활성화되어 있습니다',
+      analyticsDisabled: '분석이 비활성화되어 있습니다',
+      settings: '개인정보 설정'
+    },
+    actions: {
+      title: '작업',
+      refresh: '분석 새로고침',
+      privacySettings: '개인정보 설정',
+      exportData: '데이터 내보내기'
+    }
+  },
   input: {
     title: 'JSON 입력',
     description: 'JSON 또는 JSONL 데이터를 붙여넣으세요',
@@ -852,6 +969,14 @@ export default {
       samples: {
         label: '샘플',
         description: '예제 데이터 라이브러리'
+      },
+      preferences: {
+        label: '사용자 선호도',
+        description: '사용 패턴과 개인화 설정'
+      },
+      privacy: {
+        label: '개인정보',
+        description: '개인정보 보호 및 데이터 설정'
       }
     }
   },
