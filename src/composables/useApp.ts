@@ -1,14 +1,20 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useJsonTreeStore } from '../stores'
+import { useMobile } from './useMobile'
 
 export function useApp() {
   const store = useJsonTreeStore()
+  const mobile = useMobile()
 
   // 반응형 상태 관리
   const windowWidth = ref(window.innerWidth)
   const leftPanelWidth = ref(Math.floor(window.innerWidth / 2))
 
-  const isMobile = computed(() => windowWidth.value <= 768)
+  // Use the enhanced mobile detection
+  const isMobile = computed(() => mobile.isMobileMd.value)
+  const isMobileSm = computed(() => mobile.isMobileSm.value)
+  const isTablet = computed(() => mobile.isTablet.value)
+  const isTouchDevice = computed(() => mobile.isTouchDevice.value)
 
   const mainStyle = computed(() => {
     if (isMobile.value) {
@@ -110,9 +116,28 @@ export function useApp() {
   })
 
   return {
+    // Legacy compatibility
     isMobile,
     mainStyle,
     inputPanelStyle,
-    handlePanelResize
+    handlePanelResize,
+    
+    // Enhanced mobile detection
+    isMobileSm,
+    isTablet,
+    isTouchDevice,
+    
+    // Mobile utilities
+    deviceType: mobile.deviceType,
+    orientation: mobile.orientation,
+    isPortrait: mobile.isPortrait,
+    isLandscape: mobile.isLandscape,
+    viewportHeight: mobile.viewportHeight,
+    
+    // Mobile utility functions
+    preventDoubleTabZoom: mobile.preventDoubleTabZoom,
+    optimizeTouchScrolling: mobile.optimizeTouchScrolling,
+    getTouchTargetSize: mobile.getTouchTargetSize,
+    getOptimalFontSize: mobile.getOptimalFontSize
   }
 }

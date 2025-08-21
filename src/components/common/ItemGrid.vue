@@ -135,11 +135,41 @@ const getItemKey = (item: any, index: number) => {
   .empty-state {
     padding: 2rem 1rem;
   }
+  
+  .retry-button,
+  .reset-button {
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  
+  .loading-spinner {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (max-width: 480px) {
   .grid-container {
     gap: 0.75rem;
+  }
+  
+  .loading-state,
+  .error-state,
+  .empty-state {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .retry-button,
+  .reset-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

@@ -249,8 +249,8 @@ const closeMobileMenu = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
@@ -259,11 +259,23 @@ const closeMobileMenu = () => {
   transition: all 0.3s ease;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  /* Touch-friendly sizing */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .mobile-menu-button:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
+}
+
+.mobile-menu-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.mobile-menu-button:active {
+  transform: scale(0.95);
 }
 
 .mobile-menu-overlay {
@@ -289,6 +301,9 @@ const closeMobileMenu = () => {
   padding-top: 5rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   animation: slideDown 0.3s ease-out;
+  max-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideDown {
@@ -319,7 +334,7 @@ const closeMobileMenu = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 1rem;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.9);
@@ -328,6 +343,9 @@ const closeMobileMenu = () => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  /* Touch-friendly sizing */
+  min-height: 60px;
+  position: relative;
 }
 
 .mobile-nav-link:hover,
@@ -335,6 +353,15 @@ const closeMobileMenu = () => {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   transform: translateX(4px);
+}
+
+.mobile-nav-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.mobile-nav-link:active {
+  transform: scale(0.98) translateX(2px);
 }
 
 .mobile-nav-icon {
@@ -372,6 +399,37 @@ const closeMobileMenu = () => {
   
   .mobile-nav-menu {
     padding-top: 4rem;
+    padding: 0.75rem;
+    padding-top: 4rem;
+  }
+  
+  .mobile-nav-link {
+    padding: 1rem;
+    min-height: 56px;
+  }
+  
+  .mobile-nav-label {
+    font-size: 0.95rem;
+  }
+  
+  .mobile-nav-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mobile-nav-menu {
+    padding-top: 3rem;
+  }
+  
+  .mobile-nav-link {
+    padding: 0.75rem 1rem;
+    min-height: 48px;
+  }
+  
+  .mobile-nav-content {
+    gap: 0.125rem;
   }
 }
 

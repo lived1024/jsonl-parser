@@ -59,6 +59,7 @@ const AdSenseContainer = defineAsyncComponent({
   align-items: center;
   margin: 1rem 0;
   min-height: 100px;
+  width: 100%;
 }
 
 .ad-placeholder,
@@ -79,5 +80,92 @@ const AdSenseContainer = defineAsyncComponent({
 .ad-loading p {
   margin: 0;
   font-size: 0.9rem;
+}
+
+/* Mobile-specific ad container styles */
+@media (max-width: 768px) {
+  .safe-ad-container {
+    margin: 1.5rem 0;
+    min-height: 120px;
+  }
+  
+  .ad-placeholder,
+  .ad-error-fallback,
+  .ad-loading {
+    padding: 1.5rem;
+    border-radius: 12px;
+    max-width: 100%;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ad-placeholder p,
+  .ad-error-fallback p,
+  .ad-loading p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .safe-ad-container {
+    margin: 1rem 0;
+    min-height: 100px;
+  }
+  
+  .ad-placeholder,
+  .ad-error-fallback,
+  .ad-loading {
+    padding: 1.25rem;
+    min-height: 100px;
+  }
+  
+  .ad-placeholder p,
+  .ad-error-fallback p,
+  .ad-loading p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive ad sizing */
+.safe-ad-container.header-ad {
+  min-height: 90px;
+}
+
+.safe-ad-container.content-ad {
+  min-height: 250px;
+}
+
+.safe-ad-container.sidebar-ad {
+  min-height: 200px;
+}
+
+@media (max-width: 768px) {
+  .safe-ad-container.header-ad {
+    min-height: 100px;
+  }
+  
+  .safe-ad-container.content-ad {
+    min-height: 200px;
+  }
+  
+  .safe-ad-container.sidebar-ad {
+    min-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .safe-ad-container.header-ad {
+    min-height: 80px;
+  }
+  
+  .safe-ad-container.content-ad {
+    min-height: 160px;
+  }
+  
+  .safe-ad-container.sidebar-ad {
+    min-height: 120px;
+  }
 }
 </style>

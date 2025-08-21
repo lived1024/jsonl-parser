@@ -114,15 +114,71 @@ defineProps<Props>()
   }
   
   .page-title {
-    font-size: 2rem;
+    font-size: 1.75rem;
+    line-height: 1.3;
   }
   
   .page-description {
     font-size: 1rem;
+    line-height: 1.5;
   }
   
   .page-body {
     padding: 1rem 0;
+  }
+  
+  .page-header {
+    padding: 1rem 0;
+  }
+  
+  /* Mobile-specific sidebar improvements */
+  .page-sidebar {
+    background: var(--color-background-secondary);
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content,
+  .page-container {
+    padding: 0 0.75rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-description {
+    font-size: 0.9rem;
+  }
+  
+  .page-header {
+    padding: 0.75rem 0;
+  }
+  
+  .page-body {
+    padding: 0.75rem 0;
+  }
+  
+  .page-container {
+    gap: 1rem;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .page-header {
+    padding: 0.75rem 0;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-description {
+    font-size: 0.9rem;
   }
 }
 </style>
