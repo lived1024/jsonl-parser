@@ -203,6 +203,50 @@ export default function useTreeNode(props: { node: ParsedNode }) {
     return (treeNodes[currentIndex - 1] as HTMLElement) || null
   }
 
+  // 접근성 레이블 생성
+  const getNodeAriaLabel = (): string => {
+    const parts = []
+    
+    if (props.node.key) {
+      parts.push(`키: ${props.node.key}`)
+    }
+    
+    parts.push(`타입: ${getTypeLabel(props.node.type)}`)
+    
+    if (hasChildren.value) {
+      const childCount = props.node.children!.length
+      parts.push(`${childCount}개 항목`)
+      parts.push(props.node.isExpanded ? '펼쳐짐' : '접혀짐')
+    } else {
+      parts.push(`값: ${displayValue.value}`)
+    }
+    
+    return parts.join(', ')
+  }
+
+  // 노드 설명 생성
+  const getNodeDescription = (): string => {
+    if (!hasChildren.value) return ''
+    
+    const childCount = props.node.children!.length
+    const typeLabel = getTypeLabel(props.node.type)
+    
+    return `${typeLabel} ${childCount}개 항목 포함. ${props.node.isExpanded ? '펼쳐진' : '접힌'} 상태`
+  }
+
+  // 타입 레이블 변환
+  const getTypeLabel = (type: DataType): string => {
+    const labels: Record<DataType, string> = {
+      [DataType.OBJECT]: '객체',
+      [DataType.ARRAY]: '배열',
+      [DataType.STRING]: '문자열',
+      [DataType.NUMBER]: '숫자',
+      [DataType.BOOLEAN]: '불린',
+      [DataType.NULL]: '널'
+    }
+    return labels[type] || '알 수 없음'
+  }
+
   return {
     isLoadingMore,
     shouldUseLazyLoading,
@@ -216,6 +260,8 @@ export default function useTreeNode(props: { node: ParsedNode }) {
     typeIcon,
     toggleNode,
     handleNodeClick,
-    handleKeydown
+    handleKeydown,
+    getNodeAriaLabel,
+    getNodeDescription
   }
 }

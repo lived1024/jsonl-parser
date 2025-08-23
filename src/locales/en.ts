@@ -175,13 +175,33 @@ Example:
     toggleLineBreaks: 'Toggle line break preservation',
     expandToLevel: 'Expand to level {{level}}',
     treeStructure: 'JSON tree structure',
+    skipToMainContent: 'Skip to main content',
     languageSelector: {
       label: 'Language selector',
       currentLanguage: 'Current language: {{language}}'
     },
     panelResizer: 'Panel resizer',
     jsonInput: 'JSON data input',
-    errorLocation: 'Error location information'
+    errorLocation: 'Error location information',
+    screenReader: {
+      nodeExpanded: 'Node expanded',
+      nodeCollapsed: 'Node collapsed',
+      allNodesExpanded: 'All nodes expanded',
+      allNodesCollapsed: 'All nodes collapsed',
+      parsingStarted: 'JSON parsing started',
+      parsingCompleted: 'JSON parsing completed',
+      parsingFailed: 'JSON parsing failed',
+      loadingMore: 'Loading more items',
+      loadingCompleted: 'Loading completed'
+    },
+    keyboardShortcuts: {
+      title: 'Keyboard Shortcuts',
+      global: 'Global Shortcuts',
+      tree: 'Tree Navigation',
+      treeNavigation: 'Tree Navigation',
+      help: 'Show Help',
+      close: 'Close'
+    }
   },
   help: {
     title: 'Help',
@@ -590,6 +610,7 @@ Example:
   },
   navigation: {
     mainLabel: 'Main navigation',
+    mobileMenuLabel: 'Mobile navigation menu',
     toggleMenu: 'Toggle menu',
     items: {
       parser: {

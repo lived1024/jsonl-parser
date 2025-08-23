@@ -1,5 +1,10 @@
 <template>
-  <div class="adsense-container" :class="containerClass">
+  <div 
+    class="adsense-container" 
+    :class="containerClass"
+    role="complementary"
+    :aria-label="showAd && !isBlocked ? '광고' : undefined"
+  >
     <div v-if="showAd && !isBlocked" class="ad-wrapper">
       <ins
         class="adsbygoogle"
@@ -9,15 +14,26 @@
         :data-ad-format="adFormat"
         :data-ad-layout="adLayout"
         :data-full-width-responsive="fullWidthResponsive"
+        aria-label="광고"
       ></ins>
     </div>
     
-    <div v-else-if="isBlocked" class="ad-blocked-message">
+    <div 
+      v-else-if="isBlocked" 
+      class="ad-blocked-message"
+      role="status"
+      aria-live="polite"
+    >
       <p>광고 차단기가 감지되었습니다</p>
       <small>이 사이트를 지원하려면 광고 차단기를 비활성화해 주세요</small>
     </div>
     
-    <div v-else-if="error" class="ad-error">
+    <div 
+      v-else-if="error" 
+      class="ad-error"
+      role="alert"
+      aria-live="assertive"
+    >
       <p>광고를 로드할 수 없습니다</p>
     </div>
   </div>

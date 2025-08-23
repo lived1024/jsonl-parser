@@ -1,0 +1,363 @@
+/* 접근성 스타일 */
+
+/* 스크린 리더 전용 텍스트 */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* 포커스 시에만 보이는 요소 */
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: inherit !important;
+  margin: inherit !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: inherit !important;
+}
+
+/* 고대비 모드 */
+.high-contrast {
+  --color-primary: #0000ff;
+  --color-secondary: #800080;
+  --color-success: #008000;
+  --color-warning: #ff8c00;
+  --color-error: #ff0000;
+  --color-text-primary: #000000;
+  --color-text-secondary: #333333;
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f0f0f0;
+  --color-border: #000000;
+}
+
+.high-contrast * {
+  border-color: var(--color-border) !important;
+}
+
+.high-contrast a {
+  color: var(--color-primary) !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast button {
+  border: 2px solid var(--color-border) !important;
+  background: var(--color-background-primary) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.high-contrast button:hover,
+.high-contrast button:focus {
+  background: var(--color-text-primary) !important;
+  color: var(--color-background-primary) !important;
+}
+
+/* 큰 텍스트 모드 */
+.large-text {
+  font-size: 1.25em !important;
+}
+
+.large-text h1 { font-size: 2.5rem !important; }
+.large-text h2 { font-size: 2rem !important; }
+.large-text h3 { font-size: 1.75rem !important; }
+.large-text h4 { font-size: 1.5rem !important; }
+.large-text h5 { font-size: 1.25rem !important; }
+.large-text h6 { font-size: 1.125rem !important; }
+
+.large-text button,
+.large-text input,
+.large-text select,
+.large-text textarea {
+  font-size: 1.125rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+/* 애니메이션 감소 */
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* 스크린 리더 최적화 */
+.screen-reader-optimized {
+  /* 더 명확한 포커스 표시 */
+}
+
+.screen-reader-optimized *:focus {
+  outline: 3px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* 포커스 표시 개선 */
+:focus {
+  outline: 2px solid var(--color-primary, #007bff);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary, #007bff);
+  outline-offset: 2px;
+}
+
+/* 터치 타겟 크기 보장 */
+button,
+input,
+select,
+textarea,
+a,
+[role="button"],
+[role="link"],
+[role="menuitem"],
+[role="option"],
+[role="tab"],
+[role="treeitem"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* 키보드 네비게이션 개선 */
+[tabindex="0"]:focus,
+[tabindex="-1"]:focus {
+  outline: 2px solid var(--color-primary, #007bff);
+  outline-offset: 2px;
+}
+
+/* 스킵 링크 스타일 */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+  font-size: 14px;
+  font-weight: 600;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* 키보드 도움말 모달 */
+.keyboard-help-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keyboard-help-modal .modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.keyboard-help-modal .modal-content {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  margin: 20px;
+}
+
+.keyboard-help-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.keyboard-help-modal .modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.keyboard-help-modal .modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  color: #6b7280;
+  border-radius: 4px;
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.keyboard-help-modal .modal-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.keyboard-help-modal .modal-body {
+  padding: 20px 24px;
+}
+
+.keyboard-help-modal .shortcut-section {
+  margin-bottom: 24px;
+}
+
+.keyboard-help-modal .shortcut-section:last-child {
+  margin-bottom: 0;
+}
+
+.keyboard-help-modal .shortcut-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.keyboard-help-modal .shortcut-list {
+  display: grid;
+  gap: 8px;
+}
+
+.keyboard-help-modal .shortcut-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.keyboard-help-modal .shortcut-key {
+  background: #374151;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.keyboard-help-modal .shortcut-desc {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-left: 12px;
+  flex: 1;
+}
+
+/* 다크 모드 지원 */
+@media (prefers-color-scheme: dark) {
+  .keyboard-help-modal .modal-content {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .keyboard-help-modal .modal-header {
+    border-bottom-color: #374151;
+  }
+  
+  .keyboard-help-modal .modal-header h2 {
+    color: #f9fafb;
+  }
+  
+  .keyboard-help-modal .modal-close {
+    color: #9ca3af;
+  }
+  
+  .keyboard-help-modal .modal-close:hover {
+    background: #374151;
+    color: #f3f4f6;
+  }
+  
+  .keyboard-help-modal .shortcut-section h3 {
+    color: #f3f4f6;
+  }
+  
+  .keyboard-help-modal .shortcut-item {
+    background: #374151;
+  }
+  
+  .keyboard-help-modal .shortcut-key {
+    background: #f9fafb;
+    color: #1f2937;
+  }
+  
+  .keyboard-help-modal .shortcut-desc {
+    color: #d1d5db;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .keyboard-help-modal .modal-content {
+    margin: 10px;
+    max-height: 90vh;
+  }
+  
+  .keyboard-help-modal .modal-header {
+    padding: 16px 20px 12px;
+  }
+  
+  .keyboard-help-modal .modal-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .keyboard-help-modal .modal-body {
+    padding: 16px 20px;
+  }
+  
+  .keyboard-help-modal .shortcut-section {
+    margin-bottom: 20px;
+  }
+  
+  .keyboard-help-modal .shortcut-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .keyboard-help-modal .shortcut-desc {
+    margin-left: 0;
+  }
+}
+
+/* 애니메이션 감소 설정 적용 */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link {
+    transition: none;
+  }
+  
+  .keyboard-help-modal .modal-backdrop {
+    backdrop-filter: none;
+  }
+}
