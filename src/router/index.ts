@@ -2,56 +2,86 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { AnalyticsService } from '../services/AnalyticsService'
 
+// Route-based code splitting with named chunks and preloading
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('../pages/HomePage.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../pages/HomePage.vue')
   },
   {
     path: '/learn',
     name: 'LearningCenter',
-    component: () => import('../pages/LearningCenterPage.vue')
+    component: () => import(/* webpackChunkName: "learning-center" */ '../pages/LearningCenterPage.vue'),
+    meta: {
+      preload: true, // Preload this route as it's commonly accessed
+      chunkGroup: 'learning'
+    }
   },
   {
     path: '/learn/:id',
     name: 'Tutorial',
-    component: () => import('../pages/TutorialPage.vue')
+    component: () => import(/* webpackChunkName: "tutorial" */ '../pages/TutorialPage.vue'),
+    meta: {
+      chunkGroup: 'learning'
+    }
   },
   {
     path: '/tools',
     name: 'ToolsHub',
-    component: () => import('../pages/ToolsHubPage.vue')
+    component: () => import(/* webpackChunkName: "tools-hub" */ '../pages/ToolsHubPage.vue'),
+    meta: {
+      preload: true, // Preload this route as it's commonly accessed
+      chunkGroup: 'tools'
+    }
   },
   {
     path: '/tools/:toolId',
     name: 'Tool',
-    component: () => import('../pages/ToolPage.vue')
+    component: () => import(/* webpackChunkName: "tool" */ '../pages/ToolPage.vue'),
+    meta: {
+      chunkGroup: 'tools'
+    }
   },
   {
     path: '/reference',
     name: 'ReferenceHub',
-    component: () => import('../pages/ReferenceHubPage.vue')
+    component: () => import(/* webpackChunkName: "reference-hub" */ '../pages/ReferenceHubPage.vue'),
+    meta: {
+      chunkGroup: 'reference'
+    }
   },
   {
     path: '/reference/:referenceId',
     name: 'Reference',
-    component: () => import('../pages/ReferencePage.vue')
+    component: () => import(/* webpackChunkName: "reference" */ '../pages/ReferencePage.vue'),
+    meta: {
+      chunkGroup: 'reference'
+    }
   },
   {
     path: '/samples',
     name: 'SampleLibrary',
-    component: () => import('../pages/SampleLibraryPage.vue')
+    component: () => import(/* webpackChunkName: "sample-library" */ '../pages/SampleLibraryPage.vue'),
+    meta: {
+      chunkGroup: 'content'
+    }
   },
   {
     path: '/info',
     name: 'InfoHub',
-    component: () => import('../pages/InfoHubPage.vue')
+    component: () => import(/* webpackChunkName: "info-hub" */ '../pages/InfoHubPage.vue'),
+    meta: {
+      chunkGroup: 'content'
+    }
   },
   {
     path: '/info/:guideId',
     name: 'InfoGuide',
-    component: () => import('../pages/InfoGuidePage.vue')
+    component: () => import(/* webpackChunkName: "info-guide" */ '../pages/InfoGuidePage.vue'),
+    meta: {
+      chunkGroup: 'content'
+    }
   }
 ]
 
@@ -60,7 +90,43 @@ const router = createRouter({
   routes
 })
 
-// Add analytics tracking to router
+// Preload critical routes for better performance
+function preloadCriticalRoutes() {
+  const criticalRoutes = routes.filter(route => route.meta?.preload)
+  
+  criticalRoutes.forEach(route => {
+    if (typeof route.component === 'function') {
+      // Preload the component in the background
+      setTimeout(() => {
+        (route.component as () => Promise<any>)().catch(() => {
+          // Silently handle preload errors
+        })
+      }, 100)
+    }
+  })
+}
+
+// Preload related chunks when navigating to a route group
+function preloadRelatedChunks(chunkGroup: string) {
+  const relatedRoutes = routes.filter(route => route.meta?.chunkGroup === chunkGroup)
+  
+  relatedRoutes.forEach(route => {
+    if (typeof route.component === 'function') {
+      setTimeout(() => {
+        (route.component as () => Promise<any>)().catch(() => {
+          // Silently handle preload errors
+        })
+      }, 200)
+    }
+  })
+}
+
+// Initialize preloading after router is ready
+router.isReady().then(() => {
+  preloadCriticalRoutes()
+})
+
+// Add analytics tracking and chunk preloading to router
 router.beforeEach((to, from, next) => {
   // Track navigation events
   const analyticsService = AnalyticsService.getInstance()
@@ -90,6 +156,11 @@ router.beforeEach((to, from, next) => {
         }
       })
     }
+  }
+
+  // Preload related chunks when navigating to a new chunk group
+  if (to.meta?.chunkGroup && to.meta.chunkGroup !== from.meta?.chunkGroup) {
+    preloadRelatedChunks(to.meta.chunkGroup as string)
   }
   
   next()
