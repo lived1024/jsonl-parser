@@ -541,19 +541,175 @@ watch(jsonInput, () => {
 }
 
 @media (max-width: 768px) {
+  .tool-header {
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .tool-header h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+  
+  .tool-header p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
   .section-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: 0.75rem;
+  }
+  
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .secondary-button {
+    padding: 0.625rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+    border-radius: 8px;
   }
   
   .json-input {
-    height: 200px;
+    height: 240px;
+    font-size: 14px;
+    padding: 1rem;
+    border-radius: 12px;
+    border-width: 2px;
+  }
+  
+  .status-indicator {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+  
+  .result-summary {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+  }
+  
+  .errors-list {
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  
+  .error-item {
+    padding: 1rem 0;
+    gap: 1rem;
+  }
+  
+  .error-message {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  
+  .error-location {
+    font-size: 0.85rem;
+  }
+  
+  .success-message {
+    padding: 1.25rem;
+    border-radius: 12px;
+    gap: 1rem;
+  }
+  
+  .success-title {
+    font-size: 1rem;
+  }
+  
+  .success-details {
+    font-size: 0.9rem;
+  }
+  
+  .empty-state {
+    padding: 2.5rem 1rem;
+  }
+  
+  .empty-state svg {
+    width: 40px;
+    height: 40px;
   }
   
   :deep(.tool-ad) {
     min-height: 200px;
-    padding: 0.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tool-header {
+    margin-bottom: 1rem;
+  }
+  
+  .tool-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .tool-header p {
+    font-size: 0.9rem;
+  }
+  
+  .json-input {
+    height: 200px;
+    font-size: 13px;
+    padding: 0.875rem;
+  }
+  
+  .secondary-button {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.85rem;
+    min-height: 40px;
+  }
+  
+  .status-indicator {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .errors-list {
+    padding: 1rem;
+  }
+  
+  .error-item {
+    padding: 0.75rem 0;
+  }
+  
+  .success-message {
+    padding: 1rem;
+  }
+  
+  .empty-state {
+    padding: 2rem 0.75rem;
+  }
+  
+  :deep(.tool-ad) {
+    min-height: 160px;
+    padding: 0.75rem;
+  }
+}
+
+/* Touch-specific improvements */
+@media (hover: none) and (pointer: coarse) {
+  .secondary-button:hover {
+    transform: none;
+  }
+  
+  .secondary-button:active {
+    transform: scale(0.98);
+  }
+  
+  .json-input {
+    /* Better touch scrolling */
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

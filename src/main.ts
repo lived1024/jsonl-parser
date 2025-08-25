@@ -4,6 +4,7 @@ import router from './router'
 import './styles/variables.css'
 import './styles/global.css'
 import './styles/components.css'
+import './styles/accessibility.css'
 import 'highlight.js/styles/github.css'
 import App from './App.vue'
 
