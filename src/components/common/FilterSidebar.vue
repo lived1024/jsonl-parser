@@ -199,4 +199,77 @@ const clearAll = () => {
     margin-bottom: 1rem;
   }
 }
+
+@media (max-width: 768px) {
+  .filter-sidebar {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .filter-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .filter-header h3 {
+    font-size: 1.125rem;
+  }
+  
+  .clear-button {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  .clear-button:hover {
+    background: var(--color-primary-dark);
+  }
+  
+  .filter-option {
+    padding: 0.5rem 0;
+    gap: 1rem;
+  }
+  
+  .checkmark {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .option-label {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  
+  .section-title {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-sidebar {
+    padding: 0.75rem;
+  }
+  
+  .filter-header h3 {
+    font-size: 1rem;
+  }
+  
+  .clear-button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+  }
+  
+  .option-label {
+    font-size: 0.95rem;
+  }
+}
 </style>

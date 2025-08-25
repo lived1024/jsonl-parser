@@ -744,10 +744,142 @@ watch(inputFormat, validateInput)
 }
 
 @media (max-width: 768px) {
+  .tool-header {
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+  }
+  
+  .tool-header h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+  
+  .tool-header p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
   .section-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .format-selector {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .format-selector label {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+  
+  .data-input {
+    height: 240px;
+    font-size: 14px;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .input-status {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+  
+  .options-section {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+  
+  .options-grid {
+    gap: 1.25rem;
+  }
+  
+  .option-group label {
+    font-size: 0.95rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .option-group select,
+  .option-group input[type="text"] {
+    padding: 0.75rem;
+    font-size: 16px; /* Prevent zoom on iOS */
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  
+  .convert-actions {
+    gap: 0.75rem;
+  }
+  
+  .primary-button {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    min-height: 48px;
+  }
+  
+  .secondary-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  
+  .output-actions {
+    flex-direction: column;
     gap: 0.5rem;
+  }
+  
+  .output-display {
+    max-height: 300px;
+    font-size: 13px;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .output-info {
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+  }
+  
+  .error-message {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+  
+  .empty-output {
+    padding: 2.5rem 1rem;
+  }
+  
+  .empty-output svg {
+    width: 40px;
+    height: 40px;
+  }
+  
+  :deep(.tool-ad) {
+    min-height: 200px;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tool-header {
+    margin-bottom: 1rem;
+  }
+  
+  .tool-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .tool-header p {
+    font-size: 0.9rem;
   }
   
   .format-selector {
@@ -757,15 +889,70 @@ watch(inputFormat, validateInput)
   
   .data-input {
     height: 200px;
+    font-size: 13px;
+    padding: 0.875rem;
   }
   
-  .output-actions {
-    flex-direction: column;
+  .options-section {
+    padding: 1rem;
+  }
+  
+  .options-grid {
+    gap: 1rem;
+  }
+  
+  .option-group select,
+  .option-group input[type="text"] {
+    padding: 0.625rem;
+    min-height: 40px;
+  }
+  
+  .primary-button {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+  }
+  
+  .secondary-button {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9rem;
+    min-height: 40px;
+  }
+  
+  .output-display {
+    max-height: 250px;
+    font-size: 12px;
+    padding: 0.875rem;
+  }
+  
+  .empty-output {
+    padding: 2rem 0.75rem;
   }
   
   :deep(.tool-ad) {
-    min-height: 200px;
-    padding: 0.5rem;
+    min-height: 160px;
+    padding: 0.75rem;
+  }
+}
+
+/* Touch-specific improvements */
+@media (hover: none) and (pointer: coarse) {
+  .primary-button:hover,
+  .secondary-button:hover {
+    transform: none;
+  }
+  
+  .primary-button:active {
+    transform: scale(0.98);
+  }
+  
+  .secondary-button:active {
+    transform: scale(0.98);
+  }
+  
+  .data-input,
+  .output-display {
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

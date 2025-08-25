@@ -230,12 +230,68 @@ defineEmits<Emits>()
 
 @media (max-width: 768px) {
   .item-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+    /* Better touch target */
+    min-height: 120px;
+  }
+  
+  .item-card:hover {
+    transform: translateY(-1px);
+  }
+  
+  .item-card:active {
+    transform: scale(0.98);
+  }
+  
+  .card-header {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-icon {
+    padding: 0.625rem;
+    border-radius: 8px;
+  }
+  
+  .card-title {
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+  
+  .card-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .card-meta {
+    gap: 0.375rem;
+  }
+  
+  .meta-item {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    /* Better touch targets for meta items */
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .item-card {
     padding: 1rem;
+    min-height: 100px;
   }
   
   .card-header {
     gap: 0.75rem;
     margin-bottom: 0.75rem;
+  }
+  
+  .card-icon {
+    padding: 0.5rem;
   }
   
   .card-title {
@@ -244,6 +300,34 @@ defineEmits<Emits>()
   
   .card-description {
     font-size: 0.85rem;
+  }
+  
+  .meta-item {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    min-height: 26px;
+  }
+  
+  .card-content {
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Touch device specific improvements */
+@media (hover: none) and (pointer: coarse) {
+  .item-card {
+    /* Remove hover effects on touch devices */
+    transition: transform 0.2s ease;
+  }
+  
+  .item-card:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .item-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
 </style>

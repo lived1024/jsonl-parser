@@ -175,13 +175,33 @@ export default {
     toggleLineBreaks: '줄바꿈 유지 토글',
     expandToLevel: '{{level}} 레벨까지 펼치기',
     treeStructure: 'JSON 트리 구조',
+    skipToMainContent: '메인 콘텐츠로 건너뛰기',
     languageSelector: {
       label: '언어 선택기',
       currentLanguage: '현재 언어: {{language}}'
     },
     panelResizer: '패널 크기 조정',
     jsonInput: 'JSON 데이터 입력',
-    errorLocation: '오류 위치 정보'
+    errorLocation: '오류 위치 정보',
+    screenReader: {
+      nodeExpanded: '노드가 펼쳐졌습니다',
+      nodeCollapsed: '노드가 접혀졌습니다',
+      allNodesExpanded: '모든 노드가 펼쳐졌습니다',
+      allNodesCollapsed: '모든 노드가 접혀졌습니다',
+      parsingStarted: 'JSON 파싱을 시작합니다',
+      parsingCompleted: 'JSON 파싱이 완료되었습니다',
+      parsingFailed: 'JSON 파싱에 실패했습니다',
+      loadingMore: '더 많은 항목을 로딩 중입니다',
+      loadingCompleted: '로딩이 완료되었습니다'
+    },
+    keyboardShortcuts: {
+      title: '키보드 단축키',
+      global: '전역 단축키',
+      tree: '트리 네비게이션',
+      treeNavigation: '트리 내 네비게이션',
+      help: '도움말 표시',
+      close: '닫기'
+    }
   },
   help: {
     title: '도움말',
@@ -827,6 +847,7 @@ export default {
   },
   navigation: {
     mainLabel: '주요 네비게이션',
+    mobileMenuLabel: '모바일 네비게이션 메뉴',
     toggleMenu: '메뉴 열기/닫기',
     items: {
       parser: {
