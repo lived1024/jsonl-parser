@@ -13,6 +13,8 @@
       role="treeitem"
       :aria-expanded="hasChildren ? node.isExpanded : undefined"
       :aria-level="node.depth + 1"
+      :aria-label="getNodeAriaLabel()"
+      :aria-describedby="hasChildren ? `node-${node.id}-desc` : undefined"
     >
       <!-- 확장/축소 버튼 -->
       <button 
@@ -21,6 +23,7 @@
         @click.stop="toggleNode"
         :aria-label="node.isExpanded ? '축소' : '확장'"
         tabindex="-1"
+        :aria-expanded="node.isExpanded"
       >
         <svg 
           width="12" 
@@ -30,14 +33,15 @@
           stroke="currentColor" 
           stroke-width="2"
           :class="{ 'rotated': node.isExpanded }"
+          aria-hidden="true"
         >
           <polyline points="3,4.5 6,7.5 9,4.5"/>
         </svg>
       </button>
-      <div v-else class="expand-spacer"></div>
+      <div v-else class="expand-spacer" aria-hidden="true"></div>
       
       <!-- 타입 아이콘 -->
-      <div class="type-icon" :class="`type-${node.type}`">
+      <div class="type-icon" :class="`type-${node.type}`" aria-hidden="true">
         <component :is="typeIcon" />
       </div>
       
@@ -51,8 +55,13 @@
       </span>
       
       <!-- 컬렉션 크기 표시 -->
-      <span v-if="collectionSize" class="collection-size">
+      <span v-if="collectionSize" class="collection-size" aria-hidden="true">
         {{ collectionSize }}
+      </span>
+      
+      <!-- 스크린 리더용 설명 -->
+      <span v-if="hasChildren" :id="`node-${node.id}-desc`" class="sr-only">
+        {{ getNodeDescription() }}
       </span>
     </div>
     
@@ -111,7 +120,9 @@ const {
   typeIcon,
   toggleNode,
   handleNodeClick,
-  handleKeydown
+  handleKeydown,
+  getNodeAriaLabel,
+  getNodeDescription
 } = useTreeNode(props)
 </script>
 

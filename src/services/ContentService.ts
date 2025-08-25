@@ -1360,32 +1360,6 @@ class CacheMetrics {
     return await this.getGuide(tutorialId)
   }
 
-  async getTutorials(): Promise<Tutorial[]> {
-    const categories = await this.getGuideCategories()
-    const tutorials: Tutorial[] = []
-
-    for (const category of categories) {
-      for (const guideId of category.guides) {
-        const guide = await this.getGuide(guideId)
-        if (guide) {
-          tutorials.push({
-            id: guide.id,
-            title: guide.metadata.title,
-            description: guide.metadata.description,
-            difficulty: guide.metadata.difficulty,
-            category: guide.metadata.category,
-            tags: guide.metadata.tags,
-            estimatedReadTime: guide.metadata.estimatedReadTime,
-            lastUpdated: guide.metadata.lastUpdated,
-            author: guide.metadata.author
-          })
-        }
-      }
-    }
-
-    return tutorials
-  }
-
   renderMarkdown(content: string): string {
     // marked를 사용하여 마크다운을 HTML로 변환
     return marked(content) as string

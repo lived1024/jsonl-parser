@@ -1,16 +1,27 @@
 <template>
   <nav class="main-navigation" role="navigation" :aria-label="t('navigation.mainLabel')">
+    <!-- Skip Link -->
+    <a 
+      href="#main-content" 
+      class="skip-link"
+      @click="skipToMainContent"
+    >
+      {{ t('accessibility.skipToMainContent') }}
+    </a>
+
     <div class="nav-container">
       <!-- Desktop Navigation -->
-      <ul class="nav-menu desktop-nav" v-if="!isMobile">
-        <li v-for="item in navigationItems" :key="item.path" class="nav-item">
+      <ul class="nav-menu desktop-nav" v-if="!isMobile" role="menubar">
+        <li v-for="item in navigationItems" :key="item.path" class="nav-item" role="none">
           <router-link 
             :to="item.path" 
             class="nav-link"
             :class="{ active: isActive(item.path) }"
             :aria-current="isActive(item.path) ? 'page' : undefined"
+            role="menuitem"
+            :aria-label="`${item.label} - ${item.description}`"
           >
-            <component :is="item.icon" :size="18" class="nav-icon" />
+            <component :is="item.icon" :size="18" class="nav-icon" aria-hidden="true" />
             <span class="nav-label">{{ item.label }}</span>
           </router-link>
         </li>
@@ -37,20 +48,24 @@
       id="mobile-menu"
       class="mobile-nav-menu"
       role="menu"
+      :aria-label="t('navigation.mobileMenuLabel')"
     >
-      <ul class="mobile-nav-list">
-        <li v-for="item in navigationItems" :key="item.path" class="mobile-nav-item">
+      <ul class="mobile-nav-list" role="none">
+        <li v-for="item in navigationItems" :key="item.path" class="mobile-nav-item" role="none">
           <router-link 
             :to="item.path" 
             class="mobile-nav-link"
             :class="{ active: isActive(item.path) }"
             @click="closeMobileMenu"
+            @keydown="handleMobileMenuKeydown"
             role="menuitem"
+            :aria-current="isActive(item.path) ? 'page' : undefined"
+            :aria-label="`${item.label} - ${item.description}`"
           >
-            <component :is="item.icon" :size="20" class="mobile-nav-icon" />
+            <component :is="item.icon" :size="20" class="mobile-nav-icon" aria-hidden="true" />
             <div class="mobile-nav-content">
               <span class="mobile-nav-label">{{ item.label }}</span>
-              <span class="mobile-nav-description">{{ item.description }}</span>
+              <span class="mobile-nav-description" aria-hidden="true">{{ item.description }}</span>
             </div>
           </router-link>
         </li>
@@ -151,11 +166,74 @@ const toggleMobileMenu = () => {
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
+
+// 접근성 기능
+const skipToMainContent = (event: Event) => {
+  event.preventDefault()
+  const mainContent = document.querySelector('main, [role="main"], #main-content') as HTMLElement
+  if (mainContent) {
+    mainContent.focus()
+    mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+}
+
+const handleMobileMenuKeydown = (event: KeyboardEvent) => {
+  const menuItems = Array.from(document.querySelectorAll('.mobile-nav-link')) as HTMLElement[]
+  const currentIndex = menuItems.indexOf(event.target as HTMLElement)
+  
+  switch (event.key) {
+    case 'ArrowDown':
+      event.preventDefault()
+      const nextIndex = (currentIndex + 1) % menuItems.length
+      menuItems[nextIndex]?.focus()
+      break
+    case 'ArrowUp':
+      event.preventDefault()
+      const prevIndex = currentIndex === 0 ? menuItems.length - 1 : currentIndex - 1
+      menuItems[prevIndex]?.focus()
+      break
+    case 'Escape':
+      event.preventDefault()
+      closeMobileMenu()
+      // 모바일 메뉴 버튼에 포커스 복원
+      const menuButton = document.querySelector('.mobile-menu-button') as HTMLElement
+      menuButton?.focus()
+      break
+    case 'Home':
+      event.preventDefault()
+      menuItems[0]?.focus()
+      break
+    case 'End':
+      event.preventDefault()
+      menuItems[menuItems.length - 1]?.focus()
+      break
+  }
+}
 </script>
 
 <style scoped>
 .main-navigation {
   position: relative;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+  font-size: 14px;
+  font-weight: 600;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
 }
 
 .nav-container {
@@ -249,8 +327,8 @@ const closeMobileMenu = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   background: rgba(255, 255, 255, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
@@ -259,11 +337,23 @@ const closeMobileMenu = () => {
   transition: all 0.3s ease;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  /* Touch-friendly sizing */
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .mobile-menu-button:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: translateY(-1px);
+}
+
+.mobile-menu-button:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.mobile-menu-button:active {
+  transform: scale(0.95);
 }
 
 .mobile-menu-overlay {
@@ -289,6 +379,9 @@ const closeMobileMenu = () => {
   padding-top: 5rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   animation: slideDown 0.3s ease-out;
+  max-height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes slideDown {
@@ -319,7 +412,7 @@ const closeMobileMenu = () => {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1.25rem;
   border-radius: 1rem;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.9);
@@ -328,6 +421,9 @@ const closeMobileMenu = () => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  /* Touch-friendly sizing */
+  min-height: 60px;
+  position: relative;
 }
 
 .mobile-nav-link:hover,
@@ -335,6 +431,15 @@ const closeMobileMenu = () => {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   transform: translateX(4px);
+}
+
+.mobile-nav-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.mobile-nav-link:active {
+  transform: scale(0.98) translateX(2px);
 }
 
 .mobile-nav-icon {
@@ -372,6 +477,37 @@ const closeMobileMenu = () => {
   
   .mobile-nav-menu {
     padding-top: 4rem;
+    padding: 0.75rem;
+    padding-top: 4rem;
+  }
+  
+  .mobile-nav-link {
+    padding: 1rem;
+    min-height: 56px;
+  }
+  
+  .mobile-nav-label {
+    font-size: 0.95rem;
+  }
+  
+  .mobile-nav-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Landscape mobile adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mobile-nav-menu {
+    padding-top: 3rem;
+  }
+  
+  .mobile-nav-link {
+    padding: 0.75rem 1rem;
+    min-height: 48px;
+  }
+  
+  .mobile-nav-content {
+    gap: 0.125rem;
   }
 }
 
