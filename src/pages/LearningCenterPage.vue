@@ -117,9 +117,20 @@ import ItemGrid from '../components/common/ItemGrid.vue'
 import ItemCard from '../components/common/ItemCard.vue'
 import SafeAdContainer from '../components/tools/SafeAdContainer.vue'
 import { ContentService, type Tutorial } from '../services/ContentService'
+import { useSEO } from '../composables/useSEO'
+import { useI18n } from '../composables/useI18n'
 
 const router = useRouter()
 const contentService = ContentService.getInstance()
+const { t } = useI18n()
+
+// SEO 메타데이터 설정 (임시 비활성화)
+// const { generateBreadcrumbStructuredData } = useSEO({
+//   title: t('seo.learn.title'),
+//   description: t('seo.learn.description'),
+//   keywords: ['JSON', 'JSONL', 'tutorial', 'learning', 'guide', 'education', 'developer', 'training'],
+//   ogType: 'website'
+// })
 
 // 상태 관리
 const tutorials = ref<Tutorial[]>([])
@@ -179,6 +190,12 @@ const progress = ref<LearningProgress>({
 
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(async () => {
+  // Structured data 설정 (임시 비활성화)
+  // const structuredData = generateBreadcrumbStructuredData([
+  //   { name: 'Home', url: '/' },
+  //   { name: 'Learning Center', url: '/learn' }
+  // ])
+  
   await loadTutorials()
   loadProgress()
   
