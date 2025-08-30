@@ -1,0 +1,44 @@
+{
+  "report": {
+    "title": "사용자 행동 분석 리포트",
+    "period": {
+      "start": "2024-01-01",
+      "end": "2024-01-31"
+    },
+    "generated_at": "2024-02-01T10:00:00Z"
+  },
+  "overview": {
+    "total_users": 15420,
+    "active_users": 12336,
+    "new_users": 2184,
+    "retention_rate": 0.8,
+    "bounce_rate": 0.25,
+    "average_session_duration": 420
+  },
+  "demographics": {
+    "age_groups": [
+      {"range": "18-24", "count": 3084, "percentage": 20.0},
+      {"range": "25-34", "count": 6168, "percentage": 40.0},
+      {"range": "35-44", "count": 4626, "percentage": 30.0},
+      {"range": "45+", "count": 1542, "percentage": 10.0}
+    ],
+    "locations": [
+      {"country": "KR", "city": "서울", "users": 7710, "percentage": 50.0},
+      {"country": "KR", "city": "부산", "users": 1542, "percentage": 10.0},
+      {"country": "KR", "city": "대구", "users": 1234, "percentage": 8.0},
+      {"country": "KR", "city": "기타", "users": 4934, "percentage": 32.0}
+    ]
+  },
+  "behavior": {
+    "top_pages": [
+      {"path": "/", "views": 45620, "unique_visitors": 12340},
+      {"path": "/products", "views": 23810, "unique_visitors": 8920},
+      {"path": "/about", "views": 15420, "unique_visitors": 6180}
+    ],
+    "devices": [
+      {"type": "mobile", "users": 9252, "percentage": 60.0},
+      {"type": "desktop", "users": 4626, "percentage": 30.0},
+      {"type": "tablet", "users": 1542, "percentage": 10.0}
+    ]
+  }
+}

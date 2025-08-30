@@ -1,0 +1,50 @@
+{
+  "samples": [
+    {
+      "id": "user-management",
+      "name": "사용자 관리 API 응답",
+      "category": "api-responses",
+      "file": "api-responses/user-management.json",
+      "description": "사용자 정보 조회 API의 표준 응답 형식입니다.",
+      "use_cases": ["사용자 프로필 페이지", "관리자 대시보드"],
+      "complexity": "medium",
+      "size": "small"
+    },
+    {
+      "id": "e-commerce-product",
+      "name": "전자상거래 제품 정보",
+      "category": "api-responses", 
+      "file": "api-responses/e-commerce-product.json",
+      "description": "온라인 쇼핑몰의 제품 상세 정보 API 응답입니다.",
+      "complexity": "medium",
+      "size": "medium"
+    },
+    {
+      "id": "social-media-feed",
+      "name": "소셜 미디어 피드",
+      "category": "api-responses",
+      "file": "api-responses/social-media-feed.json", 
+      "description": "소셜 미디어 플랫폼의 피드 데이터입니다.",
+      "complexity": "medium",
+      "size": "medium"
+    },
+    {
+      "id": "web-app-config",
+      "name": "웹 애플리케이션 설정",
+      "category": "configurations",
+      "file": "configurations/web-app-config.json",
+      "description": "프로덕션 웹 애플리케이션의 설정 파일입니다.",
+      "complexity": "medium", 
+      "size": "medium"
+    },
+    {
+      "id": "build-config",
+      "name": "빌드 도구 설정",
+      "category": "configurations",
+      "file": "configurations/build-config.json",
+      "description": "모던 프론트엔드 프로젝트의 빌드 설정입니다.",
+      "complexity": "simple",
+      "size": "medium"
+    }
+  ]
+}

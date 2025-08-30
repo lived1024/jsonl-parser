@@ -1,0 +1,57 @@
+{
+  "app": {
+    "name": "MyWebApp",
+    "version": "2.1.0",
+    "environment": "production",
+    "debug": false,
+    "timezone": "Asia/Seoul",
+    "locale": "ko-KR"
+  },
+  "server": {
+    "host": "0.0.0.0",
+    "port": 3000,
+    "ssl": {
+      "enabled": true,
+      "cert_path": "/etc/ssl/cert.pem",
+      "key_path": "/etc/ssl/key.pem"
+    },
+    "cors": {
+      "enabled": true,
+      "origins": ["https://example.com", "https://app.example.com"],
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "credentials": true
+    }
+  },
+  "database": {
+    "primary": {
+      "type": "postgresql",
+      "host": "db.example.com",
+      "port": 5432,
+      "name": "myapp_prod",
+      "ssl": true,
+      "pool": {
+        "min": 5,
+        "max": 20,
+        "idle_timeout": 30000
+      }
+    },
+    "redis": {
+      "host": "redis.example.com",
+      "port": 6379,
+      "db": 0,
+      "ttl": 3600
+    }
+  },
+  "features": {
+    "authentication": {
+      "enabled": true,
+      "providers": ["google", "github", "email"],
+      "session_timeout": 3600
+    },
+    "analytics": {
+      "enabled": true,
+      "provider": "google_analytics",
+      "tracking_id": "GA-XXXXXXXX"
+    }
+  }
+}

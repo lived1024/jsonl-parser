@@ -1,0 +1,55 @@
+{
+  "success": true,
+  "data": {
+    "product": {
+      "id": "PROD-001",
+      "sku": "WE-001-BLK",
+      "name": "무선 이어폰",
+      "description": "고품질 무선 이어폰으로 뛰어난 음질을 제공합니다",
+      "category": {
+        "id": 10,
+        "name": "전자제품",
+        "path": ["전자제품", "오디오", "이어폰"]
+      },
+      "pricing": {
+        "base_price": 150000,
+        "sale_price": 135000,
+        "currency": "KRW",
+        "discount": {
+          "type": "percentage",
+          "value": 10,
+          "valid_until": "2024-12-31T23:59:59Z"
+        }
+      },
+      "inventory": {
+        "in_stock": true,
+        "quantity": 50,
+        "warehouse_locations": ["SEOUL-01", "BUSAN-01"]
+      },
+      "specifications": {
+        "color": "블랙",
+        "weight": "45g",
+        "battery_life": "24시간",
+        "connectivity": ["Bluetooth 5.0", "USB-C"],
+        "features": [
+          "노이즈 캔슬링",
+          "방수 기능 (IPX4)",
+          "터치 컨트롤"
+        ]
+      },
+      "media": {
+        "images": [
+          {
+            "url": "https://example.com/products/prod-001/main.jpg",
+            "alt": "무선 이어폰 메인 이미지",
+            "type": "main"
+          }
+        ]
+      },
+      "reviews": {
+        "average_rating": 4.5,
+        "total_reviews": 128
+      }
+    }
+  }
+}
