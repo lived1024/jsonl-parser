@@ -29,11 +29,20 @@
       "size": "medium"
     },
     {
+      "id": "app-config",
+      "name": "기본 애플리케이션 설정",
+      "category": "configurations",
+      "file": "configurations/app-config.json",
+      "description": "기본적인 애플리케이션 설정 파일 예제입니다.",
+      "complexity": "simple",
+      "size": "small"
+    },
+    {
       "id": "web-app-config",
-      "name": "웹 애플리케이션 설정",
+      "name": "고급 웹 애플리케이션 설정",
       "category": "configurations",
       "file": "configurations/web-app-config.json",
-      "description": "프로덕션 웹 애플리케이션의 설정 파일입니다.",
+      "description": "프로덕션 웹 애플리케이션의 고급 설정 파일입니다.",
       "complexity": "medium", 
       "size": "medium"
     },
@@ -44,6 +53,51 @@
       "file": "configurations/build-config.json",
       "description": "모던 프론트엔드 프로젝트의 빌드 설정입니다.",
       "complexity": "simple",
+      "size": "medium"
+    },
+    {
+      "id": "sales-data",
+      "name": "매출 데이터 분석",
+      "category": "datasets",
+      "file": "datasets/sales-data.json",
+      "description": "월간 매출 분석 리포트 데이터입니다.",
+      "complexity": "medium",
+      "size": "medium"
+    },
+    {
+      "id": "user-analytics",
+      "name": "사용자 분석 데이터",
+      "category": "datasets",
+      "file": "datasets/user-analytics.json",
+      "description": "사용자 행동 분석 리포트입니다.",
+      "complexity": "medium",
+      "size": "medium"
+    },
+    {
+      "id": "weather-data",
+      "name": "날씨 데이터",
+      "category": "datasets",
+      "file": "datasets/weather-data.json",
+      "description": "날씨 API 응답 형식의 예제 데이터입니다.",
+      "complexity": "simple",
+      "size": "small"
+    },
+    {
+      "id": "log-entries",
+      "name": "로그 엔트리 (JSONL)",
+      "category": "datasets",
+      "file": "datasets/log-entries.jsonl",
+      "description": "애플리케이션 로그 데이터 (JSONL 형식)입니다.",
+      "complexity": "simple",
+      "size": "small"
+    },
+    {
+      "id": "error-responses",
+      "name": "API 오류 응답",
+      "category": "api-responses",
+      "file": "api-responses/error-responses.json",
+      "description": "다양한 API 오류 응답 패턴 모음입니다.",
+      "complexity": "medium",
       "size": "medium"
     }
   ]
