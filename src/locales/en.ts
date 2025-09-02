@@ -155,6 +155,11 @@ Example:
     loading: {
       title: 'Processing file...',
       description: 'Reading and parsing the file'
+    },
+    errors: {
+      fileReadFailed: 'Failed to read file',
+      fileReadAsTextFailed: 'Failed to read file as text',
+      unsupportedFileType: 'Only JSON and JSONL files are supported'
     }
   },
   validation: {

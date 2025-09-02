@@ -155,6 +155,11 @@ export default {
     loading: {
       title: '파일 처리 중...',
       description: '파일을 읽고 파싱하는 중입니다'
+    },
+    errors: {
+      fileReadFailed: '파일을 읽을 수 없습니다',
+      fileReadAsTextFailed: '파일을 텍스트로 읽는데 실패했습니다',
+      unsupportedFileType: 'JSON과 JSONL 파일만 지원됩니다'
     }
   },
   validation: {
