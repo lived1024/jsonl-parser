@@ -16,7 +16,10 @@
   - 파일 로딩 메시지와 에디터 관련 텍스트 다국어화
   - _Requirements: 1.1_
 
-- [ ] 1.2 OutputPanel 컴포넌트 다국어화
+- [x] 1.2 OutputPanel 컴포넌트 다국어화
+
+
+
   - OutputPanel.vue에서 useI18n 컴포저블 import 및 설정
   - 트리 제어 버튼 텍스트(Expand All, Collapse All 등) 다국어화
   - 통계 정보 라벨(nodes, levels, lines) 다국어화
