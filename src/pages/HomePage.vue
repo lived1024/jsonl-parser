@@ -42,14 +42,17 @@ import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApp } from '../composables/useApp'
 import { useJsonTreeStore } from '../stores/jsonTreeStore'
+import { useSEO } from '../composables/useSEO'
+import { useI18n } from '../composables/useI18n'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PanelResizer from '../components/ui/PanelResizer.vue'
 import InputPanel from '../components/feature/InputPanel.vue'
 import OutputPanel from '../components/feature/OutputPanel.vue'
-import AdSenseContainer from '../components/common/AdSenseContainer.vue'
+// import AdSenseContainer from '../components/common/AdSenseContainer.vue'
 
 const route = useRoute()
 const jsonTreeStore = useJsonTreeStore()
+const { t } = useI18n()
 
 const {
   isMobile,
@@ -57,8 +60,20 @@ const {
   handlePanelResize
 } = useApp()
 
+// SEO 메타데이터 설정 (임시 비활성화)
+// const { generateWebApplicationStructuredData } = useSEO({
+//   title: t('seo.home.title'),
+//   description: t('seo.home.description'),
+//   keywords: ['JSON', 'JSONL', 'parser', 'visualizer', 'tree', 'viewer', 'developer', 'tools', 'data', 'validation'],
+//   ogType: 'website'
+// })
+
 // 컴포넌트 마운트 시 쿼리 파라미터 및 예제 데이터 확인
 onMounted(() => {
+  // Structured data 설정 (임시 비활성화)
+  // const structuredData = generateWebApplicationStructuredData()
+  // 필요시 setMetadata로 structured data 업데이트 가능
+  
   // URL 쿼리 파라미터에서 데이터 로드
   const dataParam = route.query.data
   if (dataParam && typeof dataParam === 'string') {
@@ -77,7 +92,6 @@ onMounted(() => {
     try {
       // localStorage에서 예제 데이터 로드
       const exampleData = localStorage.getItem('parser-example-data')
-      const exampleType = localStorage.getItem('parser-example-type')
       const exampleTitle = localStorage.getItem('parser-example-title')
       
       if (exampleData) {
@@ -90,7 +104,6 @@ onMounted(() => {
         
         // 사용 후 localStorage 정리
         localStorage.removeItem('parser-example-data')
-        localStorage.removeItem('parser-example-type')
         localStorage.removeItem('parser-example-title')
       }
     } catch (error) {

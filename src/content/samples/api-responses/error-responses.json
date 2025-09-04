@@ -1,0 +1,96 @@
+{
+  "examples": [
+    {
+      "type": "validation_error",
+      "status": 400,
+      "response": {
+        "success": false,
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "입력 데이터가 유효하지 않습니다",
+          "details": [
+            {
+              "field": "email",
+              "code": "INVALID_FORMAT",
+              "message": "이메일 형식이 올바르지 않습니다",
+              "value": "invalid-email"
+            },
+            {
+              "field": "age",
+              "code": "OUT_OF_RANGE", 
+              "message": "나이는 0보다 커야 합니다",
+              "value": -5
+            }
+          ]
+        },
+        "meta": {
+          "timestamp": "2024-01-15T10:30:00Z",
+          "request_id": "req-abc123"
+        }
+      }
+    },
+    {
+      "type": "authentication_error",
+      "status": 401,
+      "response": {
+        "success": false,
+        "error": {
+          "code": "UNAUTHORIZED",
+          "message": "인증이 필요합니다",
+          "details": {
+            "auth_url": "https://api.example.com/auth/login",
+            "supported_methods": ["Bearer Token", "API Key"]
+          }
+        },
+        "meta": {
+          "timestamp": "2024-01-15T10:30:00Z",
+          "request_id": "req-def456"
+        }
+      }
+    },
+    {
+      "type": "not_found_error",
+      "status": 404,
+      "response": {
+        "success": false,
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "요청한 리소스를 찾을 수 없습니다",
+          "details": {
+            "resource_type": "user",
+            "resource_id": 999,
+            "suggestions": [
+              "사용자 ID를 확인해주세요",
+              "사용자 목록에서 올바른 ID를 찾아보세요"
+            ]
+          }
+        },
+        "meta": {
+          "timestamp": "2024-01-15T10:30:00Z",
+          "request_id": "req-ghi789"
+        }
+      }
+    },
+    {
+      "type": "rate_limit_error",
+      "status": 429,
+      "response": {
+        "success": false,
+        "error": {
+          "code": "RATE_LIMIT_EXCEEDED",
+          "message": "요청 한도를 초과했습니다",
+          "details": {
+            "limit": 100,
+            "remaining": 0,
+            "reset_at": "2024-01-15T11:00:00Z",
+            "retry_after": 300
+          }
+        },
+        "meta": {
+          "timestamp": "2024-01-15T10:30:00Z",
+          "request_id": "req-jkl012"
+        }
+      }
+    }
+  ]
+}

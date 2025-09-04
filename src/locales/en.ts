@@ -642,5 +642,31 @@ Example:
   meta: {
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
+  },
+  seo: {
+    home: {
+      title: 'JSONL Parser - JSON & JSONL Data Visualization Tool',
+      description: 'Parse, visualize and explore JSON and JSONL data with our interactive tree viewer. Features real-time parsing, hierarchical display, and comprehensive JSON tools.'
+    },
+    learn: {
+      title: 'Learning Center - JSON & JSONL Tutorials',
+      description: 'Learn JSON and JSONL processing with comprehensive tutorials, interactive examples, and best practices for developers.'
+    },
+    tools: {
+      title: 'JSON Tools Hub - Validation, Conversion & Formatting',
+      description: 'Comprehensive collection of JSON tools including validators, converters, formatters, and schema generators for developers.'
+    },
+    reference: {
+      title: 'JSON Reference Guide - Syntax, Patterns & Best Practices',
+      description: 'Complete JSON reference with syntax guides, common patterns, error solutions, and performance optimization tips.'
+    },
+    samples: {
+      title: 'JSON Sample Data Library - Real-world Examples',
+      description: 'Curated collection of JSON and JSONL sample data from APIs, configurations, and real-world use cases for testing and learning.'
+    },
+    info: {
+      title: 'JSON & API Development Guide - Information Hub',
+      description: 'Comprehensive guides and information about JSON, APIs, data processing, and modern development practices.'
+    }
   }
 } as const

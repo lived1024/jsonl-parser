@@ -1,0 +1,60 @@
+{
+  "success": true,
+  "data": {
+    "posts": [
+      {
+        "id": "post_789",
+        "type": "text",
+        "content": "JSON 파싱에 대한 새로운 튜토리얼을 작성했습니다! 🚀",
+        "author": {
+          "id": 123,
+          "username": "developer_hong",
+          "display_name": "홍길동",
+          "avatar_url": "https://example.com/avatars/123.jpg",
+          "verified": true
+        },
+        "engagement": {
+          "likes_count": 45,
+          "comments_count": 12,
+          "shares_count": 8,
+          "views_count": 234
+        },
+        "metadata": {
+          "hashtags": ["#JSON", "#개발", "#튜토리얼"],
+          "mentions": [
+            {
+              "user_id": 456,
+              "username": "kim_dev",
+              "start": 25,
+              "length": 7
+            }
+          ]
+        },
+        "timestamps": {
+          "created_at": "2024-01-15T10:30:00Z",
+          "updated_at": "2024-01-15T10:30:00Z"
+        }
+      },
+      {
+        "id": "post_790",
+        "type": "image",
+        "content": "새로운 프로젝트 스크린샷입니다",
+        "media": {
+          "images": [
+            {
+              "url": "https://example.com/images/project-screenshot.jpg",
+              "width": 1200,
+              "height": 800,
+              "alt": "프로젝트 스크린샷"
+            }
+          ]
+        },
+        "author": {
+          "id": 456,
+          "username": "designer_kim",
+          "display_name": "김디자이너"
+        }
+      }
+    ]
+  }
+}

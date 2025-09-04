@@ -7,6 +7,7 @@ import './styles/components.css'
 import './styles/accessibility.css'
 import 'highlight.js/styles/github.css'
 import App from './App.vue'
+import { initializeSEO } from './config/seo'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -26,9 +27,12 @@ const removeInitialLoading = () => {
   }
 }
 
-// i18n 및 AdSense 초기화
+// i18n, SEO 및 AdSense 초기화
 const initializeApp = async () => {
   try {
+    // SEO 설정 초기화
+    initializeSEO()
+    
     // Pinia가 설치된 후에 store를 사용할 수 있음
     const { useI18nStore } = await import('./stores/i18nStore')
     const i18nStore = useI18nStore()

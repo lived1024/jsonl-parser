@@ -1,11 +1,14 @@
 <template>
   <div v-if="showDemo" class="analytics-demo">
     <div class="demo-header">
-      <h3>Analytics Demo</h3>
+      <h3 style="width: 80%;">Analytics Demo</h3>
+      <button @click="toggleExpanded" class="toggle-btn">
+        {{ isExpanded ? '−' : '+' }}
+      </button>
       <button @click="toggleDemo" class="close-btn">×</button>
     </div>
     
-    <div class="demo-content">
+    <div v-if="isExpanded" class="demo-content">
       <div class="demo-section">
         <h4>Test Analytics Events</h4>
         <div class="demo-buttons">
@@ -92,7 +95,8 @@ interface DemoEvent {
 }
 
 // Only show in development mode
-const showDemo = import.meta.env.DEV
+const showDemo = ref(import.meta.env.DEV)
+const isExpanded = ref(false)
 
 const {
   trackPageView,
@@ -109,7 +113,11 @@ let eventCounter = 0
 const analyticsState = computed(() => getAnalyticsState())
 
 const toggleDemo = () => {
-  showDemo && (document.querySelector('.analytics-demo')?.remove())
+  showDemo.value = false
+}
+
+const toggleExpanded = () => {
+  isExpanded.value = !isExpanded.value
 }
 
 const addEvent = (category: string, action: string, label?: string) => {
@@ -183,15 +191,15 @@ onMounted(() => {
   position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 400px;
-  max-height: 600px;
-  background: white;
-  border: 1px solid #e1e5e9;
+  width: 350px;
+  max-height: 80vh;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
   border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 9999;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 12px;
   overflow: hidden;
 }
 
@@ -199,44 +207,48 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e1e5e9;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .demo-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: white;
 }
 
+.toggle-btn,
 .close-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  color: #6c757d;
+  color: white;
   padding: 0;
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 8px;
 }
 
+.toggle-btn:hover,
 .close-btn:hover {
-  color: #495057;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
 .demo-content {
-  padding: 20px;
-  max-height: 520px;
+  padding: 16px;
+  max-height: calc(80vh - 60px);
   overflow-y: auto;
 }
 
 .demo-section {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .demo-section:last-child {
@@ -244,65 +256,55 @@ onMounted(() => {
 }
 
 .demo-section h4 {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: #495057;
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #ccc;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .demo-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .demo-btn {
+  background: #374151;
+  color: white;
+  border: none;
   padding: 8px 12px;
-  border: 1px solid #dee2e6;
   border-radius: 4px;
-  background: white;
-  color: #495057;
-  font-size: 12px;
   cursor: pointer;
-  transition: all 0.2s;
+  font-size: 11px;
+  transition: background-color 0.2s;
 }
 
 .demo-btn:hover {
-  background: #f8f9fa;
-  border-color: #adb5bd;
+  background: #4b5563;
 }
 
 .demo-btn.error {
-  border-color: #dc3545;
-  color: #dc3545;
+  background: #dc2626;
 }
 
 .demo-btn.error:hover {
-  background: #f8d7da;
+  background: #b91c1c;
 }
 
 .status-grid {
   display: grid;
-  gap: 8px;
+  gap: 4px;
 }
 
 .status-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #f1f3f4;
-}
-
-.status-item:last-child {
-  border-bottom: none;
+  margin-bottom: 4px;
 }
 
 .label {
-  font-weight: 500;
-  color: #6c757d;
+  color: #aaa;
 }
 
 .value {
@@ -310,23 +312,23 @@ onMounted(() => {
 }
 
 .value.success {
-  color: #28a745;
+  color: #4ade80;
 }
 
 .value.warning {
-  color: #ffc107;
+  color: #fbbf24;
 }
 
 .value.error {
-  color: #dc3545;
+  color: #f87171;
 }
 
 .value.info {
-  color: #17a2b8;
+  color: #60a5fa;
 }
 
 .value.muted {
-  color: #6c757d;
+  color: #9ca3af;
 }
 
 .events-log {
@@ -335,55 +337,51 @@ onMounted(() => {
 }
 
 .event-item {
-  padding: 8px 0;
-  border-bottom: 1px solid #f1f3f4;
-}
-
-.event-item:last-child {
-  border-bottom: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-left: 3px solid #3b82f6;
 }
 
 .event-info {
   display: flex;
   gap: 8px;
-  align-items: center;
   margin-bottom: 4px;
 }
 
 .event-type {
-  background: #007bff;
+  background: #3b82f6;
   color: white;
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 10px;
   font-weight: 600;
-  text-transform: uppercase;
 }
 
 .event-action {
-  background: #6c757d;
+  background: #6b7280;
   color: white;
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 10px;
-  font-weight: 500;
 }
 
 .event-time {
-  color: #6c757d;
-  font-size: 11px;
+  color: #9ca3af;
+  font-size: 10px;
   margin-left: auto;
 }
 
 .event-label {
-  color: #495057;
-  font-size: 12px;
-  padding-left: 8px;
+  color: #d1d5db;
+  font-size: 11px;
+  margin-bottom: 4px;
 }
 
 .no-events {
   text-align: center;
-  color: #6c757d;
+  color: #9ca3af;
   font-style: italic;
   padding: 20px;
 }
@@ -396,12 +394,26 @@ onMounted(() => {
 
 .demo-content::-webkit-scrollbar-track,
 .events-log::-webkit-scrollbar-track {
-  background: #f1f3f4;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .demo-content::-webkit-scrollbar-thumb,
 .events-log::-webkit-scrollbar-thumb {
-  background: #dee2e6;
+  background: rgba(255, 255, 255, 0.3);
   border-radius: 2px;
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .analytics-demo {
+    width: 300px;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-demo {
+    display: none;
+  }
 }
 </style>

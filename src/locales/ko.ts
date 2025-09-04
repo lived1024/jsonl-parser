@@ -879,5 +879,31 @@ export default {
   meta: {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'
+  },
+  seo: {
+    home: {
+      title: 'JSONL 파서 - JSON & JSONL 데이터 시각화 도구',
+      description: '대화형 트리 뷰어로 JSON과 JSONL 데이터를 파싱, 시각화, 탐색하세요. 실시간 파싱, 계층적 표시, 포괄적인 JSON 도구를 제공합니다.'
+    },
+    learn: {
+      title: '학습 센터 - JSON & JSONL 튜토리얼',
+      description: '포괄적인 튜토리얼, 대화형 예제, 개발자를 위한 모범 사례로 JSON과 JSONL 처리를 학습하세요.'
+    },
+    tools: {
+      title: 'JSON 도구 허브 - 검증, 변환 및 포맷팅',
+      description: '개발자를 위한 검증기, 변환기, 포맷터, 스키마 생성기를 포함한 포괄적인 JSON 도구 모음입니다.'
+    },
+    reference: {
+      title: 'JSON 참조 가이드 - 구문, 패턴 및 모범 사례',
+      description: '구문 가이드, 일반적인 패턴, 오류 해결책, 성능 최적화 팁이 포함된 완전한 JSON 참조 자료입니다.'
+    },
+    samples: {
+      title: 'JSON 샘플 데이터 라이브러리 - 실제 사례',
+      description: '테스트와 학습을 위한 API, 설정, 실제 사용 사례의 JSON과 JSONL 샘플 데이터 큐레이션 모음입니다.'
+    },
+    info: {
+      title: 'JSON & API 개발 가이드 - 정보 허브',
+      description: 'JSON, API, 데이터 처리, 현대적인 개발 관행에 대한 포괄적인 가이드와 정보입니다.'
+    }
   }
 } as const

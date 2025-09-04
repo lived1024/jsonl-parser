@@ -1,0 +1,10 @@
+{"timestamp": "2024-01-15T10:30:00.123Z", "level": "info", "message": "User login successful", "service": "auth-service", "user_id": 123, "ip": "192.168.1.100"}
+{"timestamp": "2024-01-15T10:30:15.456Z", "level": "info", "message": "API request processed", "service": "api-gateway", "endpoint": "/api/users", "method": "GET", "status": 200, "duration": 45}
+{"timestamp": "2024-01-15T10:30:30.789Z", "level": "warn", "message": "High memory usage detected", "service": "web-server", "memory_usage": "85%", "threshold": "80%"}
+{"timestamp": "2024-01-15T10:31:00.012Z", "level": "error", "message": "Database connection failed", "service": "user-service", "error": "Connection timeout", "retry_count": 3}
+{"timestamp": "2024-01-15T10:31:15.345Z", "level": "info", "message": "Cache invalidated", "service": "cache-service", "cache_key": "user:123", "reason": "user_update"}
+{"timestamp": "2024-01-15T10:31:30.678Z", "level": "debug", "message": "Processing background job", "service": "job-processor", "job_id": "job_456", "job_type": "email_notification"}
+{"timestamp": "2024-01-15T10:32:00.901Z", "level": "info", "message": "File uploaded successfully", "service": "file-service", "file_id": "file_789", "size": 2048576, "type": "image/jpeg"}
+{"timestamp": "2024-01-15T10:32:15.234Z", "level": "error", "message": "Payment processing failed", "service": "payment-service", "order_id": "ORD-001", "error_code": "CARD_DECLINED"}
+{"timestamp": "2024-01-15T10:32:30.567Z", "level": "info", "message": "User logout", "service": "auth-service", "user_id": 123, "session_duration": 1800}
+{"timestamp": "2024-01-15T10:33:00.890Z", "level": "info", "message": "Scheduled backup completed", "service": "backup-service", "backup_size": "1.2GB", "duration": 300}

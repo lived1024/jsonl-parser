@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "report_name": "월간 매출 데이터",
+    "period": "2024-01",
+    "generated_at": "2024-02-01T09:00:00Z",
+    "currency": "KRW",
+    "total_records": 1250
+  },
+  "summary": {
+    "total_revenue": 45750000,
+    "total_orders": 1250,
+    "average_order_value": 36600,
+    "top_category": "전자제품",
+    "growth_rate": 12.5
+  },
+  "sales_by_category": [
+    {
+      "category": "전자제품",
+      "revenue": 18300000,
+      "orders": 450,
+      "percentage": 40.0
+    },
+    {
+      "category": "의류",
+      "revenue": 13725000,
+      "orders": 375,
+      "percentage": 30.0
+    },
+    {
+      "category": "도서",
+      "revenue": 9150000,
+      "orders": 300,
+      "percentage": 20.0
+    },
+    {
+      "category": "기타",
+      "revenue": 4575000,
+      "orders": 125,
+      "percentage": 10.0
+    }
+  ],
+  "daily_sales": [
+    {
+      "date": "2024-01-01",
+      "revenue": 1520000,
+      "orders": 42,
+      "average_order_value": 36190
+    },
+    {
+      "date": "2024-01-02",
+      "revenue": 1680000,
+      "orders": 48,
+      "average_order_value": 35000
+    },
+    {
+      "date": "2024-01-03",
+      "revenue": 1450000,
+      "orders": 38,
+      "average_order_value": 38158
+    }
+  ]
+}
