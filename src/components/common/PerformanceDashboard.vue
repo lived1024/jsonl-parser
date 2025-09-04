@@ -152,16 +152,16 @@ onUnmounted(() => {
 <style scoped>
 .performance-dashboard {
   position: fixed;
-  bottom: 20px;
+  top: 100px;
   right: 20px;
   background: rgba(0, 0, 0, 0.9);
   color: white;
   border-radius: 8px;
-  padding: 1rem;
-  max-width: 400px;
-  z-index: 10000;
+  padding: 0.75rem;
+  max-width: 280px;
+  z-index: 9999;
   font-family: 'Monaco', 'Menlo', monospace;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -285,5 +285,26 @@ onUnmounted(() => {
 
 .export-btn:hover {
   background: #047857;
+}
+
+@media (max-width: 1024px) {
+  .performance-dashboard {
+    top: 10px;
+    right: 300px;
+    max-width: 220px;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .performance-dashboard {
+    display: none;
+  }
 }
 </style>

@@ -17,9 +17,19 @@ export default defineConfig({
             if (id.includes('lucide-vue-next')) {
               return 'ui-vendor'
             }
+            if (id.includes('marked') || id.includes('highlight.js')) {
+              return 'content-vendor'
+            }
             return 'vendor'
           }
-          
+
+          // Service-based chunking for better caching
+          if (id.includes('services/ContentCacheService') ||
+            id.includes('services/MediaOptimizationService') ||
+            id.includes('utils/cacheUtils')) {
+            return 'cache-services'
+          }
+
           // Feature-based chunking with size optimization
           if (id.includes('pages/LearningCenterPage.vue')) {
             return 'learning-center'
@@ -48,7 +58,7 @@ export default defineConfig({
           if (id.includes('pages/InfoGuidePage.vue')) {
             return 'info-guide'
           }
-          
+
           // Component-based chunking for large components
           if (id.includes('components/tools/')) {
             return 'tools-components'
@@ -59,13 +69,13 @@ export default defineConfig({
           if (id.includes('components/common/')) {
             return 'common-components'
           }
-          
+
           // Content chunking
           if (id.includes('content/') || id.includes('locales/')) {
             return 'content'
           }
         },
-        // Optimize chunk file names
+        // Optimize chunk file names for better caching
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId
           if (facadeModuleId) {
@@ -75,8 +85,28 @@ export default defineConfig({
             if (facadeModuleId.includes('components/')) {
               return 'components/[name]-[hash].js'
             }
+            if (facadeModuleId.includes('services/')) {
+              return 'services/[name]-[hash].js'
+            }
           }
           return 'chunks/[name]-[hash].js'
+        },
+        // Optimize asset file names
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name?.split('.') || []
+          const ext = info[info.length - 1]
+
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
+            return 'assets/images/[name]-[hash][extname]'
+          }
+          if (/css/i.test(ext)) {
+            return 'assets/styles/[name]-[hash][extname]'
+          }
+          if (/woff2?|eot|ttf|otf/i.test(ext)) {
+            return 'assets/fonts/[name]-[hash][extname]'
+          }
+
+          return 'assets/[name]-[hash][extname]'
         }
       }
     },
@@ -85,7 +115,32 @@ export default defineConfig({
     // Additional optimizations
     minify: 'esbuild',
     // Enable source maps for debugging in production
-    sourcemap: false
+    sourcemap: false,
+    // Optimize CSS
+    cssCodeSplit: true,
+    // Enable asset inlining for small files
+    assetsInlineLimit: 4096,
+    // Optimize dependencies
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: ['.js', '.cjs']
+    }
+  },
+  // Optimize dependencies
+  optimizeDeps: {
+    include: [
+      'vue',
+      'vue-router',
+      'pinia',
+      'marked',
+      'highlight.js'
+    ],
+    exclude: ['@vite/client', '@vite/env']
+  },
+  // Enable experimental features for better performance
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [], // Remove console.log in production only
+    legalComments: 'none'
   },
   test: {
     globals: true,

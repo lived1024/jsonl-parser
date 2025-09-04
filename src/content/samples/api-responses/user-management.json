@@ -1,0 +1,60 @@
+{
+  "success": true,
+  "data": {
+    "users": [
+      {
+        "id": 123,
+        "username": "hong_gildong",
+        "email": "hong@example.com",
+        "profile": {
+          "first_name": "길동",
+          "last_name": "홍",
+          "display_name": "홍길동",
+          "bio": "소프트웨어 개발자",
+          "avatar_url": "https://example.com/avatars/123.jpg",
+          "location": {
+            "country": "KR",
+            "city": "서울",
+            "timezone": "Asia/Seoul"
+          }
+        },
+        "settings": {
+          "theme": "dark",
+          "language": "ko",
+          "notifications": {
+            "email": true,
+            "push": false,
+            "sms": true
+          }
+        },
+        "stats": {
+          "posts_count": 42,
+          "followers_count": 156,
+          "following_count": 89
+        },
+        "timestamps": {
+          "created_at": "2024-01-01T00:00:00Z",
+          "updated_at": "2024-01-15T10:30:00Z",
+          "last_login_at": "2024-01-15T09:45:00Z"
+        },
+        "status": {
+          "is_active": true,
+          "is_verified": true,
+          "account_status": "active"
+        }
+      },
+      {
+        "id": 456,
+        "username": "kim_developer",
+        "email": "kim@example.com",
+        "profile": {
+          "first_name": "철수",
+          "last_name": "김",
+          "display_name": "김철수",
+          "bio": "프론트엔드 개발자",
+          "avatar_url": "https://example.com/avatars/456.jpg"
+        }
+      }
+    ]
+  }
+}

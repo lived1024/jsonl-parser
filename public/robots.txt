@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /*.json$
+Disallow: /test*
+
+Sitemap: https://jsonl-parser.com/sitemap.xml

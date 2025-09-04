@@ -5,6 +5,7 @@
     <AnalyticsDashboard />
     <AnalyticsDemo />
     <PerformanceDashboard />
+    <CacheMonitor />
   </div>
 </template>
 
@@ -14,10 +15,12 @@ import ChunkLoadingIndicator from './components/common/ChunkLoadingIndicator.vue
 import AnalyticsDashboard from './components/common/AnalyticsDashboard.vue'
 import AnalyticsDemo from './components/common/AnalyticsDemo.vue'
 import PerformanceDashboard from './components/common/PerformanceDashboard.vue'
+import CacheMonitor from './components/common/CacheMonitor.vue'
 import { useUserTracking } from './composables/useUserTracking'
 import { useAccessibility } from './composables/useAccessibility'
 import { useKeyboardNavigation } from './composables/useKeyboardNavigation'
 import { PerformanceService } from './services/PerformanceService'
+import { cacheManager } from './utils/cacheUtils'
 
 // Initialize user tracking for the entire app
 useUserTracking()
@@ -47,6 +50,9 @@ onMounted(() => {
   // Initialize performance monitoring
   const performanceService = PerformanceService.getInstance()
   
+  // Initialize cache warming
+  cacheManager.warmUpCache().catch(console.error)
+  
   // Log performance report in development
   if (import.meta.env.DEV) {
     setTimeout(() => {
@@ -55,6 +61,9 @@ onMounted(() => {
       
       const bundleAnalysis = performanceService.getBundleAnalysis()
       console.log('Bundle Analysis:', bundleAnalysis)
+      
+      const cacheStats = cacheManager.getCacheStatistics()
+      console.log('Cache Statistics:', cacheStats)
     }, 5000) // Wait 5 seconds for chunks to load
   }
 })

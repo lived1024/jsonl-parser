@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://jsonl-parser.com/</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/tools</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/tools/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/tools/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/samples</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/samples/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/samples/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/info</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/info/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/info/?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn/json-basics</loc>
+    <lastmod>2024-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/json-basics?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/json-basics?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn/jsonl-processing</loc>
+    <lastmod>2024-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/jsonl-processing?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/jsonl-processing?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn/advanced-parsing</loc>
+    <lastmod>2024-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/advanced-parsing?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/advanced-parsing?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn/data-validation</loc>
+    <lastmod>2024-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/data-validation?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/data-validation?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/learn/performance-optimization</loc>
+    <lastmod>2024-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/learn/performance-optimization?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/learn/performance-optimization?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/tools/json-validator</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/tools/json-validator?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/tools/json-validator?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/tools/data-converter</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/tools/data-converter?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/tools/data-converter?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/tools/json-formatter</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/tools/json-formatter?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/tools/json-formatter?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/tools/schema-generator</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/tools/schema-generator?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/tools/schema-generator?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference/json-syntax</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/json-syntax?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/json-syntax?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference/jsonl-format</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/jsonl-format?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/jsonl-format?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference/error-patterns</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/error-patterns?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/error-patterns?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference/best-practices</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/best-practices?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/best-practices?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/reference/performance-tips</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/reference/performance-tips?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/reference/performance-tips?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/info/getting-started</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/info/getting-started?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/info/getting-started?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/info/api-integration</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/info/api-integration?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/info/api-integration?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/info/data-processing</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/info/data-processing?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/info/data-processing?lang=ko" />
+  </url>
+  <url>
+    <loc>https://jsonl-parser.com/info/troubleshooting</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://jsonl-parser.com/info/troubleshooting?lang=en" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://jsonl-parser.com/info/troubleshooting?lang=ko" />
+  </url>
+</urlset>

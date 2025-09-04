@@ -1,5 +1,7 @@
 import { marked } from 'marked'
 import hljs from 'highlight.js'
+import { ContentCacheService } from './ContentCacheService'
+import { cacheManager, generateCacheKey } from '../utils/cacheUtils'
 
 export interface ContentMetadata {
   title: string
@@ -59,9 +61,11 @@ class ContentService {
   private static instance: ContentService | null = null
   private contentCache = new Map<string, GuideContent>()
   private categoriesCache: GuideCategory[] | null = null
+  private cacheService: ContentCacheService
 
   constructor() {
     this.setupMarked()
+    this.cacheService = ContentCacheService.getInstance()
   }
 
   static getInstance(): ContentService {
@@ -139,13 +143,28 @@ class ContentService {
   }
 
   async getGuide(guideId: string): Promise<GuideContent | null> {
-    // Check cache first
-    if (this.contentCache.has(guideId)) {
-      return this.contentCache.get(guideId)!
+    // Check enhanced cache first
+    const cacheKey = generateCacheKey('guide', guideId)
+    const cached = await this.cacheService.getGuide(guideId)
+    if (cached) {
+      return cached
     }
+
+    // Check memory cache as fallback
+    if (this.contentCache.has(guideId)) {
+      const guide = this.contentCache.get(guideId)!
+      // Update enhanced cache
+      await this.cacheService.cacheGuide(guide)
+      return guide
+    }
+
     try {
       const guideContent = await this.loadGuideContent(guideId)
+      
+      // Cache in both systems
       this.contentCache.set(guideId, guideContent)
+      await this.cacheService.cacheGuide(guideContent)
+      
       return guideContent
     } catch (error) {
       console.error(`Failed to load guide ${guideId}:`, error)

@@ -1,0 +1,59 @@
+{
+  "name": "my-frontend-app",
+  "version": "1.0.0",
+  "description": "Modern web application built with Vue.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "@vueuse/core": "^10.7.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^5.0.8",
+    "vitest": "^1.1.0",
+    "eslint": "^8.56.0",
+    "typescript": "~5.3.0"
+  },
+  "build": {
+    "target": "es2020",
+    "outDir": "dist",
+    "sourcemap": true,
+    "minify": true,
+    "rollupOptions": {
+      "output": {
+        "manualChunks": {
+          "vendor": ["vue", "vue-router", "pinia"],
+          "utils": ["@vueuse/core"]
+        }
+      }
+    }
+  },
+  "vite": {
+    "server": {
+      "port": 5173,
+      "host": true,
+      "open": true
+    },
+    "build": {
+      "chunkSizeWarningLimit": 1000
+    }
+  },
+  "eslint": {
+    "extends": [
+      "eslint:recommended",
+      "@vue/eslint-config-typescript"
+    ],
+    "rules": {
+      "no-console": "warn",
+      "no-debugger": "error"
+    }
+  }
+}
