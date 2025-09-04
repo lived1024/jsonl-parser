@@ -170,6 +170,26 @@ Example:
     tooManyErrors: 'Too many errors occurred. Only showing the first 10 errors.',
     partialSuccess: '{{errorCount}} lines had errors. {{successCount}} lines were successfully parsed.'
   },
+  errors: {
+    parsing: {
+      jsonSyntax: 'JSON Syntax Error: {{message}}',
+      jsonlLine: 'Line {{line}}: {{message}}',
+      unknownError: 'Unknown parsing error occurred',
+      invalidJson: 'Invalid JSON'
+    },
+    validation: {
+      jsonlRequired: 'JSONL format requires at least one line of JSON data',
+      inputTooLarge: 'Input size is too large. Maximum {{maxSize}}MB is supported',
+      memoryWarning: 'Input data is too large and may cause memory issues. Please use smaller data',
+      jsonlTooManyLines: 'JSONL format supports up to {{maxLines}} lines maximum',
+      tooManyErrors: 'Too many errors occurred. Only showing the first {{maxErrors}} errors',
+      partialSuccess: '{{errorCount}} lines had errors. {{successCount}} lines were successfully parsed'
+    },
+    jsonl: {
+      linePrefix: 'Line {{line}}',
+      detected: 'JSONL format detected'
+    }
+  },
   accessibility: {
     mainArea: 'JSONL Parser main area',
     inputPanel: 'JSON input panel',

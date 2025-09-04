@@ -170,6 +170,26 @@ export default {
     tooManyErrors: '너무 많은 오류가 발생했습니다. 처음 10개 오류만 표시됩니다.',
     partialSuccess: '{{errorCount}}개 줄에서 오류가 발생했습니다. {{successCount}}개 줄이 성공적으로 파싱되었습니다.'
   },
+  errors: {
+    parsing: {
+      jsonSyntax: 'JSON 구문 오류: {{message}}',
+      jsonlLine: '{{line}}번째 줄: {{message}}',
+      unknownError: '알 수 없는 파싱 오류가 발생했습니다',
+      invalidJson: '유효하지 않은 JSON입니다'
+    },
+    validation: {
+      jsonlRequired: 'JSONL 형식에는 최소 한 줄의 JSON 데이터가 필요합니다',
+      inputTooLarge: '입력 크기가 너무 큽니다. 최대 {{maxSize}}MB까지 지원됩니다',
+      memoryWarning: '입력 데이터가 너무 커서 메모리 부족이 예상됩니다. 더 작은 데이터를 사용해주세요',
+      jsonlTooManyLines: 'JSONL 형식에서는 최대 {{maxLines}}줄까지 지원됩니다',
+      tooManyErrors: '너무 많은 오류가 발생했습니다. 처음 {{maxErrors}}개 오류만 표시됩니다',
+      partialSuccess: '{{errorCount}}개 줄에서 오류가 발생했습니다. {{successCount}}개 줄이 성공적으로 파싱되었습니다'
+    },
+    jsonl: {
+      linePrefix: '{{line}}번째 줄',
+      detected: 'JSONL 형식이 감지되었습니다'
+    }
+  },
   accessibility: {
     mainArea: 'JSONL 파서 메인 영역',
     inputPanel: 'JSON 입력 패널',
