@@ -4,7 +4,32 @@
       "Bash(npm run build:*)",
       "Bash(npm run dev:*)",
       "Bash(npm run typecheck:*)",
+<<<<<<< HEAD
       "Bash(npm run:*)"
+=======
+      "Bash(npm run:*)",
+<<<<<<< HEAD
+      "Bash(git cherry-pick:*)",
+      "Bash(git log:*)"
+=======
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Bash(claude mcp:*)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Read(/C:\\Users\\YrShin\\AppData\\Roaming\\Claude/**)",
+      "Bash(claude config --help)",
+      "Bash(claude config list:*)"
+>>>>>>> bbb33be (feat: SEO 최적화 및 배포 준비 시스템 구현)
+>>>>>>> 468b67c (feat: SEO 최적화 및 배포 준비 시스템 구현)
     ],
     "deny": [],
     "ask": []

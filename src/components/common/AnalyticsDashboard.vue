@@ -163,7 +163,7 @@ onUnmounted(() => {
 .analytics-dashboard {
   position: fixed;
   top: 20px;
-  right: 20px;
+  left: 20px;
   width: 350px;
   max-height: 80vh;
   background: rgba(0, 0, 0, 0.9);
