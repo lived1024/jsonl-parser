@@ -145,7 +145,8 @@ const { t } = useI18n()
 }
 
 .header-navigation {
-  flex: 1;
+  flex: none;
+  width: 700px;
   display: flex;
   justify-content: center;
 }
@@ -214,6 +215,8 @@ const { t } = useI18n()
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  white-space: nowrap;
+  width: 200px;
 }
 
 .brand-title {
