@@ -1,6 +1,11 @@
 # Implementation Plan
 
-- [ ] 1. Phase 1: 핵심 파싱 기능 다국어화
+- [x] 1. Phase 1: 핵심 파싱 기능 다국어화
+
+
+
+
+
   - InputPanel과 OutputPanel 컴포넌트의 하드코딩된 텍스트를 useI18n 컴포저블을 사용하여 다국어 지원으로 변경
   - JSON 파싱 오류 메시지와 키보드 단축키 도움말 다국어화
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
