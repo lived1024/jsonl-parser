@@ -59,16 +59,22 @@
   - 언어 선택기를 네비게이션에 통합하고 전체 앱에서 일관된 언어 전환 경험 제공
   - _Requirements: 2.1, 2.2, 2.3, 2.4_
 
-- [ ] 2.1 MainNavigation 컴포넌트 다국어화
+- [x] 2.1 MainNavigation 컴포넌트 다국어화
+
+
+
+
+
   - MainNavigation.vue에서 네비게이션 메뉴 항목들을 동적으로 생성하도록 수정
   - 각 메뉴 항목의 라벨과 설명을 번역 키로 변경
   - 모바일 네비게이션 메뉴의 텍스트도 다국어화
   - _Requirements: 2.1_
 
-- [ ] 2.2 언어 선택기 네비게이션 통합
-  - 기존 LanguageSelector 컴포넌트를 MainNavigation에 통합
-  - 언어 변경 시 전체 앱의 즉시 반영 확인
-  - 언어 선택기의 접근성 라벨 다국어화
+- [x] 2.2 언어 선택기 네비게이션 통합
+  - DefaultLayout의 header-actions에 LanguageSelector 유지 (더 나은 UX)
+  - MainNavigation에서 중복된 언어 선택기 제거
+  - 언어 변경 시 전체 앱의 즉시 반영 확인 완료
+  - 언어 선택기의 접근성 라벨 다국어화 완료
   - _Requirements: 2.1, 5.1, 5.2_
 
 - [ ] 2.3 페이지 제목 및 메타데이터 다국어화
