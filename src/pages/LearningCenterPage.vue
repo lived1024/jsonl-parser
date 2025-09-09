@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="학습 센터" 
-      description="JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드"
+      title-key="pages.learn.title"
+      description-key="pages.learn.description"
+      :breadcrumbs="[
+        { name: t('pages.learn.title') }
+      ]"
     >
     <template #sidebar>
       <FilterSidebar 
@@ -124,13 +127,13 @@ const router = useRouter()
 const contentService = ContentService.getInstance()
 const { t } = useI18n()
 
-// SEO 메타데이터 설정 (임시 비활성화)
-// const { generateBreadcrumbStructuredData } = useSEO({
-//   title: t('seo.learn.title'),
-//   description: t('seo.learn.description'),
-//   keywords: ['JSON', 'JSONL', 'tutorial', 'learning', 'guide', 'education', 'developer', 'training'],
-//   ogType: 'website'
-// })
+// SEO 메타데이터 설정
+const { generateBreadcrumbStructuredData, setMetadata } = useSEO({
+  title: t('seo.learn.title'),
+  description: t('seo.learn.description'),
+  keywords: ['JSON', 'JSONL', 'tutorial', 'learning', 'guide', 'education', 'developer', 'training'],
+  ogType: 'website'
+})
 
 // 상태 관리
 const tutorials = ref<Tutorial[]>([])
@@ -190,11 +193,17 @@ const progress = ref<LearningProgress>({
 
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(async () => {
-  // Structured data 설정 (임시 비활성화)
-  // const structuredData = generateBreadcrumbStructuredData([
-  //   { name: 'Home', url: '/' },
-  //   { name: 'Learning Center', url: '/learn' }
-  // ])
+  // Structured data 설정
+  const structuredData = generateBreadcrumbStructuredData([
+    { name: t('breadcrumb.home'), url: '/' },
+    { name: t('pages.learn.title'), url: '/learn' }
+  ])
+  
+  setMetadata({
+    title: t('seo.learn.title'),
+    description: t('seo.learn.description'),
+    structuredData
+  })
   
   await loadTutorials()
   loadProgress()

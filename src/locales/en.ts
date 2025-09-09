@@ -226,7 +226,8 @@ Example:
       treeNavigation: 'Tree Navigation',
       help: 'Show Help',
       close: 'Close'
-    }
+    },
+    breadcrumbNavigation: 'Breadcrumb navigation'
   },
   help: {
     title: 'Help',
@@ -637,6 +638,7 @@ Example:
     mainLabel: 'Main navigation',
     mobileMenuLabel: 'Mobile navigation menu',
     toggleMenu: 'Toggle menu',
+    backTo: ' back',
     items: {
       parser: {
         label: 'Parser',
@@ -663,6 +665,52 @@ Example:
         description: 'Example data library'
       }
     }
+  },
+  pages: {
+    home: {
+      title: 'JSONL Parser',
+      description: 'Visualize JSON and JSONL data with interactive tree structure'
+    },
+    learn: {
+      title: 'Learning Center',
+      description: 'Tutorials and guides to improve your JSON and JSONL processing skills'
+    },
+    tutorial: {
+      title: 'Tutorial',
+      description: 'Step-by-step learning guide'
+    },
+    tools: {
+      title: 'Tools Hub',
+      description: 'Useful tools collection for JSON data processing'
+    },
+    tool: {
+      title: 'Tool',
+      description: 'JSON processing tool'
+    },
+    reference: {
+      title: 'Reference Hub',
+      description: 'Comprehensive reference materials for JSON syntax and patterns'
+    },
+    referenceGuide: {
+      title: 'Reference Guide',
+      description: 'Detailed reference documentation'
+    },
+    samples: {
+      title: 'Sample Library',
+      description: 'Various JSON example data and real-world use cases'
+    },
+    info: {
+      title: 'Information Hub',
+      description: 'Comprehensive guides and information about JSON and API development'
+    },
+    infoGuide: {
+      title: 'Information Guide',
+      description: 'Detailed development guide'
+    }
+  },
+  breadcrumb: {
+    home: 'Home',
+    separator: '/'
   },
   meta: {
     title: 'JSONL Parser',
