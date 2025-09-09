@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="도구 모음" 
-      description="JSON 처리를 위한 다양한 유틸리티와 변환 도구"
+      title-key="pages.tools.title"
+      description-key="pages.tools.description"
+      :breadcrumbs="[
+        { name: t('pages.tools.title') }
+      ]"
     >
     <template #sidebar>
       <FilterSidebar 
@@ -67,6 +70,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { CheckCircle, RefreshCw, AlignLeft, FileText } from 'lucide-vue-next'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
@@ -85,6 +89,7 @@ interface Tool {
 }
 
 const router = useRouter()
+const { t } = useI18n()
 
 const filters = ref({
   validation: true,

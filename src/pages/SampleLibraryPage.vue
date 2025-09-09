@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="샘플 데이터 라이브러리" 
-      description="다양한 실제 사용 사례의 JSON/JSONL 샘플 데이터를 탐색하고 파서에서 바로 테스트해보세요."
+      title-key="pages.samples.title"
+      description-key="pages.samples.description"
+      :breadcrumbs="[
+        { name: t('pages.samples.title') }
+      ]"
     >
     <template #sidebar>
       <FilterSidebar 
@@ -109,6 +112,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, Teleport } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { Database, Settings, FileText, Layers } from 'lucide-vue-next'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
@@ -123,6 +127,7 @@ import type { SampleData } from '../types'
 
 const router = useRouter()
 const sampleStore = useSampleLibraryStore()
+const { t } = useI18n()
 
 // 상태 관리
 const loading = ref(true)

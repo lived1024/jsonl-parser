@@ -226,7 +226,8 @@ export default {
       treeNavigation: '트리 내 네비게이션',
       help: '도움말 표시',
       close: '닫기'
-    }
+    },
+    breadcrumbNavigation: '브레드크럼 네비게이션'
   },
   help: {
     title: '도움말',
@@ -874,6 +875,7 @@ export default {
     mainLabel: '주요 네비게이션',
     mobileMenuLabel: '모바일 네비게이션 메뉴',
     toggleMenu: '메뉴 열기/닫기',
+    backTo: '로 돌아가기',
     items: {
       parser: {
         label: '파서',
@@ -900,6 +902,52 @@ export default {
         description: '예제 데이터 라이브러리'
       }
     }
+  },
+  pages: {
+    home: {
+      title: 'JSONL 파서',
+      description: 'JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하세요'
+    },
+    learn: {
+      title: '학습 센터',
+      description: 'JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드'
+    },
+    tutorial: {
+      title: '튜토리얼',
+      description: '단계별 학습 가이드'
+    },
+    tools: {
+      title: '도구 허브',
+      description: 'JSON 데이터 처리를 위한 유용한 도구 모음'
+    },
+    tool: {
+      title: '도구',
+      description: 'JSON 처리 도구'
+    },
+    reference: {
+      title: '참조 허브',
+      description: 'JSON 구문과 패턴에 대한 포괄적인 참조 자료'
+    },
+    referenceGuide: {
+      title: '참조 가이드',
+      description: '상세한 참조 문서'
+    },
+    samples: {
+      title: '샘플 라이브러리',
+      description: '다양한 JSON 예제 데이터와 실제 사용 사례'
+    },
+    info: {
+      title: '정보 허브',
+      description: 'JSON과 API 개발에 대한 포괄적인 가이드와 정보'
+    },
+    infoGuide: {
+      title: '정보 가이드',
+      description: '상세한 개발 가이드'
+    }
+  },
+  breadcrumb: {
+    home: '홈',
+    separator: '/'
   },
   meta: {
     title: 'JSONL 파서',

@@ -47,6 +47,8 @@
 </template>
 
 <script setup lang="ts">
+import { watch, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useApp } from '../composables/useApp'
 import { useI18n } from '../composables/useI18n'
 import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
@@ -55,7 +57,21 @@ import HelpButton from '../components/common/HelpButton.vue'
 import MainNavigation from '../components/common/MainNavigation.vue'
 
 const { mainStyle } = useApp()
-const { t } = useI18n()
+const { t, currentLanguage } = useI18n()
+const route = useRoute()
+
+// Update document language attribute when language changes
+const updateDocumentLanguage = () => {
+  document.documentElement.lang = currentLanguage.value
+}
+
+// Watch for language changes and update document lang attribute
+watch(currentLanguage, updateDocumentLanguage, { immediate: true })
+
+// Set initial document language on mount
+onMounted(() => {
+  updateDocumentLanguage()
+})
 </script>
 
 <style scoped>
