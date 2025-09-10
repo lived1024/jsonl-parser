@@ -7,7 +7,7 @@
       :aria-valuenow="loadingProgress"
       aria-valuemin="0"
       aria-valuemax="100"
-      aria-label="Loading content"
+      :aria-label="t('accessibility.screenReader.loadingMore')"
     >
       <div class="loading-bar">
         <div 
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="loading-text">
-        Loading... {{ Math.round(loadingProgress) }}%
+        {{ t('status.loading') }}... {{ Math.round(loadingProgress) }}%
       </div>
     </div>
   </Transition>
@@ -24,8 +24,10 @@
 
 <script setup lang="ts">
 import { useChunkLoading } from '../../composables/useChunkLoading'
+import { useI18n } from '../../composables/useI18n'
 
 const { isLoading, loadingProgress } = useChunkLoading()
+const { t } = useI18n()
 </script>
 
 <style scoped>

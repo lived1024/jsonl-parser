@@ -2,20 +2,20 @@
   <div class="item-grid">
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
-      <p>로딩 중...</p>
+      <p>{{ t('common.loading') }}</p>
     </div>
     
     <div v-else-if="error" class="error-state">
-      <p>오류가 발생했습니다.</p>
+      <p>{{ t('common.error') }}</p>
       <button @click="$emit('retry')" class="retry-button">
-        다시 시도
+        {{ t('troubleshooting.problems.largeFileSlow.quickFixes.refresh') }}
       </button>
     </div>
     
     <div v-else-if="items.length === 0" class="empty-state">
-      <p>{{ emptyText }}</p>
+      <p>{{ computedEmptyText }}</p>
       <button v-if="onReset" @click="onReset" class="reset-button">
-        {{ resetButtonText }}
+        {{ computedResetButtonText }}
       </button>
     </div>
     
@@ -30,6 +30,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from '../../composables/useI18n'
+
 interface Props {
   items: any[]
   loading?: boolean
@@ -48,12 +51,22 @@ interface Emits {
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   error: false,
-  emptyText: '항목이 없습니다.',
-  resetButtonText: '초기화',
+  emptyText: '',
+  resetButtonText: '',
   showAd: false
 })
 
 defineEmits<Emits>()
+
+const { t } = useI18n()
+
+const computedEmptyText = computed(() => {
+  return props.emptyText || t('faq.noResults')
+})
+
+const computedResetButtonText = computed(() => {
+  return props.resetButtonText || t('faq.clearFilters')
+})
 
 const getItemKey = (item: any, index: number) => {
   return item.id || item.key || index

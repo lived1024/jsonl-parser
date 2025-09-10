@@ -741,5 +741,28 @@ Example:
       title: 'JSON & API Development Guide - Information Hub',
       description: 'Comprehensive guides and information about JSON, APIs, data processing, and modern development practices.'
     }
+  },
+  guide: {
+    tableOfContents: 'Table of Contents',
+    relatedTools: 'Related Tools',
+    relatedGuides: 'Related Guides',
+    tryItOut: 'Try it out',
+    loadInParser: 'Load in Parser',
+    loadError: 'Error loading guide',
+    previous: 'Previous',
+    next: 'Next'
+  },
+  common: {
+    loading: 'Loading...',
+    error: 'An error occurred',
+    backToHub: 'Back to Hub',
+    lastUpdated: 'Last Updated',
+    author: 'Author',
+    minutes: 'minutes',
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    }
   }
 } as const
