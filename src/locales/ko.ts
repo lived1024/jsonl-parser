@@ -860,7 +860,7 @@ export default {
   },
   common: {
     loading: '로딩 중...',
-    error: '오류',
+    error: '오류가 발생했습니다',
     backToHub: '허브로 돌아가기',
     lastUpdated: '최종 업데이트',
     author: '작성자',

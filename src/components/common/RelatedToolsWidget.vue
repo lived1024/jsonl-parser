@@ -2,7 +2,7 @@
   <div class="related-tools-widget">
     <h3 class="widget-title">
       <Wrench class="title-icon" />
-      관련 도구
+      {{ t('guide.relatedTools') }}
     </h3>
     <div class="tools-list">
       <router-link
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { Wrench, ExternalLink } from 'lucide-vue-next'
+import { useI18n } from '../../composables/useI18n'
 
 interface Tool {
   id: string
@@ -35,6 +36,8 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const { t } = useI18n()
 </script>
 
 <style scoped>

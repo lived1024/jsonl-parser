@@ -5,7 +5,7 @@
       <input
         :value="modelValue"
         type="text"
-        :placeholder="placeholder"
+        :placeholder="computedPlaceholder"
         class="search-input"
         @input="updateValue"
         @keydown.escape="clearSearch"
@@ -14,7 +14,7 @@
         v-if="modelValue" 
         @click="clearSearch"
         class="clear-button"
-        title="검색어 지우기"
+        :title="t('faq.clearSearch')"
       >
         <X :size="16" />
       </button>
@@ -23,7 +23,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Search, X } from 'lucide-vue-next'
+import { useI18n } from '../../composables/useI18n'
 
 interface Props {
   modelValue: string
@@ -35,7 +37,13 @@ interface Emits {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: '검색...'
+  placeholder: ''
+})
+
+const { t } = useI18n()
+
+const computedPlaceholder = computed(() => {
+  return props.placeholder || t('faq.searchPlaceholder')
 })
 
 const emit = defineEmits<Emits>()
