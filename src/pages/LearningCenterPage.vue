@@ -14,15 +14,15 @@
       >
         <template #additional>
           <div class="progress-section">
-            <h3>학습 진행률</h3>
+            <h3>{{ t('learn.progress.title') }}</h3>
             <div class="progress-stats">
               <div class="stat">
                 <span class="stat-number">{{ completedCount }}</span>
-                <span class="stat-label">완료</span>
+                <span class="stat-label">{{ t('learn.progress.completed') }}</span>
               </div>
               <div class="stat">
                 <span class="stat-number">{{ totalCount }}</span>
-                <span class="stat-label">전체</span>
+                <span class="stat-label">{{ t('learn.progress.total') }}</span>
               </div>
             </div>
             <div class="progress-bar">
@@ -48,10 +48,10 @@
         :items="filteredTutorials"
         :loading="loading"
         :error="error"
-        loading-text="튜토리얼을 불러오는 중..."
-        error-text="튜토리얼을 불러오는 중 오류가 발생했습니다."
-        empty-text="선택한 조건에 맞는 튜토리얼이 없습니다."
-        reset-button-text="필터 초기화"
+        :loading-text="t('learn.loading')"
+        :error-text="t('learn.error')"
+        :empty-text="t('learn.empty')"
+        :reset-button-text="t('learn.resetFilters')"
         :show-ad="true"
         :ad-after-index="2"
         :on-retry="loadTutorials"
@@ -72,7 +72,7 @@
               },
               { 
                 key: 'duration', 
-                label: `${tutorial.estimatedReadTime}분`,
+                label: t('learn.duration.minutes', { count: tutorial.estimatedReadTime }),
                 type: 'duration'
               },
               { 
@@ -154,27 +154,27 @@ const filters = ref({
 })
 
 // 필터 섹션 정의
-const filterSections: FilterSection[] = [
+const filterSections = computed((): FilterSection[] => [
   {
     key: 'difficulty',
-    title: '난이도',
+    title: t('learn.filters.difficulty'),
     options: [
-      { key: 'beginner', label: '초급' },
-      { key: 'intermediate', label: '중급' },
-      { key: 'advanced', label: '고급' }
+      { key: 'beginner', label: t('learn.difficulty.beginner') },
+      { key: 'intermediate', label: t('learn.difficulty.intermediate') },
+      { key: 'advanced', label: t('learn.difficulty.advanced') }
     ]
   },
   {
     key: 'category',
-    title: '카테고리',
+    title: t('learn.filters.category'),
     options: [
-      { key: 'basics', label: '기초' },
-      { key: 'parsing', label: '파싱' },
-      { key: 'validation', label: '검증' },
-      { key: 'advanced_topics', label: '고급 주제' }
+      { key: 'basics', label: t('learn.categories.basics') },
+      { key: 'parsing', label: t('learn.categories.parsing') },
+      { key: 'validation', label: t('learn.categories.validation') },
+      { key: 'advanced_topics', label: t('learn.categories.advanced_topics') }
     ]
   }
-]
+])
 
 // 학습 진행 상황 (localStorage에서 관리)
 const PROGRESS_KEY = 'jsonl-parser-learning-progress'
@@ -312,7 +312,7 @@ const isCompleted = (tutorialId: string): boolean => {
 // 진행률 라벨 생성
 const getProgressLabel = (tutorialId: string): string => {
   if (isCompleted(tutorialId)) {
-    return '완료'
+    return t('learn.progress.completedStatus')
   }
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
@@ -320,7 +320,7 @@ const getProgressLabel = (tutorialId: string): string => {
     return `${Math.round(progressPercent)}%`
   }
   
-  return '시작 전'
+  return t('learn.progress.notStarted')
 }
 
 // 진행률 타입 생성
@@ -340,7 +340,7 @@ const getProgressType = (tutorialId: string): string => {
 // 배지 정보 생성
 const getBadgeForTutorial = (tutorialId: string) => {
   if (isCompleted(tutorialId)) {
-    return { text: '✓ 완료', type: 'success' }
+    return { text: `✓ ${t('learn.progress.completedStatus')}`, type: 'success' }
   }
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
@@ -353,12 +353,8 @@ const getBadgeForTutorial = (tutorialId: string) => {
 
 // 난이도 라벨 변환
 const getDifficultyLabel = (difficulty: string): string => {
-  const labels: Record<string, string> = {
-    beginner: '초급',
-    intermediate: '중급',
-    advanced: '고급'
-  }
-  return labels[difficulty] || difficulty
+  const key = `learn.difficulty.${difficulty}` as const
+  return t(key) || difficulty
 }
 
 // 튜토리얼 아이콘 매핑
@@ -411,8 +407,8 @@ const handleTutorialProgress = (tutorialId: string, progressPercent: number) => 
   saveProgress()
 }
 
-// 사용하지 않는 import 제거를 위한 참조
-console.log('Unused imports:', handleTutorialProgress)
+// Remove unused function to clean up warnings
+// handleTutorialProgress is defined but not used in current implementation
 
 // 필터 초기화
 const resetFilters = () => {

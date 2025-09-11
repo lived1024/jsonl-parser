@@ -104,7 +104,12 @@
   - 필터링, 검색, 진행률 추적 기능의 다국어화
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-- [ ] 3.1 LearningCenterPage 다국어화
+- [x] 3.1 LearningCenterPage 다국어화
+
+
+
+
+
   - LearningCenterPage.vue의 페이지 제목과 설명을 번역 키로 변경
   - 튜토리얼 카드의 메타데이터(난이도, 소요시간) 다국어화
   - 로딩, 오류, 빈 상태 메시지 다국어화
