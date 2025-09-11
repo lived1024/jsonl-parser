@@ -953,6 +953,40 @@ export default {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'
   },
+  learn: {
+    title: '학습 센터',
+    description: 'JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드',
+    loading: '튜토리얼을 불러오는 중...',
+    error: '튜토리얼을 불러오는 중 오류가 발생했습니다.',
+    empty: '선택한 조건에 맞는 튜토리얼이 없습니다.',
+    resetFilters: '필터 초기화',
+    progress: {
+      title: '학습 진행률',
+      completed: '완료',
+      total: '전체',
+      completedStatus: '완료',
+      inProgress: '진행 중',
+      notStarted: '시작 전'
+    },
+    filters: {
+      difficulty: '난이도',
+      category: '카테고리'
+    },
+    difficulty: {
+      beginner: '초급',
+      intermediate: '중급',
+      advanced: '고급'
+    },
+    categories: {
+      basics: '기초',
+      parsing: '파싱',
+      validation: '검증',
+      advanced_topics: '고급 주제'
+    },
+    duration: {
+      minutes: '{{count}}분'
+    }
+  },
   seo: {
     home: {
       title: 'JSONL 파서 - JSON & JSONL 데이터 시각화 도구',

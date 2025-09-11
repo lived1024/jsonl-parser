@@ -716,6 +716,40 @@ Example:
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
   },
+  learn: {
+    title: 'Learning Center',
+    description: 'Tutorials and guides to improve your JSON and JSONL processing skills',
+    loading: 'Loading tutorials...',
+    error: 'An error occurred while loading tutorials.',
+    empty: 'No tutorials match the selected criteria.',
+    resetFilters: 'Reset Filters',
+    progress: {
+      title: 'Learning Progress',
+      completed: 'Completed',
+      total: 'Total',
+      completedStatus: 'Completed',
+      inProgress: 'In Progress',
+      notStarted: 'Not Started'
+    },
+    filters: {
+      difficulty: 'Difficulty',
+      category: 'Category'
+    },
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    },
+    categories: {
+      basics: 'Basics',
+      parsing: 'Parsing',
+      validation: 'Validation',
+      advanced_topics: 'Advanced Topics'
+    },
+    duration: {
+      minutes: '{{count}} min'
+    }
+  },
   seo: {
     home: {
       title: 'JSONL Parser - JSON & JSONL Data Visualization Tool',
