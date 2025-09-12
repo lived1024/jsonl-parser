@@ -729,7 +729,9 @@ Example:
       total: 'Total',
       completedStatus: 'Completed',
       inProgress: 'In Progress',
-      notStarted: 'Not Started'
+      notStarted: 'Not Started',
+      completedBadge: '✓ Completed',
+      percentage: '{{percent}}%'
     },
     filters: {
       title: 'Filters',

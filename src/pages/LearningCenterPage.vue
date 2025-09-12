@@ -116,7 +116,7 @@ import {
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
 import FilterSidebar, { type FilterSection } from '../components/common/FilterSidebar.vue'
-import SearchBar from '../components/common/SearchBar.vue'
+
 import ItemGrid from '../components/common/ItemGrid.vue'
 import ItemCard from '../components/common/ItemCard.vue'
 import SafeAdContainer from '../components/tools/SafeAdContainer.vue'
@@ -327,7 +327,7 @@ const getProgressLabel = (tutorialId: string): string => {
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
   if (progressPercent > 0) {
-    return `${Math.round(progressPercent)}%`
+    return t('learn.progress.percentage', { percent: Math.round(progressPercent) })
   }
   
   return t('learn.progress.notStarted')
@@ -350,12 +350,12 @@ const getProgressType = (tutorialId: string): string => {
 // 배지 정보 생성
 const getBadgeForTutorial = (tutorialId: string) => {
   if (isCompleted(tutorialId)) {
-    return { text: `✓ ${t('learn.progress.completedStatus')}`, type: 'success' }
+    return { text: t('learn.progress.completedBadge'), type: 'success' }
   }
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
   if (progressPercent > 0) {
-    return { text: `${Math.round(progressPercent)}%`, type: 'progress' }
+    return { text: t('learn.progress.percentage', { percent: Math.round(progressPercent) }), type: 'progress' }
   }
   
   return undefined
@@ -417,8 +417,7 @@ const handleTutorialProgress = (tutorialId: string, progressPercent: number) => 
   saveProgress()
 }
 
-// Remove unused function to clean up warnings
-// handleTutorialProgress is defined but not used in current implementation
+
 
 // 필터 초기화
 const resetFilters = () => {
@@ -505,21 +504,27 @@ const resetFilters = () => {
 :deep(.card-meta) {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: center;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 :deep(.meta-item) {
-  padding: 0.4rem 0.8rem !important;
-  border-radius: 16px !important;
-  font-size: 0.85rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  font-size: 0.8rem !important;
   font-weight: 600 !important;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   min-width: fit-content !important;
   width: auto !important;
-  max-width: none !important;
+  max-width: calc(45% - 0.2rem) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
 }
 
 /* 난이도별 색상 - TutorialViewer와 동일한 스타일 */
@@ -553,25 +558,27 @@ const resetFilters = () => {
   background: var(--color-success) !important;
   color: white !important;
   border-color: var(--color-success) !important;
-  min-width: 50px !important;
   text-align: center !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 :deep(.meta-item.progress-in-progress) {
   background: #f3e5f5 !important;
   color: #6a1b9a !important;
   border-color: #ce93d8 !important;
-  min-width: 50px !important;
   text-align: center !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 :deep(.meta-item.progress-not-started) {
   background: var(--color-background-tertiary) !important;
   color: var(--color-text-secondary) !important;
   border-color: var(--color-border) !important;
-  min-width: 60px !important;
   text-align: center !important;
-  padding: 0.25rem 0.5rem !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 /* 배지 스타일 */
