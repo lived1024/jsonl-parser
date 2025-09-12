@@ -50,7 +50,7 @@
         :error="error"
         :loading-text="t('learn.loading')"
         :error-text="t('learn.error')"
-        :empty-text="t('learn.empty')"
+        :empty-text="searchQuery ? t('learn.search.noResults') : t('learn.empty')"
         :reset-button-text="t('learn.resetFilters')"
         :show-ad="true"
         :ad-after-index="2"
@@ -116,6 +116,7 @@ import {
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
 import FilterSidebar, { type FilterSection } from '../components/common/FilterSidebar.vue'
+import SearchBar from '../components/common/SearchBar.vue'
 import ItemGrid from '../components/common/ItemGrid.vue'
 import ItemCard from '../components/common/ItemCard.vue'
 import SafeAdContainer from '../components/tools/SafeAdContainer.vue'
@@ -139,6 +140,7 @@ const { generateBreadcrumbStructuredData, setMetadata } = useSEO({
 const tutorials = ref<Tutorial[]>([])
 const loading = ref(true)
 const error = ref(false)
+const searchQuery = ref('')
 
 // 필터 상태
 const filters = ref({
@@ -292,7 +294,15 @@ const filteredTutorials = computed(() => {
     const category = getCategoryForTutorial(tutorial.id)
     const categoryMatch = filters.value[category as keyof typeof filters.value]
     
-    return difficultyMatch && categoryMatch
+    // 검색 필터
+    let searchMatch = true
+    if (searchQuery.value.trim()) {
+      const query = searchQuery.value.toLowerCase()
+      searchMatch = tutorial.title.toLowerCase().includes(query) ||
+                   tutorial.description.toLowerCase().includes(query)
+    }
+    
+    return difficultyMatch && categoryMatch && searchMatch
   })
 })
 
@@ -412,6 +422,7 @@ const handleTutorialProgress = (tutorialId: string, progressPercent: number) => 
 
 // 필터 초기화
 const resetFilters = () => {
+  searchQuery.value = ''
   filters.value = {
     beginner: true,
     intermediate: true,
@@ -425,10 +436,11 @@ const resetFilters = () => {
 </script>
 
 <style scoped>
-/* 진행률 섹션 */
+/* 검색 및 진행률 섹션 */
 .progress-section {
   border-top: 1px solid var(--color-border);
   padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .progress-section h3 {

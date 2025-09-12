@@ -1,9 +1,9 @@
 <template>
   <div class="filter-sidebar">
     <div class="filter-header">
-      <h3>필터</h3>
+      <h3>{{ t('learn.filters.title') }}</h3>
       <button @click="clearAll" class="clear-button">
-        모두 지우기
+        {{ t('learn.filters.clearAll') }}
       </button>
     </div>
     
@@ -32,10 +32,17 @@
         </div>
       </div>
     </div>
+    
+    <!-- Slot for additional content like search or progress -->
+    <slot name="additional"></slot>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from '../../composables/useI18n'
+
+const { t } = useI18n()
+
 export interface FilterOption {
   key: string
   label: string

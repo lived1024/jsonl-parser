@@ -969,8 +969,16 @@ export default {
       notStarted: '시작 전'
     },
     filters: {
+      title: '필터',
+      clearAll: '모두 지우기',
       difficulty: '난이도',
       category: '카테고리'
+    },
+    search: {
+      placeholder: '튜토리얼 검색...',
+      noResults: '검색 결과가 없습니다',
+      noResultsDescription: '다른 키워드로 검색하거나 필터를 초기화해보세요.',
+      clearSearch: '검색 지우기'
     },
     difficulty: {
       beginner: '초급',
