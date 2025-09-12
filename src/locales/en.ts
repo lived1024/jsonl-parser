@@ -732,8 +732,16 @@ Example:
       notStarted: 'Not Started'
     },
     filters: {
+      title: 'Filters',
+      clearAll: 'Clear All',
       difficulty: 'Difficulty',
       category: 'Category'
+    },
+    search: {
+      placeholder: 'Search tutorials...',
+      noResults: 'No results found',
+      noResultsDescription: 'Try different keywords or reset filters.',
+      clearSearch: 'Clear search'
     },
     difficulty: {
       beginner: 'Beginner',
