@@ -966,7 +966,9 @@ export default {
       total: '전체',
       completedStatus: '완료',
       inProgress: '진행 중',
-      notStarted: '시작 전'
+      notStarted: '시작 전',
+      completedBadge: '✓ 완료',
+      percentage: '{{percent}}%'
     },
     filters: {
       title: '필터',
