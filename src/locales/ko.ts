@@ -761,6 +761,41 @@ export default {
     previous: '이전',
     next: '다음'
   },
+  tutorial: {
+    loading: '튜토리얼을 불러오는 중...',
+    error: {
+      title: '오류가 발생했습니다',
+      retry: '다시 시도',
+      notFound: '튜토리얼을 찾을 수 없습니다.',
+      loadFailed: '튜토리얼을 불러오는 중 오류가 발생했습니다.'
+    },
+    progress: {
+      label: '진행률: {{progress}}%'
+    },
+    duration: {
+      minutes: '{{count}}분'
+    },
+    status: {
+      completed: '완료',
+      completedBadge: '✓ 완료'
+    },
+    actions: {
+      markCompleted: '완료 표시',
+      markIncomplete: '완료 취소',
+      backToList: '← 목록으로 돌아가기'
+    },
+    examples: {
+      title: '코드 예제',
+      copy: '복사',
+      copied: '복사됨!',
+      loadInParser: '파서에서 열기'
+    },
+    difficulty: {
+      beginner: '초급',
+      intermediate: '중급',
+      advanced: '고급'
+    }
+  },
   guides: {
     'json-basics': {
       title: 'JSON 기초',

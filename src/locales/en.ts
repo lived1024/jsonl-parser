@@ -796,6 +796,41 @@ Example:
     previous: 'Previous',
     next: 'Next'
   },
+  tutorial: {
+    loading: 'Loading tutorial...',
+    error: {
+      title: 'An error occurred',
+      retry: 'Try Again',
+      notFound: 'Tutorial not found.',
+      loadFailed: 'Failed to load tutorial.'
+    },
+    progress: {
+      label: 'Progress: {{progress}}%'
+    },
+    duration: {
+      minutes: '{{count}} min'
+    },
+    status: {
+      completed: 'Completed',
+      completedBadge: '✓ Completed'
+    },
+    actions: {
+      markCompleted: 'Mark as Completed',
+      markIncomplete: 'Mark as Incomplete',
+      backToList: '← Back to List'
+    },
+    examples: {
+      title: 'Code Examples',
+      copy: 'Copy',
+      copied: 'Copied!',
+      loadInParser: 'Load in Parser'
+    },
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    }
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',

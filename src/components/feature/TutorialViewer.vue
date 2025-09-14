@@ -3,14 +3,14 @@
     <!-- 로딩 상태 -->
     <div v-if="loading" class="loading-state">
       <div class="loading-spinner"></div>
-      <p>튜토리얼을 불러오는 중...</p>
+      <p>{{ t('tutorial.loading') }}</p>
     </div>
 
     <!-- 오류 상태 -->
     <div v-else-if="error" class="error-state">
-      <h2>오류가 발생했습니다</h2>
+      <h2>{{ t('tutorial.error.title') }}</h2>
       <p>{{ error }}</p>
-      <button @click="$emit('retry')" class="retry-button">다시 시도</button>
+      <button @click="$emit('retry')" class="retry-button">{{ t('tutorial.error.retry') }}</button>
     </div>
 
     <!-- 튜토리얼 콘텐츠 -->
@@ -24,8 +24,8 @@
             <span class="difficulty" :class="tutorial.metadata.difficulty">
               {{ getDifficultyLabel(tutorial.metadata.difficulty) }}
             </span>
-            <span class="duration">{{ tutorial.metadata.estimatedReadTime }}분</span>
-            <span v-if="isCompleted" class="completed-badge">✓ 완료</span>
+            <span class="duration">{{ t('tutorial.duration.minutes', { count: tutorial.metadata.estimatedReadTime }) }}</span>
+            <span v-if="isCompleted" class="completed-badge">{{ t('tutorial.status.completedBadge') }}</span>
           </div>
         </div>
         
@@ -35,14 +35,14 @@
             @click="markAsCompleted"
             class="complete-button"
           >
-            완료 표시
+            {{ t('tutorial.actions.markCompleted') }}
           </button>
           <button 
             v-else 
             @click="markAsIncomplete"
             class="incomplete-button"
           >
-            완료 취소
+            {{ t('tutorial.actions.markIncomplete') }}
           </button>
         </div>
       </header>
@@ -50,7 +50,7 @@
       <!-- 진행률 표시 -->
       <div class="progress-section">
         <div class="progress-info">
-          <span>진행률: {{ Math.round(readingProgress) }}%</span>
+          <span>{{ t('tutorial.progress.label', { progress: Math.round(readingProgress) }) }}</span>
         </div>
         <div class="progress-bar">
           <div 
@@ -76,7 +76,7 @@
 
       <!-- 코드 예제 섹션 -->
       <section v-if="tutorial.metadata.interactiveExamples && tutorial.metadata.interactiveExamples.length > 0" class="examples-section">
-        <h2>코드 예제</h2>
+        <h2>{{ t('tutorial.examples.title') }}</h2>
         <div class="examples-grid">
           <div 
             v-for="(example, index) in tutorial.metadata.interactiveExamples" 
@@ -97,7 +97,7 @@
                 class="copy-button"
                 :class="{ copied: copiedIndex === index }"
               >
-                {{ copiedIndex === index ? '복사됨!' : '복사' }}
+                {{ copiedIndex === index ? t('tutorial.examples.copied') : t('tutorial.examples.copy') }}
               </button>
             </div>
             
@@ -107,7 +107,7 @@
               @click="loadInParser(example.data)"
               class="load-parser-button"
             >
-              파서에서 열기
+              {{ t('tutorial.examples.loadInParser') }}
             </button>
           </div>
         </div>
@@ -123,7 +123,7 @@
       <!-- 네비게이션 -->
       <nav class="tutorial-navigation">
         <button @click="$emit('back')" class="nav-button back">
-          ← 목록으로 돌아가기
+          {{ t('tutorial.actions.backToList') }}
         </button>
         <div class="nav-actions">
           <button 
@@ -131,7 +131,7 @@
             @click="markAsCompleted"
             class="complete-button"
           >
-            완료 표시
+            {{ t('tutorial.actions.markCompleted') }}
           </button>
         </div>
       </nav>
@@ -144,6 +144,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import AdSenseContainer from '../common/AdSenseContainer.vue'
 import { ContentService, type GuideContent } from '../../services/ContentService'
+import { useI18n } from '../../composables/useI18n'
 import hljs from 'highlight.js'
 
 interface Props {
@@ -160,6 +161,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 const router = useRouter()
+const { t } = useI18n()
 
 const contentService = ContentService.getInstance()
 
@@ -218,11 +220,11 @@ const loadTutorial = async () => {
     tutorial.value = await contentService.getGuide(props.tutorialId)
     
     if (!tutorial.value) {
-      error.value = '튜토리얼을 찾을 수 없습니다.'
+      error.value = t('tutorial.error.notFound')
     }
   } catch (err) {
     console.error('Failed to load tutorial:', err)
-    error.value = '튜토리얼을 불러오는 중 오류가 발생했습니다.'
+    error.value = t('tutorial.error.loadFailed')
   } finally {
     loading.value = false
   }
@@ -359,12 +361,8 @@ const isCompleted = computed(() => {
 
 // 난이도 라벨
 const getDifficultyLabel = (difficulty: string): string => {
-  const labels: Record<string, string> = {
-    beginner: '초급',
-    intermediate: '중급',
-    advanced: '고급'
-  }
-  return labels[difficulty] || difficulty
+  const difficultyKey = `tutorial.difficulty.${difficulty}`
+  return t(difficultyKey) !== difficultyKey ? t(difficultyKey) : difficulty
 }
 
 // 완료 표시
