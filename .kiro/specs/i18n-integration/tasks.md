@@ -137,7 +137,12 @@
   - 진행률 관련 배지와 메타 정보 다국어화
   - _Requirements: 3.3_
 
-- [ ] 3.4 TutorialViewer 컴포넌트 다국어화
+- [x] 3.4 TutorialViewer 컴포넌트 다국어화
+
+
+
+
+
   - TutorialViewer.vue의 네비게이션 버튼(이전/다음) 다국어화
   - 목차와 관련 도구 섹션 텍스트 다국어화
   - 튜토리얼 로딩 오류 메시지 다국어화
