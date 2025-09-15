@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="참조 자료" 
-      description="JSON 개발을 위한 치트시트, 가이드, 모범 사례"
+      title-key="pages.reference.title"
+      description-key="pages.reference.description"
+      :breadcrumbs="[
+        { name: t('pages.reference.title') }
+      ]"
     >
     <template #sidebar>
       <FilterSidebar 
@@ -67,6 +70,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { BookOpen, AlertTriangle, Zap, FileText } from 'lucide-vue-next'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
@@ -85,6 +89,7 @@ interface Reference {
 }
 
 const router = useRouter()
+const { t } = useI18n()
 
 const filters = ref({
   cheatsheet: true,

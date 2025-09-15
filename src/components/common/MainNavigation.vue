@@ -11,21 +11,24 @@
 
     <div class="nav-container">
       <!-- Desktop Navigation -->
-      <ul class="nav-menu desktop-nav" v-if="!isMobile" role="menubar">
-        <li v-for="item in navigationItems" :key="item.path" class="nav-item" role="none">
-          <router-link 
-            :to="item.path" 
-            class="nav-link"
-            :class="{ active: isActive(item.path) }"
-            :aria-current="isActive(item.path) ? 'page' : undefined"
-            role="menuitem"
-            :aria-label="`${item.label} - ${item.description}`"
-          >
-            <component :is="item.icon" :size="18" class="nav-icon" aria-hidden="true" />
-            <span class="nav-label">{{ item.label }}</span>
-          </router-link>
-        </li>
-      </ul>
+      <div v-if="!isMobile" class="desktop-nav-wrapper">
+        <ul class="nav-menu desktop-nav" role="menubar">
+          <li v-for="item in navigationItems" :key="item.path" class="nav-item" role="none">
+            <router-link 
+              :to="item.path" 
+              class="nav-link"
+              :class="{ active: isActive(item.path) }"
+              :aria-current="isActive(item.path) ? 'page' : undefined"
+              role="menuitem"
+              :aria-label="`${item.label} - ${item.description}`"
+            >
+              <component :is="item.icon" :size="18" class="nav-icon" aria-hidden="true" />
+              <span class="nav-label">{{ item.label }}</span>
+            </router-link>
+          </li>
+        </ul>
+        
+      </div>
 
       <!-- Mobile Navigation Toggle -->
       <div class="mobile-nav-toggle" v-if="isMobile">
@@ -39,6 +42,7 @@
           <Menu v-if="!isMobileMenuOpen" :size="20" />
           <X v-else :size="20" />
         </button>
+        
       </div>
     </div>
 
@@ -70,6 +74,7 @@
           </router-link>
         </li>
       </ul>
+      
     </div>
 
     <!-- Mobile Menu Overlay -->
@@ -86,7 +91,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApp } from '../../composables/useApp'
-import { useI18nStore } from '../../stores/i18nStore'
+import { useI18n } from '../../composables/useI18n'
 import { 
   Home, 
   BookOpen, 
@@ -97,6 +102,7 @@ import {
   Menu,
   X
 } from 'lucide-vue-next'
+import LanguageSelector from '../ui/LanguageSelector.vue'
 
 interface NavigationItem {
   path: string
@@ -107,11 +113,8 @@ interface NavigationItem {
 
 const route = useRoute()
 const { isMobile } = useApp()
-const { getTranslation } = useI18nStore()
+const { t } = useI18n()
 const isMobileMenuOpen = ref(false)
-
-// 번역 함수 단축키
-const t = (key: string) => getTranslation(key)
 
 const navigationItems = computed((): NavigationItem[] => [
   {
@@ -128,9 +131,9 @@ const navigationItems = computed((): NavigationItem[] => [
   },
   {
     path: '/info',
-    label: t('navigation.items.info.label') || '정보 허브',
+    label: t('navigation.items.info.label'),
     icon: Info,
-    description: t('navigation.items.info.description') || 'JSON과 API 개발 가이드'
+    description: t('navigation.items.info.description')
   },
   {
     path: '/tools',
@@ -240,6 +243,13 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+
+.desktop-nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Desktop Navigation */
@@ -255,17 +265,23 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 700px;
+  justify-content: space-around;
+  overflow: hidden;
 }
 
 .nav-item {
   margin: 0;
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .nav-link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.5rem;
   border-radius: 1.5rem;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.8);
@@ -274,6 +290,9 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  justify-content: center;
+  min-width: 0;
 }
 
 .nav-link::before {
@@ -315,12 +334,29 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
 
 .nav-label {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+  text-align: center;
+}
+
+/* Language Selector Integration */
+.desktop-language-selector {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-language-selector {
+  display: flex;
+  align-items: center;
+  margin-left: 0.5rem;
 }
 
 /* Mobile Navigation */
 .mobile-nav-toggle {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .mobile-menu-button {
@@ -461,6 +497,19 @@ const handleMobileMenuKeydown = (event: KeyboardEvent) => {
 .mobile-nav-description {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.mobile-menu-language-selector {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.5rem;
+}
+
+.language-selector-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.75rem;
 }
 
 /* Responsive adjustments */

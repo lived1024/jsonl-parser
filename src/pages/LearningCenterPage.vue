@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="학습 센터" 
-      description="JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드"
+      title-key="pages.learn.title"
+      description-key="pages.learn.description"
+      :breadcrumbs="[
+        { name: t('pages.learn.title') }
+      ]"
     >
     <template #sidebar>
       <FilterSidebar 
@@ -11,15 +14,15 @@
       >
         <template #additional>
           <div class="progress-section">
-            <h3>학습 진행률</h3>
+            <h3>{{ t('learn.progress.title') }}</h3>
             <div class="progress-stats">
               <div class="stat">
                 <span class="stat-number">{{ completedCount }}</span>
-                <span class="stat-label">완료</span>
+                <span class="stat-label">{{ t('learn.progress.completed') }}</span>
               </div>
               <div class="stat">
                 <span class="stat-number">{{ totalCount }}</span>
-                <span class="stat-label">전체</span>
+                <span class="stat-label">{{ t('learn.progress.total') }}</span>
               </div>
             </div>
             <div class="progress-bar">
@@ -45,10 +48,10 @@
         :items="filteredTutorials"
         :loading="loading"
         :error="error"
-        loading-text="튜토리얼을 불러오는 중..."
-        error-text="튜토리얼을 불러오는 중 오류가 발생했습니다."
-        empty-text="선택한 조건에 맞는 튜토리얼이 없습니다."
-        reset-button-text="필터 초기화"
+        :loading-text="t('learn.loading')"
+        :error-text="t('learn.error')"
+        :empty-text="searchQuery ? t('learn.search.noResults') : t('learn.empty')"
+        :reset-button-text="t('learn.resetFilters')"
         :show-ad="true"
         :ad-after-index="2"
         :on-retry="loadTutorials"
@@ -69,7 +72,7 @@
               },
               { 
                 key: 'duration', 
-                label: `${tutorial.estimatedReadTime}분`,
+                label: t('learn.duration.minutes', { count: tutorial.estimatedReadTime }),
                 type: 'duration'
               },
               { 
@@ -113,6 +116,7 @@ import {
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import PageLayout from '../components/common/PageLayout.vue'
 import FilterSidebar, { type FilterSection } from '../components/common/FilterSidebar.vue'
+
 import ItemGrid from '../components/common/ItemGrid.vue'
 import ItemCard from '../components/common/ItemCard.vue'
 import SafeAdContainer from '../components/tools/SafeAdContainer.vue'
@@ -124,18 +128,19 @@ const router = useRouter()
 const contentService = ContentService.getInstance()
 const { t } = useI18n()
 
-// SEO 메타데이터 설정 (임시 비활성화)
-// const { generateBreadcrumbStructuredData } = useSEO({
-//   title: t('seo.learn.title'),
-//   description: t('seo.learn.description'),
-//   keywords: ['JSON', 'JSONL', 'tutorial', 'learning', 'guide', 'education', 'developer', 'training'],
-//   ogType: 'website'
-// })
+// SEO 메타데이터 설정
+const { generateBreadcrumbStructuredData, setMetadata } = useSEO({
+  title: t('seo.learn.title'),
+  description: t('seo.learn.description'),
+  keywords: ['JSON', 'JSONL', 'tutorial', 'learning', 'guide', 'education', 'developer', 'training'],
+  ogType: 'website'
+})
 
 // 상태 관리
 const tutorials = ref<Tutorial[]>([])
 const loading = ref(true)
 const error = ref(false)
+const searchQuery = ref('')
 
 // 필터 상태
 const filters = ref({
@@ -151,27 +156,27 @@ const filters = ref({
 })
 
 // 필터 섹션 정의
-const filterSections: FilterSection[] = [
+const filterSections = computed((): FilterSection[] => [
   {
     key: 'difficulty',
-    title: '난이도',
+    title: t('learn.filters.difficulty'),
     options: [
-      { key: 'beginner', label: '초급' },
-      { key: 'intermediate', label: '중급' },
-      { key: 'advanced', label: '고급' }
+      { key: 'beginner', label: t('learn.difficulty.beginner') },
+      { key: 'intermediate', label: t('learn.difficulty.intermediate') },
+      { key: 'advanced', label: t('learn.difficulty.advanced') }
     ]
   },
   {
     key: 'category',
-    title: '카테고리',
+    title: t('learn.filters.category'),
     options: [
-      { key: 'basics', label: '기초' },
-      { key: 'parsing', label: '파싱' },
-      { key: 'validation', label: '검증' },
-      { key: 'advanced_topics', label: '고급 주제' }
+      { key: 'basics', label: t('learn.categories.basics') },
+      { key: 'parsing', label: t('learn.categories.parsing') },
+      { key: 'validation', label: t('learn.categories.validation') },
+      { key: 'advanced_topics', label: t('learn.categories.advanced_topics') }
     ]
   }
-]
+])
 
 // 학습 진행 상황 (localStorage에서 관리)
 const PROGRESS_KEY = 'jsonl-parser-learning-progress'
@@ -190,11 +195,17 @@ const progress = ref<LearningProgress>({
 
 // 컴포넌트 마운트 시 데이터 로드
 onMounted(async () => {
-  // Structured data 설정 (임시 비활성화)
-  // const structuredData = generateBreadcrumbStructuredData([
-  //   { name: 'Home', url: '/' },
-  //   { name: 'Learning Center', url: '/learn' }
-  // ])
+  // Structured data 설정
+  const structuredData = generateBreadcrumbStructuredData([
+    { name: t('breadcrumb.home'), url: '/' },
+    { name: t('pages.learn.title'), url: '/learn' }
+  ])
+  
+  setMetadata({
+    title: t('seo.learn.title'),
+    description: t('seo.learn.description'),
+    structuredData
+  })
   
   await loadTutorials()
   loadProgress()
@@ -283,7 +294,15 @@ const filteredTutorials = computed(() => {
     const category = getCategoryForTutorial(tutorial.id)
     const categoryMatch = filters.value[category as keyof typeof filters.value]
     
-    return difficultyMatch && categoryMatch
+    // 검색 필터
+    let searchMatch = true
+    if (searchQuery.value.trim()) {
+      const query = searchQuery.value.toLowerCase()
+      searchMatch = tutorial.title.toLowerCase().includes(query) ||
+                   tutorial.description.toLowerCase().includes(query)
+    }
+    
+    return difficultyMatch && categoryMatch && searchMatch
   })
 })
 
@@ -303,15 +322,15 @@ const isCompleted = (tutorialId: string): boolean => {
 // 진행률 라벨 생성
 const getProgressLabel = (tutorialId: string): string => {
   if (isCompleted(tutorialId)) {
-    return '완료'
+    return t('learn.progress.completedStatus')
   }
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
   if (progressPercent > 0) {
-    return `${Math.round(progressPercent)}%`
+    return t('learn.progress.percentage', { percent: Math.round(progressPercent) })
   }
   
-  return '시작 전'
+  return t('learn.progress.notStarted')
 }
 
 // 진행률 타입 생성
@@ -331,12 +350,12 @@ const getProgressType = (tutorialId: string): string => {
 // 배지 정보 생성
 const getBadgeForTutorial = (tutorialId: string) => {
   if (isCompleted(tutorialId)) {
-    return { text: '✓ 완료', type: 'success' }
+    return { text: t('learn.progress.completedBadge'), type: 'success' }
   }
   
   const progressPercent = progress.value.tutorialProgress[tutorialId] || 0
   if (progressPercent > 0) {
-    return { text: `${Math.round(progressPercent)}%`, type: 'progress' }
+    return { text: t('learn.progress.percentage', { percent: Math.round(progressPercent) }), type: 'progress' }
   }
   
   return undefined
@@ -344,12 +363,8 @@ const getBadgeForTutorial = (tutorialId: string) => {
 
 // 난이도 라벨 변환
 const getDifficultyLabel = (difficulty: string): string => {
-  const labels: Record<string, string> = {
-    beginner: '초급',
-    intermediate: '중급',
-    advanced: '고급'
-  }
-  return labels[difficulty] || difficulty
+  const key = `learn.difficulty.${difficulty}` as const
+  return t(key) || difficulty
 }
 
 // 튜토리얼 아이콘 매핑
@@ -402,11 +417,11 @@ const handleTutorialProgress = (tutorialId: string, progressPercent: number) => 
   saveProgress()
 }
 
-// 사용하지 않는 import 제거를 위한 참조
-console.log('Unused imports:', handleTutorialProgress)
+
 
 // 필터 초기화
 const resetFilters = () => {
+  searchQuery.value = ''
   filters.value = {
     beginner: true,
     intermediate: true,
@@ -420,10 +435,11 @@ const resetFilters = () => {
 </script>
 
 <style scoped>
-/* 진행률 섹션 */
+/* 검색 및 진행률 섹션 */
 .progress-section {
   border-top: 1px solid var(--color-border);
   padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .progress-section h3 {
@@ -488,21 +504,27 @@ const resetFilters = () => {
 :deep(.card-meta) {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: center;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 :deep(.meta-item) {
-  padding: 0.4rem 0.8rem !important;
-  border-radius: 16px !important;
-  font-size: 0.85rem !important;
+  padding: 0.3rem 0.6rem !important;
+  border-radius: 12px !important;
+  font-size: 0.8rem !important;
   font-weight: 600 !important;
-  display: inline-block !important;
+  display: inline-flex !important;
+  align-items: center !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
   min-width: fit-content !important;
   width: auto !important;
-  max-width: none !important;
+  max-width: calc(45% - 0.2rem) !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
 }
 
 /* 난이도별 색상 - TutorialViewer와 동일한 스타일 */
@@ -536,25 +558,27 @@ const resetFilters = () => {
   background: var(--color-success) !important;
   color: white !important;
   border-color: var(--color-success) !important;
-  min-width: 50px !important;
   text-align: center !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 :deep(.meta-item.progress-in-progress) {
   background: #f3e5f5 !important;
   color: #6a1b9a !important;
   border-color: #ce93d8 !important;
-  min-width: 50px !important;
   text-align: center !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 :deep(.meta-item.progress-not-started) {
   background: var(--color-background-tertiary) !important;
   color: var(--color-text-secondary) !important;
   border-color: var(--color-border) !important;
-  min-width: 60px !important;
   text-align: center !important;
-  padding: 0.25rem 0.5rem !important;
+  max-width: calc(55% - 0.2rem) !important;
+  flex-shrink: 1 !important;
 }
 
 /* 배지 스타일 */

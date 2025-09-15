@@ -155,6 +155,11 @@ Example:
     loading: {
       title: 'Processing file...',
       description: 'Reading and parsing the file'
+    },
+    errors: {
+      fileReadFailed: 'Failed to read file',
+      fileReadAsTextFailed: 'Failed to read file as text',
+      unsupportedFileType: 'Only JSON and JSONL files are supported'
     }
   },
   validation: {
@@ -164,6 +169,26 @@ Example:
     jsonlTooManyLines: 'JSONL format supports up to 10,000 lines maximum.',
     tooManyErrors: 'Too many errors occurred. Only showing the first 10 errors.',
     partialSuccess: '{{errorCount}} lines had errors. {{successCount}} lines were successfully parsed.'
+  },
+  errors: {
+    parsing: {
+      jsonSyntax: 'JSON Syntax Error: {{message}}',
+      jsonlLine: 'Line {{line}}: {{message}}',
+      unknownError: 'Unknown parsing error occurred',
+      invalidJson: 'Invalid JSON'
+    },
+    validation: {
+      jsonlRequired: 'JSONL format requires at least one line of JSON data',
+      inputTooLarge: 'Input size is too large. Maximum {{maxSize}}MB is supported',
+      memoryWarning: 'Input data is too large and may cause memory issues. Please use smaller data',
+      jsonlTooManyLines: 'JSONL format supports up to {{maxLines}} lines maximum',
+      tooManyErrors: 'Too many errors occurred. Only showing the first {{maxErrors}} errors',
+      partialSuccess: '{{errorCount}} lines had errors. {{successCount}} lines were successfully parsed'
+    },
+    jsonl: {
+      linePrefix: 'Line {{line}}',
+      detected: 'JSONL format detected'
+    }
   },
   accessibility: {
     mainArea: 'JSONL Parser main area',
@@ -201,7 +226,8 @@ Example:
       treeNavigation: 'Tree Navigation',
       help: 'Show Help',
       close: 'Close'
-    }
+    },
+    breadcrumbNavigation: 'Breadcrumb navigation'
   },
   help: {
     title: 'Help',
@@ -612,6 +638,7 @@ Example:
     mainLabel: 'Main navigation',
     mobileMenuLabel: 'Mobile navigation menu',
     toggleMenu: 'Toggle menu',
+    backTo: ' back',
     items: {
       parser: {
         label: 'Parser',
@@ -639,9 +666,99 @@ Example:
       }
     }
   },
+  pages: {
+    home: {
+      title: 'JSONL Parser',
+      description: 'Visualize JSON and JSONL data with interactive tree structure'
+    },
+    learn: {
+      title: 'Learning Center',
+      description: 'Tutorials and guides to improve your JSON and JSONL processing skills'
+    },
+    tutorial: {
+      title: 'Tutorial',
+      description: 'Step-by-step learning guide'
+    },
+    tools: {
+      title: 'Tools Hub',
+      description: 'Useful tools collection for JSON data processing'
+    },
+    tool: {
+      title: 'Tool',
+      description: 'JSON processing tool'
+    },
+    reference: {
+      title: 'Reference Hub',
+      description: 'Comprehensive reference materials for JSON syntax and patterns'
+    },
+    referenceGuide: {
+      title: 'Reference Guide',
+      description: 'Detailed reference documentation'
+    },
+    samples: {
+      title: 'Sample Library',
+      description: 'Various JSON example data and real-world use cases'
+    },
+    info: {
+      title: 'Information Hub',
+      description: 'Comprehensive guides and information about JSON and API development'
+    },
+    infoGuide: {
+      title: 'Information Guide',
+      description: 'Detailed development guide'
+    }
+  },
+  breadcrumb: {
+    home: 'Home',
+    separator: '/'
+  },
   meta: {
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'
+  },
+  learn: {
+    title: 'Learning Center',
+    description: 'Tutorials and guides to improve your JSON and JSONL processing skills',
+    loading: 'Loading tutorials...',
+    error: 'An error occurred while loading tutorials.',
+    empty: 'No tutorials match the selected criteria.',
+    resetFilters: 'Reset Filters',
+    progress: {
+      title: 'Learning Progress',
+      completed: 'Completed',
+      total: 'Total',
+      completedStatus: 'Completed',
+      inProgress: 'In Progress',
+      notStarted: 'Not Started',
+      completedBadge: '✓ Completed',
+      percentage: '{{percent}}%'
+    },
+    filters: {
+      title: 'Filters',
+      clearAll: 'Clear All',
+      difficulty: 'Difficulty',
+      category: 'Category'
+    },
+    search: {
+      placeholder: 'Search tutorials...',
+      noResults: 'No results found',
+      noResultsDescription: 'Try different keywords or reset filters.',
+      clearSearch: 'Clear search'
+    },
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    },
+    categories: {
+      basics: 'Basics',
+      parsing: 'Parsing',
+      validation: 'Validation',
+      advanced_topics: 'Advanced Topics'
+    },
+    duration: {
+      minutes: '{{count}} min'
+    }
   },
   seo: {
     home: {
@@ -667,6 +784,64 @@ Example:
     info: {
       title: 'JSON & API Development Guide - Information Hub',
       description: 'Comprehensive guides and information about JSON, APIs, data processing, and modern development practices.'
+    }
+  },
+  guide: {
+    tableOfContents: 'Table of Contents',
+    relatedTools: 'Related Tools',
+    relatedGuides: 'Related Guides',
+    tryItOut: 'Try it out',
+    loadInParser: 'Load in Parser',
+    loadError: 'Error loading guide',
+    previous: 'Previous',
+    next: 'Next'
+  },
+  tutorial: {
+    loading: 'Loading tutorial...',
+    error: {
+      title: 'An error occurred',
+      retry: 'Try Again',
+      notFound: 'Tutorial not found.',
+      loadFailed: 'Failed to load tutorial.'
+    },
+    progress: {
+      label: 'Progress: {{progress}}%'
+    },
+    duration: {
+      minutes: '{{count}} min'
+    },
+    status: {
+      completed: 'Completed',
+      completedBadge: '✓ Completed'
+    },
+    actions: {
+      markCompleted: 'Mark as Completed',
+      markIncomplete: 'Mark as Incomplete',
+      backToList: '← Back to List'
+    },
+    examples: {
+      title: 'Code Examples',
+      copy: 'Copy',
+      copied: 'Copied!',
+      loadInParser: 'Load in Parser'
+    },
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
+    }
+  },
+  common: {
+    loading: 'Loading...',
+    error: 'An error occurred',
+    backToHub: 'Back to Hub',
+    lastUpdated: 'Last Updated',
+    author: 'Author',
+    minutes: 'minutes',
+    difficulty: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced'
     }
   }
 } as const

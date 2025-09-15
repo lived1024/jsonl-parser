@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilterSidebar i18n Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .filter-sidebar {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .filter-header h3 {
+            color: #212529;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .clear-button {
+            background: none;
+            border: none;
+            color: #007bff;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .clear-button:hover {
+            background: #e9ecef;
+        }
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            color: #212529;
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0 0 0.75rem 0;
+        }
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.25rem 0;
+        }
+        .filter-option input[type="checkbox"] {
+            margin: 0;
+        }
+        .option-label {
+            color: #212529;
+            font-size: 0.9rem;
+        }
+        .language-toggle {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .language-toggle button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .language-toggle button.active {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>FilterSidebar i18n Test</h1>
+        
+        <div class="language-toggle">
+            <button id="ko-btn" class="active">한국어</button>
+            <button id="en-btn">English</button>
+        </div>
+
+        <div class="filter-sidebar">
+            <div class="filter-header">
+                <h3 id="filter-title">필터</h3>
+                <button class="clear-button" id="clear-all">모두 지우기</button>
+            </div>
+            
+            <div class="filter-sections">
+                <div class="filter-section">
+                    <h4 class="section-title" id="difficulty-title">난이도</h4>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="beginner-label">초급</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="intermediate-label">중급</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="advanced-label">고급</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-section">
+                    <h4 class="section-title" id="category-title">카테고리</h4>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="basics-label">기초</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="parsing-label">파싱</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="validation-label">검증</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span class="option-label" id="advanced-topics-label">고급 주제</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock translation data
+        const translations = {
+            ko: {
+                'learn.filters.title': '필터',
+                'learn.filters.clearAll': '모두 지우기',
+                'learn.filters.difficulty': '난이도',
+                'learn.filters.category': '카테고리',
+                'learn.difficulty.beginner': '초급',
+                'learn.difficulty.intermediate': '중급',
+                'learn.difficulty.advanced': '고급',
+                'learn.categories.basics': '기초',
+                'learn.categories.parsing': '파싱',
+                'learn.categories.validation': '검증',
+                'learn.categories.advanced_topics': '고급 주제'
+            },
+            en: {
+                'learn.filters.title': 'Filters',
+                'learn.filters.clearAll': 'Clear All',
+                'learn.filters.difficulty': 'Difficulty',
+                'learn.filters.category': 'Category',
+                'learn.difficulty.beginner': 'Beginner',
+                'learn.difficulty.intermediate': 'Intermediate',
+                'learn.difficulty.advanced': 'Advanced',
+                'learn.categories.basics': 'Basics',
+                'learn.categories.parsing': 'Parsing',
+                'learn.categories.validation': 'Validation',
+                'learn.categories.advanced_topics': 'Advanced Topics'
+            }
+        };
+
+        let currentLang = 'ko';
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            
+            document.getElementById('filter-title').textContent = t['learn.filters.title'];
+            document.getElementById('clear-all').textContent = t['learn.filters.clearAll'];
+            document.getElementById('difficulty-title').textContent = t['learn.filters.difficulty'];
+            document.getElementById('category-title').textContent = t['learn.filters.category'];
+            document.getElementById('beginner-label').textContent = t['learn.difficulty.beginner'];
+            document.getElementById('intermediate-label').textContent = t['learn.difficulty.intermediate'];
+            document.getElementById('advanced-label').textContent = t['learn.difficulty.advanced'];
+            document.getElementById('basics-label').textContent = t['learn.categories.basics'];
+            document.getElementById('parsing-label').textContent = t['learn.categories.parsing'];
+            document.getElementById('validation-label').textContent = t['learn.categories.validation'];
+            document.getElementById('advanced-topics-label').textContent = t['learn.categories.advanced_topics'];
+        }
+
+        document.getElementById('ko-btn').addEventListener('click', () => {
+            currentLang = 'ko';
+            document.getElementById('ko-btn').classList.add('active');
+            document.getElementById('en-btn').classList.remove('active');
+            updateTexts();
+        });
+
+        document.getElementById('en-btn').addEventListener('click', () => {
+            currentLang = 'en';
+            document.getElementById('en-btn').classList.add('active');
+            document.getElementById('ko-btn').classList.remove('active');
+            updateTexts();
+        });
+
+        // Initialize
+        updateTexts();
+    </script>
+</body>
+</html>
