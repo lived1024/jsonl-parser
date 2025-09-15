@@ -2,7 +2,7 @@
   <div class="interactive-examples-widget">
     <h3 class="widget-title">
       <Play class="title-icon" />
-      실습 예제
+      {{ t('help.examples.title') }}
     </h3>
     <div class="examples-list">
       <div
@@ -21,15 +21,15 @@
           <button
             @click="loadExample(example)"
             class="load-btn"
-            :title="`${example.title} 예제를 파서에서 열기`"
+            :title="t('guide.loadInParser')"
           >
             <ExternalLink class="btn-icon" />
-            파서에서 열기
+            {{ t('guide.loadInParser') }}
           </button>
           <button
             @click="copyExample(example.data)"
             class="copy-btn"
-            :title="예제 데이터 복사"
+            :title="t('faq.example')"
           >
             <Copy class="btn-icon" />
           </button>
@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import { Play, ExternalLink, Copy } from 'lucide-vue-next'
+import { useI18n } from '../../composables/useI18n'
 
 interface InteractiveExample {
   id: string
@@ -61,6 +62,8 @@ interface Emits {
 
 defineProps<Props>()
 const emit = defineEmits<Emits>()
+
+const { t } = useI18n()
 
 const loadExample = (example: InteractiveExample) => {
   emit('load-example', example)

@@ -155,6 +155,11 @@ export default {
     loading: {
       title: '파일 처리 중...',
       description: '파일을 읽고 파싱하는 중입니다'
+    },
+    errors: {
+      fileReadFailed: '파일을 읽을 수 없습니다',
+      fileReadAsTextFailed: '파일을 텍스트로 읽는데 실패했습니다',
+      unsupportedFileType: 'JSON과 JSONL 파일만 지원됩니다'
     }
   },
   validation: {
@@ -164,6 +169,26 @@ export default {
     jsonlTooManyLines: 'JSONL 형식에서는 최대 10,000줄까지 지원됩니다.',
     tooManyErrors: '너무 많은 오류가 발생했습니다. 처음 10개 오류만 표시됩니다.',
     partialSuccess: '{{errorCount}}개 줄에서 오류가 발생했습니다. {{successCount}}개 줄이 성공적으로 파싱되었습니다.'
+  },
+  errors: {
+    parsing: {
+      jsonSyntax: 'JSON 구문 오류: {{message}}',
+      jsonlLine: '{{line}}번째 줄: {{message}}',
+      unknownError: '알 수 없는 파싱 오류가 발생했습니다',
+      invalidJson: '유효하지 않은 JSON입니다'
+    },
+    validation: {
+      jsonlRequired: 'JSONL 형식에는 최소 한 줄의 JSON 데이터가 필요합니다',
+      inputTooLarge: '입력 크기가 너무 큽니다. 최대 {{maxSize}}MB까지 지원됩니다',
+      memoryWarning: '입력 데이터가 너무 커서 메모리 부족이 예상됩니다. 더 작은 데이터를 사용해주세요',
+      jsonlTooManyLines: 'JSONL 형식에서는 최대 {{maxLines}}줄까지 지원됩니다',
+      tooManyErrors: '너무 많은 오류가 발생했습니다. 처음 {{maxErrors}}개 오류만 표시됩니다',
+      partialSuccess: '{{errorCount}}개 줄에서 오류가 발생했습니다. {{successCount}}개 줄이 성공적으로 파싱되었습니다'
+    },
+    jsonl: {
+      linePrefix: '{{line}}번째 줄',
+      detected: 'JSONL 형식이 감지되었습니다'
+    }
   },
   accessibility: {
     mainArea: 'JSONL 파서 메인 영역',
@@ -201,7 +226,8 @@ export default {
       treeNavigation: '트리 내 네비게이션',
       help: '도움말 표시',
       close: '닫기'
-    }
+    },
+    breadcrumbNavigation: '브레드크럼 네비게이션'
   },
   help: {
     title: '도움말',
@@ -735,6 +761,41 @@ export default {
     previous: '이전',
     next: '다음'
   },
+  tutorial: {
+    loading: '튜토리얼을 불러오는 중...',
+    error: {
+      title: '오류가 발생했습니다',
+      retry: '다시 시도',
+      notFound: '튜토리얼을 찾을 수 없습니다.',
+      loadFailed: '튜토리얼을 불러오는 중 오류가 발생했습니다.'
+    },
+    progress: {
+      label: '진행률: {{progress}}%'
+    },
+    duration: {
+      minutes: '{{count}}분'
+    },
+    status: {
+      completed: '완료',
+      completedBadge: '✓ 완료'
+    },
+    actions: {
+      markCompleted: '완료 표시',
+      markIncomplete: '완료 취소',
+      backToList: '← 목록으로 돌아가기'
+    },
+    examples: {
+      title: '코드 예제',
+      copy: '복사',
+      copied: '복사됨!',
+      loadInParser: '파서에서 열기'
+    },
+    difficulty: {
+      beginner: '초급',
+      intermediate: '중급',
+      advanced: '고급'
+    }
+  },
   guides: {
     'json-basics': {
       title: 'JSON 기초',
@@ -834,7 +895,7 @@ export default {
   },
   common: {
     loading: '로딩 중...',
-    error: '오류',
+    error: '오류가 발생했습니다',
     backToHub: '허브로 돌아가기',
     lastUpdated: '최종 업데이트',
     author: '작성자',
@@ -849,6 +910,7 @@ export default {
     mainLabel: '주요 네비게이션',
     mobileMenuLabel: '모바일 네비게이션 메뉴',
     toggleMenu: '메뉴 열기/닫기',
+    backTo: '로 돌아가기',
     items: {
       parser: {
         label: '파서',
@@ -876,9 +938,99 @@ export default {
       }
     }
   },
+  pages: {
+    home: {
+      title: 'JSONL 파서',
+      description: 'JSON과 JSONL 데이터를 대화형 트리 구조로 시각화하세요'
+    },
+    learn: {
+      title: '학습 센터',
+      description: 'JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드'
+    },
+    tutorial: {
+      title: '튜토리얼',
+      description: '단계별 학습 가이드'
+    },
+    tools: {
+      title: '도구 허브',
+      description: 'JSON 데이터 처리를 위한 유용한 도구 모음'
+    },
+    tool: {
+      title: '도구',
+      description: 'JSON 처리 도구'
+    },
+    reference: {
+      title: '참조 허브',
+      description: 'JSON 구문과 패턴에 대한 포괄적인 참조 자료'
+    },
+    referenceGuide: {
+      title: '참조 가이드',
+      description: '상세한 참조 문서'
+    },
+    samples: {
+      title: '샘플 라이브러리',
+      description: '다양한 JSON 예제 데이터와 실제 사용 사례'
+    },
+    info: {
+      title: '정보 허브',
+      description: 'JSON과 API 개발에 대한 포괄적인 가이드와 정보'
+    },
+    infoGuide: {
+      title: '정보 가이드',
+      description: '상세한 개발 가이드'
+    }
+  },
+  breadcrumb: {
+    home: '홈',
+    separator: '/'
+  },
   meta: {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'
+  },
+  learn: {
+    title: '학습 센터',
+    description: 'JSON과 JSONL 처리 기술을 향상시키는 튜토리얼과 가이드',
+    loading: '튜토리얼을 불러오는 중...',
+    error: '튜토리얼을 불러오는 중 오류가 발생했습니다.',
+    empty: '선택한 조건에 맞는 튜토리얼이 없습니다.',
+    resetFilters: '필터 초기화',
+    progress: {
+      title: '학습 진행률',
+      completed: '완료',
+      total: '전체',
+      completedStatus: '완료',
+      inProgress: '진행 중',
+      notStarted: '시작 전',
+      completedBadge: '✓ 완료',
+      percentage: '{{percent}}%'
+    },
+    filters: {
+      title: '필터',
+      clearAll: '모두 지우기',
+      difficulty: '난이도',
+      category: '카테고리'
+    },
+    search: {
+      placeholder: '튜토리얼 검색...',
+      noResults: '검색 결과가 없습니다',
+      noResultsDescription: '다른 키워드로 검색하거나 필터를 초기화해보세요.',
+      clearSearch: '검색 지우기'
+    },
+    difficulty: {
+      beginner: '초급',
+      intermediate: '중급',
+      advanced: '고급'
+    },
+    categories: {
+      basics: '기초',
+      parsing: '파싱',
+      validation: '검증',
+      advanced_topics: '고급 주제'
+    },
+    duration: {
+      minutes: '{{count}}분'
+    }
   },
   seo: {
     home: {

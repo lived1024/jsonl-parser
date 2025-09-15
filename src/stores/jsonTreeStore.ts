@@ -9,6 +9,7 @@ import {
 } from '../types'
 import { LOCAL_STORAGE_KEYS, DEFAULT_CONFIG } from '../types/constants'
 import { detectJSONL } from '../utils/validators'
+import { errorMessageService } from '../services/errorMessageService'
 
 // 파싱 결과 캐시 인터페이스
 interface ParseCache {
@@ -113,12 +114,11 @@ export const useJsonTreeStore = defineStore('jsonTree', {
 
           // 부분적 성공의 경우 경고 표시
           if (result.warnings.length > 0) {
-            this.parseError = {
-              message: `${result.warnings.length}개 줄에서 오류가 발생했습니다. ${result.data.length}개 줄이 성공적으로 파싱되었습니다.`,
-              line: result.warnings[0].line,
-              column: result.warnings[0].column,
-              position: result.warnings[0].position
-            }
+            this.parseError = errorMessageService.createPartialSuccessError(
+              result.warnings.length,
+              result.data.length,
+              result.warnings[0]
+            )
           }
         }
 
@@ -250,38 +250,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
 
     // Helper method to create parse error objects
     createParseError(error: unknown): ParseError {
-      if (error instanceof SyntaxError) {
-        // Try to extract position information from JSON.parse error
-        const message = error.message
-        const positionMatch = message.match(/position (\d+)/)
-        const position = positionMatch ? parseInt(positionMatch[1]) : undefined
-
-        // Calculate line and column from position
-        let line: number | undefined
-        let column: number | undefined
-
-        if (position !== undefined) {
-          const textBeforeError = this.inputText.substring(0, position)
-          const lines = textBeforeError.split('\n')
-          line = lines.length
-          column = lines[lines.length - 1].length + 1
-        }
-
-        // JSON 파싱 실패 시 JSONL 형식인지 감지
-        const isJsonlDetected = this.inputType === InputType.JSON && detectJSONL(this.inputText)
-
-        return {
-          message: `JSON Parse Error: ${message}`,
-          line,
-          column,
-          position,
-          isJsonlDetected
-        }
-      }
-
-      return {
-        message: error instanceof Error ? error.message : 'Unknown parsing error'
-      }
+      return errorMessageService.createParseError(error, this.inputText, this.inputType)
     },
 
     // Helper method to convert data to ParsedNode with recursive tree structure
@@ -340,9 +309,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
 
       // JSONL에서 빈 입력은 오류
       if (!text && this.inputType === InputType.JSONL) {
-        return {
-          message: 'JSONL 형식에는 최소 한 줄의 JSON 데이터가 필요합니다.'
-        }
+        return errorMessageService.createValidationError('jsonlRequired')
       }
 
       // 일반적인 빈 입력은 오류가 아님
@@ -352,9 +319,8 @@ export const useJsonTreeStore = defineStore('jsonTree', {
 
       // 대용량 데이터 체크
       if (text.length > DEFAULT_CONFIG.MAX_INPUT_SIZE) {
-        return {
-          message: `입력 크기가 너무 큽니다. 최대 ${Math.floor(DEFAULT_CONFIG.MAX_INPUT_SIZE / 1024 / 1024)}MB까지 지원됩니다.`
-        }
+        const maxSizeMB = Math.floor(DEFAULT_CONFIG.MAX_INPUT_SIZE / 1024 / 1024)
+        return errorMessageService.createValidationError('inputTooLarge', { maxSize: maxSizeMB })
       }
 
       // 메모리 사용량 추정 체크
@@ -362,9 +328,7 @@ export const useJsonTreeStore = defineStore('jsonTree', {
       const maxMemoryUsage = 100 * 1024 * 1024 // 100MB
 
       if (estimatedMemoryUsage > maxMemoryUsage) {
-        return {
-          message: '입력 데이터가 너무 커서 메모리 부족이 예상됩니다. 더 작은 데이터를 사용해주세요.'
-        }
+        return errorMessageService.createValidationError('memoryWarning')
       }
 
       // JSONL 특화 검증
@@ -372,15 +336,11 @@ export const useJsonTreeStore = defineStore('jsonTree', {
         const lines = text.split('\n').filter(line => line.trim())
 
         if (lines.length === 0) {
-          return {
-            message: 'JSONL 형식에는 최소 한 줄의 JSON 데이터가 필요합니다.'
-          }
+          return errorMessageService.createValidationError('jsonlRequired')
         }
 
         if (lines.length > 10000) {
-          return {
-            message: 'JSONL 형식에서는 최대 10,000줄까지 지원됩니다.'
-          }
+          return errorMessageService.createValidationError('jsonlTooManyLines', { maxLines: 10000 })
         }
       }
 
@@ -425,22 +385,16 @@ export const useJsonTreeStore = defineStore('jsonTree', {
         try {
           const parsed = JSON.parse(line)
           successCount++
-          data.push(this.convertToNode(parsed, `Line ${successCount}`, 0))
+          const lineLabel = errorMessageService.getLineLabel(successCount)
+          data.push(this.convertToNode(parsed, lineLabel, 0))
         } catch (lineError) {
           const lineStart = this.inputText.split('\n').slice(0, i).join('\n').length + (i > 0 ? 1 : 0)
 
-          warnings.push({
-            message: `Line ${i + 1}: ${lineError instanceof Error ? lineError.message : 'Invalid JSON'}`,
-            line: i + 1,
-            column: 0,
-            position: lineStart
-          })
+          warnings.push(errorMessageService.createJsonlLineError(i + 1, lineError, lineStart))
 
           // 너무 많은 오류가 발생하면 중단
           if (warnings.length >= 10) {
-            warnings.push({
-              message: `너무 많은 오류가 발생했습니다. 처음 10개 오류만 표시됩니다.`
-            })
+            warnings.push(errorMessageService.createTooManyErrorsMessage(10))
             break
           }
         }

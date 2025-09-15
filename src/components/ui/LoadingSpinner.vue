@@ -6,22 +6,48 @@
           <path d="M21 12a9 9 0 11-6.219-8.56"/>
         </svg>
       </div>
-      <h2 id="loading-title" class="loading-title">{{ title }}</h2>
-      <p v-if="description" class="loading-description">{{ description }}</p>
+      <h2 id="loading-title" class="loading-title">{{ computedTitle }}</h2>
+      <p v-if="computedDescription" class="loading-description">{{ computedDescription }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from '../../composables/useI18n'
+
 interface Props {
   isVisible: boolean
   title?: string
+  titleKey?: string
   description?: string
+  descriptionKey?: string
 }
 
-withDefaults(defineProps<Props>(), {
-  title: '파싱 중...',
-  description: ''
+const props = withDefaults(defineProps<Props>(), {
+  title: '',
+  titleKey: 'status.loading',
+  description: '',
+  descriptionKey: ''
+})
+
+const { t } = useI18n()
+
+const computedTitle = computed(() => {
+  if (props.title) {
+    return props.title
+  }
+  return t(props.titleKey)
+})
+
+const computedDescription = computed(() => {
+  if (props.description) {
+    return props.description
+  }
+  if (props.descriptionKey) {
+    return t(props.descriptionKey)
+  }
+  return ''
 })
 </script>
 

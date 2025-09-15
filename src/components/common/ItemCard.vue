@@ -1,21 +1,23 @@
 <template>
   <div class="item-card" @click="$emit('click')">
     <div class="card-header">
-      <div class="card-icon">
-        <component :is="icon" :size="24" />
-      </div>
-      <div class="card-title-section">
-        <h3 class="card-title">{{ title }}</h3>
-        <div v-if="meta && meta.length > 0" class="card-meta">
-          <span 
-            v-for="metaItem in meta" 
-            :key="metaItem.key"
-            class="meta-item"
-            :class="metaItem.type"
-          >
-            {{ metaItem.label }}
-          </span>
+      <div class="card-title-row">
+        <div class="card-icon">
+          <component :is="icon" :size="24" />
         </div>
+        <div class="card-title-section">
+          <h3 class="card-title">{{ title }}</h3>
+        </div>
+      </div>
+      <div v-if="meta && meta.length > 0" class="card-meta">
+        <span 
+          v-for="metaItem in meta" 
+          :key="metaItem.key"
+          class="meta-item"
+          :class="metaItem.type"
+        >
+          {{ metaItem.label }}
+        </span>
       </div>
     </div>
     
@@ -72,10 +74,17 @@ defineEmits<Emits>()
 
 .card-header {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.75rem;
   margin-bottom: 1rem;
   min-width: 0;
+  width: 100%;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -91,23 +100,25 @@ defineEmits<Emits>()
 .card-title-section {
   flex: 1;
   min-width: 0;
-  overflow: visible;
+  display: flex;
+  align-items: center;
 }
 
 .card-title {
   color: var(--color-text-primary);
   font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   line-height: 1.3;
 }
 
 .card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;
   align-items: center;
-  min-width: max-content;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .meta-item {
@@ -245,8 +256,12 @@ defineEmits<Emits>()
   }
   
   .card-header {
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 1rem;
+  }
+  
+  .card-title-row {
+    gap: 0.75rem;
   }
   
   .card-icon {
@@ -286,8 +301,12 @@ defineEmits<Emits>()
   }
   
   .card-header {
-    gap: 0.75rem;
+    gap: 0.5rem;
     margin-bottom: 0.75rem;
+  }
+  
+  .card-title-row {
+    gap: 0.5rem;
   }
   
   .card-icon {

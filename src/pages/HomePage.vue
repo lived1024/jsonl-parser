@@ -60,19 +60,23 @@ const {
   handlePanelResize
 } = useApp()
 
-// SEO 메타데이터 설정 (임시 비활성화)
-// const { generateWebApplicationStructuredData } = useSEO({
-//   title: t('seo.home.title'),
-//   description: t('seo.home.description'),
-//   keywords: ['JSON', 'JSONL', 'parser', 'visualizer', 'tree', 'viewer', 'developer', 'tools', 'data', 'validation'],
-//   ogType: 'website'
-// })
+// SEO 메타데이터 설정
+const { generateWebApplicationStructuredData, setMetadata } = useSEO({
+  title: t('seo.home.title'),
+  description: t('seo.home.description'),
+  keywords: ['JSON', 'JSONL', 'parser', 'visualizer', 'tree', 'viewer', 'developer', 'tools', 'data', 'validation'],
+  ogType: 'website'
+})
 
 // 컴포넌트 마운트 시 쿼리 파라미터 및 예제 데이터 확인
 onMounted(() => {
-  // Structured data 설정 (임시 비활성화)
-  // const structuredData = generateWebApplicationStructuredData()
-  // 필요시 setMetadata로 structured data 업데이트 가능
+  // Structured data 설정
+  const structuredData = generateWebApplicationStructuredData()
+  setMetadata({
+    title: t('seo.home.title'),
+    description: t('seo.home.description'),
+    structuredData
+  })
   
   // URL 쿼리 파라미터에서 데이터 로드
   const dataParam = route.query.data

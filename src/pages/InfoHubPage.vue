@@ -1,8 +1,11 @@
 <template>
   <DefaultLayout>
     <PageLayout 
-      title="정보 허브" 
-      description="JSON과 API 개발에 관한 포괄적인 가이드와 정보"
+      title-key="pages.info.title"
+      description-key="pages.info.description"
+      :breadcrumbs="[
+        { name: t('pages.info.title') }
+      ]"
     >
       <template #sidebar>
         <FilterSidebar 
@@ -118,6 +121,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { 
   BookOpen, 
   FileText, 
@@ -157,6 +161,7 @@ interface GuideInfo {
 
 const router = useRouter()
 const contentService = ContentService.getInstance()
+const { t } = useI18n()
 
 // 상태 관리
 const guides = ref<GuideInfo[]>([])

@@ -1,11 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useJsonTreeStore } from '../../stores/jsonTreeStore'
+import { useI18nStore } from '../../stores/i18nStore'
 import { InputType, DataType } from '../../types'
 
 describe('JsonTreeStore', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     setActivePinia(createPinia())
+    
+    // Initialize i18n store with Korean language for tests
+    const i18nStore = useI18nStore()
+    await i18nStore.initialize()
+    await i18nStore.changeLanguage('ko')
+    
     vi.clearAllMocks()
   })
 
@@ -99,7 +106,7 @@ describe('JsonTreeStore', () => {
       expect(store.hasData).toBe(false)
       expect(store.hasError).toBe(true)
       expect(store.parseError).not.toBeNull()
-      expect(store.parseError?.message).toContain('JSON Parse Error')
+      expect(store.parseError?.message).toContain('JSON 구문 오류')
     })
 
     it('빈 입력에 대해 데이터를 초기화해야 한다', () => {
@@ -130,7 +137,7 @@ describe('JsonTreeStore', () => {
       expect(store.parsedData).toHaveLength(3)
       
       store.parsedData.forEach((node, index) => {
-        expect(node.key).toBe(`Line ${index + 1}`)
+        expect(node.key).toBe(`${index + 1}번째 줄`)
         expect(node.type).toBe(DataType.OBJECT)
       })
     })
