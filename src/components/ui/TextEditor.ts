@@ -107,10 +107,10 @@ export default function useTextEditor() {
         if (typeof result === 'string') {
           resolve(result)
         } else {
-          reject(new Error('Failed to read file as text'))
+          reject(new Error(t('editor.errors.fileReadAsTextFailed')))
         }
       }
-      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.onerror = () => reject(new Error(t('editor.errors.fileReadFailed')))
       reader.readAsText(file, 'utf-8')
     })
   }
@@ -192,7 +192,7 @@ export default function useTextEditor() {
     
     if (!allowedExtensions.includes(fileExtension)) {
       // 에러 메시지 표시 (향후 토스트 알림으로 개선 가능)
-      console.warn('Only JSON and JSONL files are supported')
+      console.warn(t('editor.errors.unsupportedFileType'))
       isFileLoading.value = false
       return
     }
@@ -227,7 +227,7 @@ export default function useTextEditor() {
       textareaRef.value?.focus()
       
     } catch (error) {
-      console.error('Failed to read file:', error)
+      console.error(t('editor.errors.fileReadFailed'), error)
     } finally {
       // 로딩 종료 (최소 표시 시간 보장)
       setTimeout(() => {

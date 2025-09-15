@@ -2,11 +2,36 @@
   <DefaultLayout>
     <div class="tutorial-page">
       <div class="tutorial-container">
+        <!-- 브레드크럼 네비게이션 -->
+        <nav class="breadcrumb-nav" :aria-label="t('accessibility.breadcrumbNavigation')">
+          <div class="breadcrumb-content">
+            <ol class="breadcrumb-list">
+              <li class="breadcrumb-item">
+                <router-link to="/" class="breadcrumb-link">
+                  {{ t('breadcrumb.home') }}
+                </router-link>
+              </li>
+              <li class="breadcrumb-item">
+                <span class="breadcrumb-separator" :aria-hidden="true">{{ t('breadcrumb.separator') }}</span>
+                <router-link to="/learn" class="breadcrumb-link">
+                  {{ t('pages.learn.title') }}
+                </router-link>
+              </li>
+              <li class="breadcrumb-item">
+                <span class="breadcrumb-separator" :aria-hidden="true">{{ t('breadcrumb.separator') }}</span>
+                <span class="breadcrumb-current" aria-current="page">
+                  {{ t('pages.tutorial.title') }}
+                </span>
+              </li>
+            </ol>
+          </div>
+        </nav>
+        
         <!-- 뒤로가기 버튼 -->
-        <div class="breadcrumb">
+        <div class="back-navigation">
           <button @click="goBack" class="back-button">
             <ArrowLeft :size="16" />
-            학습 센터로 돌아가기
+            {{ t('pages.learn.title') }}{{ t('navigation.backTo') }}
           </button>
         </div>
         
@@ -28,12 +53,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from '../composables/useI18n'
 import { ArrowLeft } from 'lucide-vue-next'
 import DefaultLayout from '../layouts/DefaultLayout.vue'
 import TutorialViewer from '../components/feature/TutorialViewer.vue'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 
 // 라우트에서 튜토리얼 ID 추출
 const tutorialId = computed(() => route.params.id as string)
@@ -129,7 +156,55 @@ const retryLoad = () => {
   padding: 0 2rem;
 }
 
-.breadcrumb {
+.breadcrumb-nav {
+  background: var(--color-background-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0.75rem 0;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb-link:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+.breadcrumb-separator {
+  margin: 0 0.5rem;
+  color: var(--color-text-tertiary);
+}
+
+.breadcrumb-current {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.back-navigation {
   margin-bottom: 2rem;
 }
 

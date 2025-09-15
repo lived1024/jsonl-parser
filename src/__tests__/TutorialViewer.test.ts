@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 import TutorialViewer from '../components/feature/TutorialViewer.vue'
 import { ContentService } from '../services/ContentService'
 
@@ -28,10 +29,53 @@ vi.mock('highlight.js', () => ({
   }
 }))
 
+// Mock i18n composable
+vi.mock('../composables/useI18n', () => ({
+  useI18n: () => ({
+    t: vi.fn((key: string, params?: any) => {
+      // Return mock translations
+      const translations: Record<string, string> = {
+        'tutorial.loading': 'Loading tutorial...',
+        'tutorial.error.title': 'An error occurred',
+        'tutorial.error.retry': 'Try Again',
+        'tutorial.error.notFound': 'Tutorial not found.',
+        'tutorial.error.loadFailed': 'Failed to load tutorial.',
+        'tutorial.progress.label': 'Progress: {{progress}}%',
+        'tutorial.duration.minutes': '{{count}} min',
+        'tutorial.status.completedBadge': '✓ Completed',
+        'tutorial.actions.markCompleted': 'Mark as Completed',
+        'tutorial.actions.markIncomplete': 'Mark as Incomplete',
+        'tutorial.actions.backToList': '← Back to List',
+        'tutorial.examples.title': 'Code Examples',
+        'tutorial.examples.copy': 'Copy',
+        'tutorial.examples.copied': 'Copied!',
+        'tutorial.examples.loadInParser': 'Load in Parser',
+        'tutorial.difficulty.beginner': 'Beginner',
+        'tutorial.difficulty.intermediate': 'Intermediate',
+        'tutorial.difficulty.advanced': 'Advanced'
+      }
+      
+      let result = translations[key] || key
+      
+      // Handle parameter substitution
+      if (params && typeof params === 'object') {
+        Object.keys(params).forEach(paramKey => {
+          result = result.replace(`{{${paramKey}}}`, params[paramKey])
+        })
+      }
+      
+      return result
+    })
+  })
+}))
+
 describe('TutorialViewer', () => {
   let mockContentService: any
 
   beforeEach(() => {
+    // Set up Pinia
+    setActivePinia(createPinia())
+    
     mockContentService = {
       getGuide: vi.fn()
     }
