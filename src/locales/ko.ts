@@ -292,7 +292,12 @@ export default {
     examples: {
       title: '예제',
       complex: '복합 구조',
-      tryIt: '시도해보기'
+      tryIt: '시도해보기',
+      tabs: {
+        json: 'JSON',
+        jsonl: 'JSONL',
+        complex: '복합 구조'
+      }
     }
   },
   onboarding: {

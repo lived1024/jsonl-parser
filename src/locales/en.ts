@@ -292,7 +292,12 @@ Example:
     examples: {
       title: 'Examples',
       complex: 'Complex Structure',
-      tryIt: 'Try it'
+      tryIt: 'Try it',
+      tabs: {
+        json: 'JSON',
+        jsonl: 'JSONL',
+        complex: 'Complex Structure'
+      }
     }
   },
   onboarding: {
