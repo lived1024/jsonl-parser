@@ -113,7 +113,7 @@ interface FAQItem {
   relatedLinks?: string[]
 }
 
-const categories = ['all', 'basics', 'parsing', 'navigation', 'performance']
+const categories = ['all', 'basics', 'parsing', 'navigation', 'performance', 'troubleshooting']
 
 const faqItems: FAQItem[] = [
   {
