@@ -96,6 +96,27 @@ export function useI18n(): UseI18nReturn {
     return translation
   }
 
+  /**
+   * 언어 설정 상태 정보 가져오기
+   */
+  const getLanguageStatus = () => {
+    return i18nStore.getLanguageStatus()
+  }
+
+  /**
+   * 브라우저 언어 감지
+   */
+  const detectBrowserLanguage = () => {
+    return i18nStore.detectBrowserLanguage()
+  }
+
+  /**
+   * 언어 설정 재설정
+   */
+  const resetLanguageSettings = async (): Promise<void> => {
+    await i18nStore.resetLanguageSettings()
+  }
+
   return {
     // 핵심 기능
     t,
@@ -108,7 +129,12 @@ export function useI18n(): UseI18nReturn {
     isLanguage,
     getCurrentLanguageInfo,
     hasTranslation,
-    tn
+    tn,
+    
+    // 언어 설정 관리
+    getLanguageStatus,
+    detectBrowserLanguage,
+    resetLanguageSettings
   }
 }
 

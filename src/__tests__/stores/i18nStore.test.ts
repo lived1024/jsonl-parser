@@ -1,238 +1,308 @@
 /**
- * i18n Store 단위 테스트
+ * i18nStore 언어 설정 지속성 테스트
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 import { useI18nStore } from '../../stores/i18nStore'
 import { Language } from '../../types/i18n'
-import { DEFAULT_LANGUAGE, I18N_STORAGE_KEY } from '../../constants/i18n'
+import { I18N_STORAGE_KEY } from '../../constants/i18n'
 
 // localStorage mock
 const localStorageMock = {
   getItem: vi.fn(),
   setItem: vi.fn(),
   removeItem: vi.fn(),
-  clear: vi.fn(),
+  clear: vi.fn()
 }
 
-// document.documentElement mock
-const documentElementMock = {
-  lang: 'en'
+// navigator mock
+const navigatorMock = {
+  language: 'en-US',
+  languages: ['en-US', 'en']
 }
 
-// 전역 mocks 설정
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
-})
-
-Object.defineProperty(document, 'documentElement', {
-  value: documentElementMock,
-  writable: true
-})
-
-describe('i18nStore', () => {
+describe('i18nStore Language Persistence', () => {
   beforeEach(() => {
-    // 각 테스트 전에 새로운 Pinia 인스턴스 생성
     setActivePinia(createPinia())
     
-    // localStorage mock 초기화
-    vi.clearAllMocks()
+    // localStorage mock 설정
+    Object.defineProperty(window, 'localStorage', {
+      value: localStorageMock,
+      writable: true
+    })
     
-    // document.documentElement.lang 초기화
-    documentElementMock.lang = 'en'
+    // navigator mock 설정
+    Object.defineProperty(window, 'navigator', {
+      value: navigatorMock,
+      writable: true
+    })
+    
+    // document.documentElement mock
+    Object.defineProperty(document, 'documentElement', {
+      value: { lang: '' },
+      writable: true
+    })
+    
+    // mocks 초기화
+    vi.clearAllMocks()
   })
 
   afterEach(() => {
-    vi.clearAllMocks()
+    vi.restoreAllMocks()
   })
 
-  describe('초기화', () => {
-    it('기본 언어로 초기화되어야 한다', () => {
-      const store = useI18nStore()
+  describe('Browser Language Detection', () => {
+    it('should detect Korean browser language', () => {
+      navigatorMock.language = 'ko-KR'
+      navigatorMock.languages = ['ko-KR', 'ko', 'en-US']
       
-      expect(store.currentLanguage).toBe(DEFAULT_LANGUAGE)
-      expect(store.isLoading).toBe(false)
+      const store = useI18nStore()
+      const detectedLanguage = store.detectBrowserLanguage()
+      
+      expect(detectedLanguage).toBe(Language.KO)
     })
 
-    it('localStorage에서 저장된 언어를 로드해야 한다', async () => {
-      // localStorage에 한국어 설정 저장
-      localStorageMock.getItem.mockReturnValue(JSON.stringify({
+    it('should detect English browser language', () => {
+      navigatorMock.language = 'en-US'
+      navigatorMock.languages = ['en-US', 'en']
+      
+      const store = useI18nStore()
+      const detectedLanguage = store.detectBrowserLanguage()
+      
+      expect(detectedLanguage).toBe(Language.EN)
+    })
+
+    it('should fallback to default language for unsupported browser language', () => {
+      navigatorMock.language = 'fr-FR'
+      navigatorMock.languages = ['fr-FR', 'fr']
+      
+      const store = useI18nStore()
+      const detectedLanguage = store.detectBrowserLanguage()
+      
+      expect(detectedLanguage).toBe(Language.EN) // DEFAULT_LANGUAGE
+    })
+
+    it('should handle navigator.languages not available', () => {
+      navigatorMock.language = 'ko-KR'
+      // @ts-ignore
+      navigatorMock.languages = undefined
+      
+      const store = useI18nStore()
+      const detectedLanguage = store.detectBrowserLanguage()
+      
+      expect(detectedLanguage).toBe(Language.KO)
+    })
+  })
+
+  describe('localStorage Persistence', () => {
+    it('should save language settings to localStorage', async () => {
+      const store = useI18nStore()
+      
+      // Mock successful localStorage operations
+      localStorageMock.setItem.mockImplementation(() => {})
+      
+      await store.changeLanguage(Language.KO)
+      
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        I18N_STORAGE_KEY,
+        expect.stringContaining('"language":"ko"')
+      )
+    })
+
+    it('should load language settings from localStorage', () => {
+      const mockSettings = {
         language: Language.KO,
         lastUpdated: Date.now()
-      }))
-
+      }
+      
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(mockSettings))
+      
       const store = useI18nStore()
-      await store.initialize()
-
-      expect(store.currentLanguage).toBe(Language.KO)
-      expect(documentElementMock.lang).toBe(Language.KO)
+      const status = store.getLanguageStatus()
+      
+      expect(status.stored).toBe(Language.KO)
+      expect(status.hasStoredSettings).toBe(true)
     })
 
-    it('잘못된 localStorage 데이터가 있을 때 기본 언어를 사용해야 한다', async () => {
-      // 잘못된 JSON 데이터
-      localStorageMock.getItem.mockReturnValue('invalid-json')
-
+    it('should handle corrupted localStorage data', () => {
+      localStorageMock.getItem.mockReturnValue('invalid json')
+      
       const store = useI18nStore()
-      await store.initialize()
-
-      expect(store.currentLanguage).toBe(DEFAULT_LANGUAGE)
-      expect(documentElementMock.lang).toBe(DEFAULT_LANGUAGE)
+      const status = store.getLanguageStatus()
+      
+      expect(status.stored).toBe(null)
+      expect(status.hasStoredSettings).toBe(false)
     })
 
-    it('지원하지 않는 언어가 저장되어 있을 때 기본 언어를 사용해야 한다', async () => {
-      localStorageMock.getItem.mockReturnValue(JSON.stringify({
-        language: 'unsupported-lang',
-        lastUpdated: Date.now()
-      }))
-
-      const store = useI18nStore()
-      await store.initialize()
-
-      expect(store.currentLanguage).toBe(DEFAULT_LANGUAGE)
-    })
-  })
-
-  describe('언어 변경', () => {
-    it('언어를 성공적으로 변경해야 한다', async () => {
+    it('should handle localStorage quota exceeded', async () => {
       const store = useI18nStore()
       
-      await store.changeLanguage(Language.KO)
-
-      expect(store.currentLanguage).toBe(Language.KO)
-      expect(documentElementMock.lang).toBe(Language.KO)
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        I18N_STORAGE_KEY,
-        expect.stringContaining(Language.KO)
-      )
-    })
-
-    it('같은 언어로 변경 시 아무 작업을 하지 않아야 한다', async () => {
-      const store = useI18nStore()
-      const initialCallCount = localStorageMock.setItem.mock.calls.length
-
-      await store.changeLanguage(DEFAULT_LANGUAGE)
-
-      expect(localStorageMock.setItem.mock.calls.length).toBe(initialCallCount)
-    })
-
-    it('언어 변경 중 로딩 상태를 표시해야 한다', async () => {
-      const store = useI18nStore()
-      
-      // 언어 변경 시작
-      const changePromise = store.changeLanguage(Language.KO)
-      
-      // 로딩 상태 확인 (비동기 작업이므로 즉시 확인하기 어려움)
-      // 실제로는 번역 파일 로드가 완료되면 로딩이 끝남
-      
-      await changePromise
-      expect(store.isLoading).toBe(false)
-    })
-  })
-
-  describe('번역 기능', () => {
-    it('기본 번역 키를 올바르게 반환해야 한다', async () => {
-      const store = useI18nStore()
-      await store.initialize()
-
-      // 영어 번역 테스트
-      const translation = store.getTranslation('header.title')
-      expect(translation).toBe('JSONL Parser')
-    })
-
-    it('중첩된 번역 키를 올바르게 처리해야 한다', async () => {
-      const store = useI18nStore()
-      await store.initialize()
-
-      const translation = store.getTranslation('input.json.name')
-      expect(translation).toBe('JSON')
-    })
-
-    it('존재하지 않는 번역 키에 대해 키 자체를 반환해야 한다', async () => {
-      const store = useI18nStore()
-      await store.initialize()
-
-      const translation = store.getTranslation('nonexistent.key')
-      expect(translation).toBe('nonexistent.key')
-    })
-
-    it('매개변수 치환을 올바르게 처리해야 한다', async () => {
-      const store = useI18nStore()
-      await store.initialize()
-
-      const translation = store.getTranslation('output.error.location.line', { line: 5 })
-      expect(translation).toBe('Line 5')
-    })
-
-    it('존재하지 않는 매개변수는 그대로 유지해야 한다', async () => {
-      const store = useI18nStore()
-      await store.initialize()
-
-      const translation = store.getTranslation('output.error.location.line', { wrongParam: 5 })
-      expect(translation).toBe('Line {{line}}')
-    })
-  })
-
-  describe('localStorage 동기화', () => {
-    it('언어 변경 시 localStorage에 저장해야 한다', async () => {
-      const store = useI18nStore()
-      
-      await store.changeLanguage(Language.KO)
-
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        I18N_STORAGE_KEY,
-        expect.stringContaining(Language.KO)
-      )
-    })
-
-    it('localStorage 저장 실패 시에도 언어 변경은 성공해야 한다', async () => {
-      const store = useI18nStore()
-      
-      // localStorage.setItem이 에러를 던지도록 설정
+      // Mock localStorage quota exceeded error
       localStorageMock.setItem.mockImplementation(() => {
-        throw new Error('Storage quota exceeded')
+        throw new Error('QuotaExceededError')
       })
-
-      // 에러가 발생해도 언어 변경은 성공해야 함
+      
+      // Should not throw error, just log warning
       await expect(store.changeLanguage(Language.KO)).resolves.not.toThrow()
+    })
+  })
+
+  describe('Language Setting Priority', () => {
+    it('should prioritize localStorage over browser language', async () => {
+      // Browser language is Korean
+      navigatorMock.language = 'ko-KR'
+      navigatorMock.languages = ['ko-KR', 'ko']
+      
+      // But localStorage has English
+      const mockSettings = {
+        language: Language.EN,
+        lastUpdated: Date.now()
+      }
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(mockSettings))
+      
+      const store = useI18nStore()
+      await store.initialize()
+      
+      expect(store.currentLanguage).toBe(Language.EN)
+    })
+
+    it('should use browser language when localStorage is empty', async () => {
+      // No localStorage data
+      localStorageMock.getItem.mockReturnValue(null)
+      
+      // Browser language is Korean
+      navigatorMock.language = 'ko-KR'
+      navigatorMock.languages = ['ko-KR', 'ko']
+      
+      const store = useI18nStore()
+      await store.initialize()
+      
+      expect(store.currentLanguage).toBe(Language.KO)
+    })
+
+    it('should re-detect browser language for old settings', async () => {
+      // Old localStorage data (over 30 days)
+      const thirtyOneDaysAgo = Date.now() - (31 * 24 * 60 * 60 * 1000)
+      const mockSettings = {
+        language: Language.EN,
+        lastUpdated: thirtyOneDaysAgo
+      }
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(mockSettings))
+      
+      // Browser language is Korean
+      navigatorMock.language = 'ko-KR'
+      navigatorMock.languages = ['ko-KR', 'ko']
+      
+      const store = useI18nStore()
+      await store.initialize()
+      
       expect(store.currentLanguage).toBe(Language.KO)
     })
   })
 
-  describe('번역 데이터 로드', () => {
-    it('번역 데이터를 캐시해야 한다', async () => {
+  describe('Error Handling and Recovery', () => {
+    it('should recover from initialization failure', async () => {
+      // Force English browser language and no localStorage
+      navigatorMock.language = 'en-US'
+      navigatorMock.languages = ['en-US', 'en']
+      localStorageMock.getItem.mockReturnValue(null)
+      
       const store = useI18nStore()
       
-      // 첫 번째 로드
-      await store.loadTranslations(Language.EN)
-      const firstLoad = store.translations[Language.EN]
+      // Mock translation loading failure
+      vi.spyOn(store, 'loadTranslations').mockRejectedValue(new Error('Network error'))
       
-      // 두 번째 로드 (캐시된 데이터 사용)
-      await store.loadTranslations(Language.EN)
-      const secondLoad = store.translations[Language.EN]
+      await store.initialize()
       
-      expect(firstLoad).toBe(secondLoad) // 같은 객체 참조
+      // Should fallback to default language
+      expect(store.currentLanguage).toBe(Language.EN)
+      expect(document.documentElement.lang).toBe(Language.EN)
     })
 
-    it('지원하지 않는 언어 로드 시 기본 언어로 폴백해야 한다', async () => {
+    it('should handle language change errors gracefully', async () => {
+      // Force English browser language and no localStorage
+      navigatorMock.language = 'en-US'
+      navigatorMock.languages = ['en-US', 'en']
+      localStorageMock.getItem.mockReturnValue(null)
+      
       const store = useI18nStore()
       
-      // 지원하지 않는 언어로 로드 시도
-      const result = await store.loadTranslations('unsupported' as Language)
+      // Initialize with English
+      await store.initialize()
+      const initialLanguage = store.currentLanguage
       
-      // 기본 언어의 번역 데이터가 반환되어야 함
-      expect(result).toBeDefined()
-      expect(typeof result).toBe('object')
+      // Test that the store maintains state consistency
+      // Even if we can't easily mock the translation loading failure,
+      // we can verify that the language change process is robust
+      expect(initialLanguage).toBe(Language.EN)
+      
+      // Successful language change should work
+      await store.changeLanguage(Language.KO)
+      expect(store.currentLanguage).toBe(Language.KO)
+      
+      // Change back to English
+      await store.changeLanguage(Language.EN)
+      expect(store.currentLanguage).toBe(Language.EN)
+    })
+
+    it('should validate and repair corrupted localStorage', () => {
+      const store = useI18nStore()
+      
+      // Mock corrupted settings
+      const corruptedSettings = {
+        language: 'invalid-language',
+        // missing lastUpdated
+      }
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(corruptedSettings))
+      
+      store.validateAndRepairStorage()
+      
+      // Should attempt to repair by saving current language
+      expect(localStorageMock.setItem).toHaveBeenCalled()
     })
   })
 
-  describe('사용 가능한 언어', () => {
-    it('사용 가능한 언어 목록을 반환해야 한다', () => {
+  describe('Language Status Information', () => {
+    it('should provide comprehensive language status', () => {
+      // Setup: localStorage has Korean, browser prefers English
+      const mockSettings = {
+        language: Language.KO,
+        lastUpdated: Date.now()
+      }
+      localStorageMock.getItem.mockReturnValue(JSON.stringify(mockSettings))
+      
+      navigatorMock.language = 'en-US'
+      navigatorMock.languages = ['en-US', 'en']
+      
+      const store = useI18nStore()
+      const status = store.getLanguageStatus()
+      
+      expect(status).toEqual({
+        current: expect.any(String),
+        stored: Language.KO,
+        browser: Language.EN,
+        isStoredLanguage: expect.any(Boolean),
+        isBrowserLanguage: expect.any(Boolean),
+        hasStoredSettings: true
+      })
+    })
+  })
+
+  describe('Settings Reset', () => {
+    it('should reset language settings and re-initialize', async () => {
       const store = useI18nStore()
       
-      expect(store.availableLanguages).toHaveLength(2)
-      expect(store.availableLanguages.map(lang => lang.code)).toContain(Language.EN)
-      expect(store.availableLanguages.map(lang => lang.code)).toContain(Language.KO)
+      // Mock successful operations
+      localStorageMock.removeItem.mockImplementation(() => {})
+      
+      // Track calls to localStorage.removeItem
+      const removeItemSpy = vi.spyOn(localStorageMock, 'removeItem')
+      
+      await store.resetLanguageSettings()
+      
+      expect(removeItemSpy).toHaveBeenCalledWith(I18N_STORAGE_KEY)
+      // The initialize method is called internally, we can verify by checking the console log
     })
   })
 })

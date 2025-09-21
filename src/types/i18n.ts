@@ -36,6 +36,16 @@ export interface I18nSettings {
   lastUpdated: number
 }
 
+// 언어 설정 상태 정보
+export interface LanguageStatus {
+  current: Language
+  stored: Language | null
+  browser: Language
+  isStoredLanguage: boolean
+  isBrowserLanguage: boolean
+  hasStoredSettings: boolean
+}
+
 // 번역 함수 타입
 export type TranslationFunction = (key: string, params?: Record<string, any>) => string
 
@@ -53,4 +63,7 @@ export interface UseI18nReturn {
   getCurrentLanguageInfo: Readonly<Ref<LanguageInfo | undefined>>
   hasTranslation: (key: string) => boolean
   tn: (key: string, count: number, params?: Record<string, any>) => string
+  getLanguageStatus: () => LanguageStatus
+  detectBrowserLanguage: () => Language
+  resetLanguageSettings: () => Promise<void>
 }

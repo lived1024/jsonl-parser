@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Persistence Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .status {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #f0f0f0;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Language Persistence Test</h1>
+    
+    <div class="test-section">
+        <h2>Current Status</h2>
+        <div id="status" class="status">Loading...</div>
+        <button onclick="updateStatus()">Refresh Status</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Language Controls</h2>
+        <button onclick="changeToKorean()">Change to Korean (한국어)</button>
+        <button onclick="changeToEnglish()">Change to English</button>
+        <button onclick="resetSettings()">Reset Language Settings</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Browser Information</h2>
+        <div id="browser-info" class="status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>localStorage Contents</h2>
+        <div id="localStorage-info" class="status"></div>
+        <button onclick="clearLocalStorage()">Clear localStorage</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <ol>
+            <li>Check the current status and browser information</li>
+            <li>Change the language using the buttons above</li>
+            <li>Refresh the page (F5) to test persistence</li>
+            <li>Check that the language is maintained after refresh</li>
+            <li>Try clearing localStorage and refreshing to test browser language detection</li>
+            <li>Test with different browser language settings</li>
+        </ol>
+    </div>
+
+    <script type="module">
+        // Mock the i18n functionality for testing
+        const I18N_STORAGE_KEY = 'jsonTreeViewer_i18n_settings';
+        
+        // Language enum
+        const Language = {
+            EN: 'en',
+            KO: 'ko'
+        };
+        
+        // Browser language detection
+        function detectBrowserLanguage() {
+            try {
+                const languages = navigator.languages || [navigator.language];
+                
+                for (const lang of languages) {
+                    const normalizedLang = lang.toLowerCase().split('-')[0];
+                    if (Object.values(Language).includes(normalizedLang)) {
+                        return normalizedLang;
+                    }
+                }
+            } catch (error) {
+                console.warn('Failed to detect browser language:', error);
+            }
+            
+            return Language.EN;
+        }
+        
+        // Load language from localStorage
+        function loadLanguageFromStorage() {
+            try {
+                const stored = localStorage.getItem(I18N_STORAGE_KEY);
+                if (stored) {
+                    const settings = JSON.parse(stored);
+                    
+                    if (settings.language && Object.values(Language).includes(settings.language)) {
+                        // Check if settings are older than 30 days
+                        const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+                        if (settings.lastUpdated && settings.lastUpdated < thirtyDaysAgo) {
+                            console.info('Language setting is older than 30 days, will re-detect browser language');
+                            return null;
+                        }
+                        
+                        return settings.language;
+                    }
+                }
+            } catch (error) {
+                console.warn('Failed to load language from localStorage:', error);
+            }
+            return null;
+        }
+        
+        // Save language to localStorage
+        function saveLanguageToStorage(language) {
+            try {
+                const settings = {
+                    language,
+                    lastUpdated: Date.now()
+                };
+                localStorage.setItem(I18N_STORAGE_KEY, JSON.stringify(settings));
+                return true;
+            } catch (error) {
+                console.warn('Failed to save language to localStorage:', error);
+                return false;
+            }
+        }
+        
+        // Determine initial language
+        function determineInitialLanguage() {
+            const storedLanguage = loadLanguageFromStorage();
+            if (storedLanguage) {
+                return storedLanguage;
+            }
+            
+            const browserLanguage = detectBrowserLanguage();
+            if (browserLanguage !== Language.EN) {
+                console.info(`Detected browser language: ${browserLanguage}, using as initial language`);
+            }
+            
+            return browserLanguage;
+        }
+        
+        // Current language state
+        let currentLanguage = determineInitialLanguage();
+        
+        // Update HTML lang attribute
+        function updateHtmlLang() {
+            document.documentElement.lang = currentLanguage;
+        }
+        
+        // Change language
+        function changeLanguage(language) {
+            if (language === currentLanguage) {
+                return;
+            }
+            
+            const previousLanguage = currentLanguage;
+            currentLanguage = language;
+            
+            const saved = saveLanguageToStorage(language);
+            if (!saved) {
+                console.warn('Language changed but failed to persist to localStorage');
+            }
+            
+            updateHtmlLang();
+            updateStatus();
+            
+            console.info(`Language changed from ${previousLanguage} to ${language}`);
+        }
+        
+        // Update status display
+        function updateStatus() {
+            const storedLanguage = loadLanguageFromStorage();
+            const browserLanguage = detectBrowserLanguage();
+            
+            const status = {
+                current: currentLanguage,
+                stored: storedLanguage,
+                browser: browserLanguage,
+                isStoredLanguage: storedLanguage === currentLanguage,
+                isBrowserLanguage: browserLanguage === currentLanguage,
+                hasStoredSettings: storedLanguage !== null,
+                htmlLang: document.documentElement.lang
+            };
+            
+            document.getElementById('status').textContent = JSON.stringify(status, null, 2);
+        }
+        
+        // Update browser info
+        function updateBrowserInfo() {
+            const info = {
+                language: navigator.language,
+                languages: navigator.languages,
+                userAgent: navigator.userAgent.substring(0, 100) + '...'
+            };
+            
+            document.getElementById('browser-info').textContent = JSON.stringify(info, null, 2);
+        }
+        
+        // Update localStorage info
+        function updateLocalStorageInfo() {
+            try {
+                const stored = localStorage.getItem(I18N_STORAGE_KEY);
+                const info = stored ? JSON.parse(stored) : null;
+                document.getElementById('localStorage-info').textContent = JSON.stringify(info, null, 2);
+            } catch (error) {
+                document.getElementById('localStorage-info').textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Global functions for buttons
+        window.changeToKorean = () => changeLanguage(Language.KO);
+        window.changeToEnglish = () => changeLanguage(Language.EN);
+        window.resetSettings = () => {
+            localStorage.removeItem(I18N_STORAGE_KEY);
+            currentLanguage = determineInitialLanguage();
+            updateHtmlLang();
+            updateStatus();
+            updateLocalStorageInfo();
+            console.info('Language settings reset');
+        };
+        window.updateStatus = updateStatus;
+        window.clearLocalStorage = () => {
+            localStorage.clear();
+            updateLocalStorageInfo();
+        };
+        
+        // Initialize
+        updateHtmlLang();
+        updateStatus();
+        updateBrowserInfo();
+        updateLocalStorageInfo();
+        
+        // Save initial language if not stored
+        if (!loadLanguageFromStorage() && currentLanguage !== Language.EN) {
+            saveLanguageToStorage(currentLanguage);
+            console.info(`Saved detected browser language (${currentLanguage}) to localStorage`);
+        }
+        
+        console.info(`Language persistence test initialized with language: ${currentLanguage}`);
+    </script>
+</body>
+</html>
