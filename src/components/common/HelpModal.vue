@@ -215,7 +215,7 @@ interface ExampleData {
 
 const examples = computed<Record<string, ExampleData>>(() => ({
   json: {
-    title: 'JSON',
+    title: t('help.examples.tabs.json'),
     type: InputType.JSON,
     content: `{
   "name": "John Doe",
@@ -229,14 +229,14 @@ const examples = computed<Record<string, ExampleData>>(() => ({
 }`
   },
   jsonl: {
-    title: 'JSONL',
+    title: t('help.examples.tabs.jsonl'),
     type: InputType.JSONL,
     content: `{"id": 1, "name": "Alice", "score": 95}
 {"id": 2, "name": "Bob", "score": 87}
 {"id": 3, "name": "Charlie", "score": 92}`
   },
   complex: {
-    title: t('help.examples.complex'),
+    title: t('help.examples.tabs.complex'),
     type: InputType.JSON,
     content: `{
   "users": [

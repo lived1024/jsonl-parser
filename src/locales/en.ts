@@ -292,7 +292,12 @@ Example:
     examples: {
       title: 'Examples',
       complex: 'Complex Structure',
-      tryIt: 'Try it'
+      tryIt: 'Try it',
+      tabs: {
+        json: 'JSON',
+        jsonl: 'JSONL',
+        complex: 'Complex Structure'
+      }
     }
   },
   onboarding: {
@@ -831,9 +836,18 @@ Example:
       advanced: 'Advanced'
     }
   },
+  languageSelector: {
+    changing: 'Changing...',
+    changingLanguage: 'Changing language to {{language}}',
+    languageChanged: 'Language changed to {{language}}',
+    changeError: 'Failed to change language. Please try again.',
+    optionLabel: 'Select {{language}}',
+    currentSelection: 'Currently selected'
+  },
   common: {
     loading: 'Loading...',
     error: 'An error occurred',
+    close: 'Close',
     backToHub: 'Back to Hub',
     lastUpdated: 'Last Updated',
     author: 'Author',
