@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Selector Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.implemented {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.enhanced {
+            background: #cce5ff;
+            color: #004085;
+        }
+        .keyboard-shortcuts {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .shortcut {
+            display: inline-block;
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Language Selector Usability Improvements - Task 5.1</h1>
+        <p>This page documents the improvements made to the language selector component for better usability, error handling, and accessibility.</p>
+
+        <div class="test-section">
+            <h3>🔄 Loading State Improvements</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Loading spinner with animation during language changes
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    "Changing..." text display with loading message
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Button disabled state during language switching
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Visual feedback with loading button styles
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>❌ Error Handling & User Feedback</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Error notification popup for language change failures
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Auto-dismiss error messages after 5 seconds
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Manual error dismissal with close button
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Error state visual indicators on button
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Screen reader announcements for errors
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>♿ Accessibility Improvements</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Proper ARIA labels and descriptions
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Screen reader announcements for language changes
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Improved focus management and restoration
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Better aria-activedescendant support
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    High contrast mode support
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Reduced motion support for animations
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>⌨️ Enhanced Keyboard Navigation</h3>
+            <div class="keyboard-shortcuts">
+                <h4>Supported Keyboard Shortcuts:</h4>
+                <div>
+                    <span class="shortcut">Enter</span> or <span class="shortcut">Space</span> - Open/select language
+                </div>
+                <div>
+                    <span class="shortcut">↑</span> <span class="shortcut">↓</span> - Navigate options
+                </div>
+                <div>
+                    <span class="shortcut">Home</span> - Jump to first option
+                </div>
+                <div>
+                    <span class="shortcut">End</span> - Jump to last option
+                </div>
+                <div>
+                    <span class="shortcut">Escape</span> - Close dropdown or clear errors
+                </div>
+                <div>
+                    <span class="shortcut">Tab</span> - Navigate away (closes dropdown)
+                </div>
+            </div>
+            <ul class="feature-list">
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Improved arrow key navigation with wrapping
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Home/End key support for quick navigation
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Better focus management during keyboard navigation
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Escape key handling for both dropdown and errors
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Disabled keyboard input during loading states
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🎨 Visual Improvements</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Error state styling with red border/background
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Improved loading state animations
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Error notification with slide-in animation
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Better responsive design for mobile devices
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Dark mode compatibility for error notifications
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🔧 Technical Improvements</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Comprehensive error handling with try-catch blocks
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Memory leak prevention with timeout cleanup
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Better TypeScript typing for error states
+                </li>
+                <li>
+                    <span class="status implemented">NEW</span>
+                    Screen reader utility functions
+                </li>
+                <li>
+                    <span class="status enhanced">ENHANCED</span>
+                    Improved component lifecycle management
+                </li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>🌐 Translation Keys Added</h3>
+            <ul class="feature-list">
+                <li><code>languageSelector.changing</code> - Loading state text</li>
+                <li><code>languageSelector.changingLanguage</code> - Screen reader announcement</li>
+                <li><code>languageSelector.languageChanged</code> - Success announcement</li>
+                <li><code>languageSelector.changeError</code> - Error message</li>
+                <li><code>languageSelector.optionLabel</code> - Option accessibility label</li>
+                <li><code>languageSelector.currentSelection</code> - Current selection indicator</li>
+                <li><code>common.close</code> - Close button label</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h3>✅ Requirements Fulfilled</h3>
+            <ul class="feature-list">
+                <li>
+                    <span class="status implemented">✓</span>
+                    <strong>Requirement 5.1:</strong> 언어 변경 시 로딩 상태 표시 개선
+                </li>
+                <li>
+                    <span class="status implemented">✓</span>
+                    <strong>Requirement 5.2:</strong> 언어 변경 실패 시 사용자 피드백 구현
+                </li>
+                <li>
+                    <span class="status implemented">✓</span>
+                    <strong>Additional:</strong> 키보드 네비게이션과 접근성 개선
+                </li>
+            </ul>
+        </div>
+
+        <p><strong>Note:</strong> To test these improvements, visit the main application at <a href="http://localhost:5174" target="_blank">http://localhost:5174</a> and interact with the language selector in the header.</p>
+    </div>
+</body>
+</html>

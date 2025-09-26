@@ -292,7 +292,12 @@ export default {
     examples: {
       title: '예제',
       complex: '복합 구조',
-      tryIt: '시도해보기'
+      tryIt: '시도해보기',
+      tabs: {
+        json: 'JSON',
+        jsonl: 'JSONL',
+        complex: '복합 구조'
+      }
     }
   },
   onboarding: {
@@ -893,9 +898,18 @@ export default {
     caching: '캐싱',
     scalability: '확장성'
   },
+  languageSelector: {
+    changing: '변경 중...',
+    changingLanguage: '{{language}}로 언어를 변경하는 중입니다',
+    languageChanged: '언어가 {{language}}로 변경되었습니다',
+    changeError: '언어 변경에 실패했습니다. 다시 시도해주세요.',
+    optionLabel: '{{language}} 선택',
+    currentSelection: '현재 선택됨'
+  },
   common: {
     loading: '로딩 중...',
     error: '오류가 발생했습니다',
+    close: '닫기',
     backToHub: '허브로 돌아가기',
     lastUpdated: '최종 업데이트',
     author: '작성자',
