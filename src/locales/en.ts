@@ -588,6 +588,13 @@ Example:
       }
     }
   },
+  footer: {
+    home: 'Home',
+    guide: 'Guide',
+    faq: 'FAQ',
+    about: 'About',
+    privacy: 'Privacy Policy'
+  },
   meta: {
     title: 'JSONL Parser',
     description: 'Parse and visualize JSON data with interactive tree structure'

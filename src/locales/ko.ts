@@ -686,6 +686,13 @@ export default {
       }
     }
   },
+  footer: {
+    home: '홈',
+    guide: '가이드',
+    faq: 'FAQ',
+    about: '소개',
+    privacy: '개인정보처리방침'
+  },
   meta: {
     title: 'JSONL 파서',
     description: '대화형 트리 구조로 JSON 데이터를 파싱하고 시각화하세요'

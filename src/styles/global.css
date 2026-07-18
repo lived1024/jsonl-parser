@@ -210,3 +210,39 @@ body {
     --color-text-muted: #333333;
   }
 }
+/* 콘텐츠 페이지 (가이드/FAQ/소개/개인정보처리방침) 공통 레이아웃 */
+.content-page {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  /* app-main은 홈 전용 flex/grid 레이아웃이므로 콘텐츠 페이지가 전체를 차지하도록 확장 */
+  flex: 1;
+  min-width: 0;
+  grid-row: 1 / -1;
+}
+
+.content-page-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.content-page-inner h2 {
+  margin: 0 0 0.5rem;
+}
+
+.content-page-inner section p {
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+  .content-page-inner {
+    padding: 1.25rem;
+  }
+}

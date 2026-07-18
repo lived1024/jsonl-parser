@@ -39,37 +39,31 @@
     <main class="app-main" :style="mainStyle" role="main" :aria-label="t('accessibility.mainArea')">
       <slot />
     </main>
+
+    <AdBanner />
+
+    <footer class="app-footer" role="contentinfo">
+      <nav class="footer-links">
+        <router-link to="/">{{ t('footer.home') }}</router-link>
+        <router-link to="/guide">{{ t('footer.guide') }}</router-link>
+        <router-link to="/faq">{{ t('footer.faq') }}</router-link>
+        <router-link to="/about">{{ t('footer.about') }}</router-link>
+        <router-link to="/privacy">{{ t('footer.privacy') }}</router-link>
+      </nav>
+    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useApp } from '../composables/useApp'
-import { useJsonTreeStore } from '../stores'
 import { useI18n } from '../composables/useI18n'
 import KeyboardShortcuts from '../components/common/KeyboardShortcuts.vue'
 import LanguageSelector from '../components/ui/LanguageSelector.vue'
 import HelpButton from '../components/common/HelpButton.vue'
+import AdBanner from '../components/common/AdBanner.vue'
 
 const { mainStyle } = useApp()
-const store = useJsonTreeStore()
 const { t } = useI18n()
-
-// 총 노드 개수 계산
-const nodeCount = computed(() => {
-  const countNodes = (nodes: any[]): number => {
-    let count = 0
-    for (const node of nodes) {
-      count++
-      if (node.children) {
-        count += countNodes(node.children)
-      }
-    }
-    return count
-  }
-
-  return countNodes(store.parsedData)
-})
 </script>
 
 <style scoped>
@@ -310,6 +304,31 @@ const nodeCount = computed(() => {
   gap: 1rem;
   background: var(--color-surface);
   min-height: 0;
+}
+
+.app-footer {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--color-text);
+  text-decoration: underline;
 }
 
 /* 반응형 디자인 - 모바일 */
