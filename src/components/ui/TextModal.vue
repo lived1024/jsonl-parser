@@ -170,6 +170,10 @@ watch(() => props.isVisible, (visible) => {
   max-width: 80vw;
   max-height: 80vh;
   width: 600px;
+  min-width: 320px;
+  min-height: 240px;
+  resize: both;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   outline: none;
@@ -239,8 +243,7 @@ watch(() => props.isVisible, (visible) => {
 .text-display {
   width: 100%;
   height: 100%;
-  min-height: 200px;
-  max-height: 400px;
+  min-height: 0; /* 모달 축소 시 텍스트 영역이 함께 줄어들도록 (하단 클리핑 방지) */
   padding: 1rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -310,6 +313,9 @@ watch(() => props.isVisible, (visible) => {
     max-width: 95vw;
     max-height: 90vh;
     width: auto;
+    min-width: 0; /* 소형 뷰포트에서 320px 고정으로 화면을 침범하지 않도록 해제 */
+    min-height: 0;
+    resize: none; /* 터치에서는 CSS resize 핸들이 동작하지 않음 */
   }
   
   .modal-header {
