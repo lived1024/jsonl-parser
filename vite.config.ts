@@ -6,8 +6,16 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
+        minify: {
+          compress: {
+            dropConsole: process.env.NODE_ENV === 'production',
+            dropDebugger: true
+          },
+          mangle: true,
+          codegen: true
+        },
         manualChunks: (id) => {
           // Vendor chunks
           if (id.includes('node_modules')) {
@@ -112,8 +120,6 @@ export default defineConfig({
     },
     // Optimize chunk size warnings
     chunkSizeWarningLimit: 500,
-    // Additional optimizations
-    minify: 'esbuild',
     // Enable source maps for debugging in production
     sourcemap: false,
     // Optimize CSS
@@ -136,11 +142,6 @@ export default defineConfig({
       'highlight.js'
     ],
     exclude: ['@vite/client', '@vite/env']
-  },
-  // Enable experimental features for better performance
-  esbuild: {
-    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [], // Remove console.log in production only
-    legalComments: 'none'
   },
   test: {
     globals: true,
